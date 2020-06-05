@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev # 环境逻辑组 dev/test/prod
+
+mybatis-plus:
+  mapper-locations: classpath:/mappers/*Mapper.xml
+  typeAliasesPackage: com.sunyard.dap.system.entity
+

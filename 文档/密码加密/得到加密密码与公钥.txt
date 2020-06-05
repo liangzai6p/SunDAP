@@ -1,0 +1,2 @@
+同路径下执行以下命令：
+java -cp druid-1.1.16.jar com.alibaba.druid.filter.config.ConfigTools 明文密码
