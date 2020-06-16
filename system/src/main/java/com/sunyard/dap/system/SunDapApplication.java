@@ -12,8 +12,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  **/
 @SpringBootApplication
 @EnableDiscoveryClient
-public class SunDapSystemApplication {
+public class SunDapApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SunDapSystemApplication.class, args);
+        SpringApplication.run(SunDapApplication.class, args);
     }
 }

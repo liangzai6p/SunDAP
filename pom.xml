@@ -12,6 +12,7 @@
     <modules>
         <module>common</module>
         <module>system</module>
+        <module>dataserve</module>
     </modules>
 
 
@@ -25,8 +26,8 @@
         <lombok.version>1.16.18</lombok.version>
         <mysql.version>8.0.18</mysql.version>
         <ojdbc.version>12.1.0.1</ojdbc.version>
-        <druid.version>1.1.16</druid.version>
-        <druid.spring.boot.starter.version>1.1.10</druid.spring.boot.starter.version>
+        <druid.version>1.1.21</druid.version>
+        <druid.spring.boot.starter.version>1.1.22</druid.spring.boot.starter.version>
         <spring.boot.version>2.2.2.RELEASE</spring.boot.version>
         <spring.cloud.version>Hoxton.SR1</spring.cloud.version>
         <spring.cloud.alibaba.version>2.1.0.RELEASE</spring.cloud.alibaba.version>

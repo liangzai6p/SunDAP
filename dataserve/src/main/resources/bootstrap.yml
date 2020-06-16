@@ -1,9 +1,9 @@
 server:
-  port: 9001
+  port: 9011
 
 spring:
   application:
-    name: sundap-system
+    name: sundap-dataserve
   cloud:
     nacos:
       discovery:

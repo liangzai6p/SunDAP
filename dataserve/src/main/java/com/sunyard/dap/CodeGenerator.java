@@ -9,7 +9,6 @@ import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class CodeGenerator {
 
     public static void main(String[] args) throws Exception {
         AutoGenerator mpg = new AutoGenerator();
-        String projectPath  = System.getProperty("user.dir")+"/system";
+        String projectPath  = System.getProperty("user.dir")+"/dataserve";
         // TODO 此处务必记得修改
         String outputDir = projectPath+"/src/main/java";
 
@@ -94,7 +93,7 @@ public class CodeGenerator {
         // 表名生成策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
         // 需要生成的表,大小写一定要正确
-        strategy.setInclude(new String[]{"TEST"});
+        strategy.setInclude(new String[]{"DM_BUSI_OFFLINE_TB"});
         // 排除生成的表
 //        strategy.setExclude(new String[]{"order"});
         Field field = strategy.getClass().getDeclaredField("logicDeleteFieldName");
@@ -105,37 +104,36 @@ public class CodeGenerator {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("com.sunyard.dap.system");
+        pc.setParent("com.sunyard.dap.dataserve");
 //        pc.setModuleName("dc");
         mpg.setPackageInfo(pc);
 
-
-        // 自定义配置
-        InjectionConfig cfg = new InjectionConfig() {
-            @Override
-            public void initMap() {
-                // to do nothing
-            }
-        };
-
-        // 如果模板引擎是 freemarker
-        String templatePath = "/templates/mapper.xml.ftl";
-        // 如果模板引擎是 velocity
-        // String templatePath = "/templates/mapper.xml.vm";
-
-        // 自定义输出配置
-        List<FileOutConfig> focList = new ArrayList<>();
-        // 自定义配置会被优先输出
-        focList.add(new FileOutConfig(templatePath) {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return projectPath + "/src/main/resources/mapper/" + pc.getModuleName()
-                        + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
-            }
-        });
-        cfg.setFileOutConfigList(focList);
-        mpg.setCfg(cfg);
+//        // 自定义配置
+//        InjectionConfig cfg = new InjectionConfig() {
+//            @Override
+//            public void initMap() {
+//                // to do nothing
+//            }
+//        };
+//
+//        // 如果模板引擎是 freemarker
+//        String templatePath = "/templates/mapper.xml.ftl";
+//        // 如果模板引擎是 velocity
+//        // String templatePath = "/templates/mapper.xml.vm";
+//
+//        // 自定义输出配置
+//        List<FileOutConfig> focList = new ArrayList<>();
+//        // 自定义配置会被优先输出
+//        focList.add(new FileOutConfig(templatePath) {
+//            @Override
+//            public String outputFile(TableInfo tableInfo) {
+//                // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
+//                return projectPath + "/src/main/resources/mapper/" + pc.getModuleName()
+//                        + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
+//            }
+//        });
+//        cfg.setFileOutConfigList(focList);
+//        mpg.setCfg(cfg);
 
         // 执行生成
         mpg.execute();

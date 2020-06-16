@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>system</artifactId>
+    <artifactId>dataserve</artifactId>
 
-    <name>SunDAP-系统管理-system</name>
+    <name>SunDAP-数据服务-dataserve</name>
 
 
    <dependencies>
