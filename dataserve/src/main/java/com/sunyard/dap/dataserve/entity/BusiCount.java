@@ -1,16 +1,12 @@
-package com.sunyard.dap.common.entity;
+package com.sunyard.dap.dataserve.entity;
 
 import java.math.BigDecimal;
-
-import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
@@ -18,11 +14,11 @@ import java.util.Date;
  * </p>
  *
  * @author yey.he
- * @since 2020-06-12
+ * @since 2020-06-17
  */
-@TableName("DM_BUSI_OFFLINE_TB")
+@TableName("DM_BUSI_COUNT_TB")
 @Data
-public class DmBusiOfflineTb extends Model<DmBusiOfflineTb> {
+public class BusiCount extends Model<BusiCount> {
 
     private static final long serialVersionUID=1L;
 
@@ -107,33 +103,8 @@ public class DmBusiOfflineTb extends Model<DmBusiOfflineTb> {
     /**
      * 日期
      */
-    @TableField("CREATE_TIME")
+    @TableField("RECORD_TIME")
     @JsonFormat(pattern = "yyyyMMdd")
-    private Date createTime;
+    private Date recordTime;
 
-
-    @Override
-    protected Serializable pkVal() {
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        return "DmBusiOfflineTb{" +
-        "blocNo=" + blocNo +
-        ", blocName=" + blocName +
-        ", zoneNo=" + zoneNo +
-        ", zoneName=" + zoneName +
-        ", branchNo=" + branchNo +
-        ", branchName=" + branchName +
-        ", siteNo=" + siteNo +
-        ", siteName=" + siteName +
-        ", channelNo=" + channelNo +
-        ", channelName=" + channelName +
-        ", busiCount=" + busiCount +
-        ", amount=" + amount +
-        ", cusCount=" + cusCount +
-        ", createTime=" + DateUtil.format(createTime,"yyyyMMdd") +
-        "}";
-    }
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @program: SunDAP
@@ -22,6 +23,7 @@ public class ReturnT<T> implements Serializable {
     public static final int FAIL_CODE = 500;
     public static final ReturnT<String> SUCCESS = new ReturnT<String>(null);
     public static final ReturnT<String> FAIL = new ReturnT<String>(FAIL_CODE, null);
+    public static final ReturnT<List> listFAIL = new ReturnT<>(FAIL_CODE, null,null);
 
     private int code;
     private String msg;

@@ -1,15 +1,12 @@
 package com.sunyard;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.RandomUtil;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,7 +19,20 @@ import java.util.List;
 public class systemTest {
 
     @Test
-    public void generateData() throws Exception{
+    public void generateDatabyDate() throws Exception{
+        for (long year = 20170000;year <= 20200000;year+=10000) {
+            for (long month = 100; month <= 1200; month += 100) {
+                for (long day = 1; day <= 27; day++) {
+                    generateData(String.valueOf(year + month + day));
+                    System.out.println("生成成功："+String.valueOf(year + month + day));
+                }
+            }
+        }
+    }
+
+
+
+    public static void generateData(String date) throws Exception{
         Connection connGet = null,connSet = null;
         PreparedStatement ps = null;
         ResultSet rs = getRs(connGet,ps);
@@ -41,7 +51,8 @@ public class systemTest {
 
         for (List<String> subList : list){
             int busi_count = Integer.parseInt(subList.get(10));
-
+            busi_count = RandomUtil.randomInt(Math.round(busi_count/2),Math.round(busi_count*2));
+            subList.set(10,String.valueOf(busi_count));
             int amount_per = RandomUtil.randomInt(0, 2000);
             int amount = amount_per*busi_count;
 
@@ -49,7 +60,7 @@ public class systemTest {
             int cus_count = busi_count>low?RandomUtil.randomInt(low, busi_count):busi_count;
             subList.add(String.valueOf(amount));
             subList.add(String.valueOf(cus_count));
-            subList.add(DateUtil.format(new Date(),"yyyyMMdd"));
+            subList.add(date);
         }
 
         insert(connSet,ps,list);
@@ -88,7 +99,7 @@ public class systemTest {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             conn = DriverManager.getConnection("jdbc:oracle:thin:@172.1.1.11:1521:orcl","sundap","123456");
-            String sql = "insert into dm_busi_offline_tb values (?,?,?,?,?,?,?,?,?,?,?,?,?,TO_DATE(?, 'yyyymmdd'))";
+            String sql = "insert into DM_BUSI_DAILY_TB values (?,?,?,?,?,?,?,?,?,?,?,?,?,TO_DATE(?, 'yyyymmdd'))";
 
             for (List<String> s : list){
                 ps = conn.prepareStatement(sql);
@@ -105,4 +116,6 @@ public class systemTest {
         }
 
     }
+
+
 }

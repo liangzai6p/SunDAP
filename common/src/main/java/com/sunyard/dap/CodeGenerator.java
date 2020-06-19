@@ -35,7 +35,8 @@ public class CodeGenerator {
 
 
     public static void main(String[] args) throws Exception {
-        generate("dataserve",new String[]{"DM_BUSI_CHANNEL_V","DM_BUSI_BRANCH_V","DM_BUSI_SITE_V","DM_BUSI_ZONE_V"});
+        generate("dataserve",new String[]{"DM_BUSI_OFFLINE_TB"});
+
     }
 
 
