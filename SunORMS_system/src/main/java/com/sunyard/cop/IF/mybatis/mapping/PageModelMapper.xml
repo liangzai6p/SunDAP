@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.PageModelMapper">
+	<resultMap id="PageModelResultMap" type="com.sunyard.cop.IF.mybatis.pojo.PageModel">
+		<id column="MODEL_ID" jdbcType="VARCHAR" property="modelId" />
+		<id column="MODEL_VERSION" jdbcType="VARCHAR" property="modelVersion" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<result column="MODEL_NAME" jdbcType="VARCHAR" property="modelName" />
+		<result column="MODEL_CONTENT" jdbcType="CLOB" property="modelContent" />
+		<result column="MODEL_JS" jdbcType="CLOB" property="modelJs" />
+		<result column="MODEL_DEL" jdbcType="VARCHAR" property="modelDel" />
+		<result column="LAST_MODI_DATE" jdbcType="VARCHAR" property="lastModiDate" />
+		<result column="EXPIRE_DATE" jdbcType="VARCHAR" property="expireDate" />
+	</resultMap>
+	<sql id="Page_Model_Column_List">
+		MODEL_ID,BANK_NO,SYSTEM_NO,PROJECT_NO,MODEL_NAME,MODEL_CONTENT,
+		MODEL_JS,MODEL_VERSION,MODEL_DEL,LAST_MODI_DATE,EXPIRE_DATE
+	</sql>
+	<select id="selectAllActivePageModels" parameterType="com.sunyard.cop.IF.mybatis.pojo.PageModel"
+		resultMap="PageModelResultMap">
+		select
+		MODEL_ID,MODEL_NAME,MODEL_VERSION,LAST_MODI_DATE
+		from sm_page_model_tb
+		where MODEL_DEL = '1' 
+		and bank_no=#{bankNo,jdbcType=VARCHAR}
+		and system_no=#{systemNo,jdbcType=VARCHAR}
+		and project_no=#{projectNo,jdbcType=VARCHAR}
+		order by MODEL_NAME
+	</select>
+	<insert id="insertPageModel" parameterType="com.sunyard.cop.IF.mybatis.pojo.PageModel">
+		insert into SM_PAGE_MODEL_TB(
+            <include refid="Page_Model_Column_List" />
+		) values (
+            #{modelId,jdbcType=VARCHAR}, #{bankNo,jdbcType=VARCHAR},
+            #{systemNo,jdbcType=VARCHAR}, #{projectNo,jdbcType=VARCHAR},
+            #{modelName,jdbcType=VARCHAR}, #{modelContent,jdbcType=CLOB},
+            #{modelJs,jdbcType=CLOB}, #{modelVersion,jdbcType=VARCHAR}, 
+            #{modelDel,jdbcType=VARCHAR}, #{lastModiDate,jdbcType=VARCHAR},
+            #{expireDate,jdbcType=VARCHAR}
+        )
+	</insert>
+	<select id="queryPageModelById" parameterType="java.lang.String" resultMap="PageModelResultMap">
+		select
+		<include refid="Page_Model_Column_List" />
+		from SM_PAGE_MODEL_TB 
+		where MODEL_ID = #{modelId,jdbcType=VARCHAR}
+		and MODEL_DEL = '1'
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		and ROWNUM = 1
+	</select>
+	<select id="queryPageModelByIdAndDate" parameterType="java.lang.String" resultMap="PageModelResultMap">
+		select
+		<include refid="Page_Model_Column_List" />
+		from SM_PAGE_MODEL_TB 
+		where MODEL_ID = #{modelId,jdbcType=VARCHAR}
+		and (EXPIRE_DATE &gt;= #{expireDate,jdbcType=VARCHAR}
+			OR EXPIRE_DATE IS NULL)
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		and ROWNUM = 1
+		order by MODEL_VERSION
+	</select>
+	<update id="updatePageModelToDel" parameterType="com.sunyard.cop.IF.mybatis.pojo.PageModel">
+        UPDATE SM_PAGE_MODEL_TB
+        set MODEL_DEL='0',
+        	EXPIRE_DATE = #{expireDate,jdbcType=VARCHAR}
+        where MODEL_ID = #{modelId,jdbcType=VARCHAR}
+        and MODEL_VERSION = #{modelVersion,jdbcType=VARCHAR}
+		and BANK_NO=#{bankNo,jdbcType=VARCHAR}
+		and system_no=#{systemNo,jdbcType=VARCHAR}
+		and project_no=#{projectNo,jdbcType=VARCHAR}
+    </update>
+</mapper>

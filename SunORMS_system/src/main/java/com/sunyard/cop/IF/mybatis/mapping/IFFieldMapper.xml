@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.IFFieldMapper">
+	<resultMap id="IFFieldResultMap" type="com.sunyard.cop.IF.mybatis.pojo.IFField">
+		<id column="FIELD_ID" jdbcType="VARCHAR" property="fieldId" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<result column="FIELD_NO" jdbcType="VARCHAR" property="fieldNo" />
+		<result column="FIELD_NAME" jdbcType="VARCHAR" property="fieldName" />
+		<result column="FIELD_DESC" jdbcType="VARCHAR" property="fieldDesc" />
+		<result column="FIELD_LENGTH" jdbcType="VARCHAR" property="fieldLength" />
+		<result column="FIELD_SIZE" jdbcType="VARCHAR" property="fieldSize" />
+		<result column="FIELD_MODE" jdbcType="VARCHAR" property="fieldMode" />
+		<result column="FIELD_TYPE" jdbcType="VARCHAR" property="fieldType" />
+		<result column="LAST_MODI_DATE" jdbcType="VARCHAR" property="lastModiDate" />
+		<result column="PARENT_FIELD" jdbcType="VARCHAR" property="parentField" />
+		<result column="IS_PARENT" jdbcType="VARCHAR" property="isParent" />
+	</resultMap>
+	<sql id="Field_List">
+		FIELD_ID, BANK_NO, SYSTEM_NO, PROJECT_NO, FIELD_NO, FIELD_NAME, FIELD_DESC,
+		FIELD_LENGTH,
+		FIELD_SIZE, FIELD_MODE, FIELD_TYPE, LAST_MODI_DATE, PARENT_FIELD, IS_PARENT
+	</sql>
+	<select id="getAllField" resultType="java.util.Map" parameterType="com.sunyard.cop.IF.mybatis.pojo.IFField">
+		select concat(concat(concat(concat(field_id, '-'), field_no), '-'), field_name) as field_value, parent_field, last_modi_date
+		from sm_iffield_tb
+		where system_no = #{systemNo,jdbcType=VARCHAR}
+		AND bank_no = #{bankNo,jdbcType=VARCHAR}
+		AND project_no = #{projectNo,jdbcType=VARCHAR}
+		order by field_id
+	</select>
+	<select id="getFieldsByModifyTime" resultType="java.util.Map" parameterType="com.sunyard.cop.IF.mybatis.pojo.IFField">
+		select concat(concat(concat(concat(field_id, '-'), field_no), '-'), field_name) as field_value, parent_field, last_modi_date
+		from sm_iffield_tb 
+		where parent_field in (
+			select t.field_id FROM sm_iffield_tb t where t.last_modi_date > #{lastModiDate,jdbcType=VARCHAR}
+		)
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and bank_no = #{bankNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+		order by field_id
+	</select>
+	<select id="asyscSelect" resultType="java.util.Map" parameterType="com.sunyard.cop.IF.mybatis.pojo.IFField">
+		select
+		<include refid="Field_List" />
+		from sm_iffield_tb t
+		where parent_field= #{parentField,jdbcType=VARCHAR}
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and bank_no = #{bankNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+		order by field_id
+	</select>
+	<select id="countParent" resultType="java.lang.Integer" parameterType="com.sunyard.cop.IF.mybatis.pojo.IFField">
+		select count(*) from sm_iffield_tb
+		where parent_field = #{parentField,jdbcType=VARCHAR}
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and bank_no = #{bankNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<select id="maxField" resultType="java.lang.String" parameterType="com.sunyard.cop.IF.mybatis.pojo.IFField">
+		select max(field_id) from sm_iffield_tb
+		where parent_field= #{parentField,jdbcType=VARCHAR}
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and bank_no = #{bankNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<select id="countField" resultType="java.lang.Integer" parameterType="com.sunyard.cop.IF.mybatis.pojo.IFField">
+		select count(*) from sm_iffield_tb
+		where field_id = #{fieldId,jdbcType=VARCHAR}
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and bank_no = #{bankNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<insert id="insertField" parameterType="com.sunyard.cop.IF.mybatis.pojo.Right">
+		insert into sm_iffield_tb (
+		field_id,field_no,field_name,field_desc,field_length,field_size,field_mode,field_type,last_modi_date,parent_field,is_parent,bank_no,system_no,project_no
+		) values (
+		#{fieldId,jdbcType=VARCHAR}, #{fieldNo,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR},
+		#{fieldDesc,jdbcType=VARCHAR}, #{fieldLength,jdbcType=DECIMAL}, #{fieldSize,jdbcType=DECIMAL},
+		#{fieldMode,jdbcType=VARCHAR}, #{fieldType,jdbcType=VARCHAR}, #{lastModiDate,jdbcType=VARCHAR},
+		#{parentField,jdbcType=VARCHAR}, #{isParent,jdbcType=VARCHAR}, #{bankNo,jdbcType=VARCHAR},
+		#{systemNo,jdbcType=VARCHAR}, #{projectNo,jdbcType=VARCHAR})
+	</insert>
+	<update id="updateParent" parameterType="com.sunyard.cop.IF.mybatis.pojo.IFField">
+		update SM_IFFIELD_TB
+		set last_modi_date = #{lastModiDate,jdbcType=VARCHAR},
+		is_parent = #{isParent,jdbcType=VARCHAR}
+		where field_id = #{fieldId,jdbcType=VARCHAR}
+		and bank_no = #{bankNo,jdbcType=VARCHAR}
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+	</update>
+	<update id="updateParentTime" parameterType="com.sunyard.cop.IF.mybatis.pojo.IFField">
+		update sm_iffield_tb
+		set last_modi_date = #{lastModiDate,jdbcType=VARCHAR}
+		where field_id = #{fieldId,jdbcType=VARCHAR}
+		and bank_no = #{bankNo,jdbcType=VARCHAR}
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+	</update>
+	<delete id="deleteField" parameterType="com.sunyard.cop.IF.mybatis.pojo.IFField">
+		delete from sm_iffield_tb
+		where field_id=#{fieldId,jdbcType=VARCHAR}
+		and bank_no = #{bankNo,jdbcType=VARCHAR}
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+	</delete>
+	<update id="updateField" parameterType="com.sunyard.cop.IF.mybatis.pojo.IFField">
+		update sm_iffield_tb
+		set field_no = #{fieldNo,jdbcType=VARCHAR},
+		field_name = #{fieldName,jdbcType=VARCHAR},
+		field_desc = #{fieldDesc,jdbcType=VARCHAR},
+		field_length = #{fieldLength,jdbcType=DECIMAL},
+		field_size = #{fieldSize,jdbcType=DECIMAL},
+		field_mode = #{fieldMode,jdbcType=VARCHAR},
+		field_type = #{fieldType,jdbcType=VARCHAR},
+		last_modi_date = #{lastModiDate,jdbcType=VARCHAR}
+		where field_id = #{fieldId,jdbcType=VARCHAR}
+		and bank_no = #{bankNo,jdbcType=VARCHAR}
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

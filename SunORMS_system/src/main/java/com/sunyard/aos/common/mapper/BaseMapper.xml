@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 公共基础 数据库操作 -->
+
+<mapper namespace="com.sunyard.aos.common.dao.BaseDao" >
+	
+	<!-- 新增日志信息 -->
+	<insert id="insertLogInfo" parameterType="java.util.HashMap">
+  		insert into sm_userlog_tb(organ_no, user_no, content, log_date, bank_no, system_no, project_no)
+			values(#{organ_no}, #{user_no}, #{content}, #{log_date}, #{bank_no}, #{system_no}, #{project_no})
+    </insert>
+    
+    <!-- 用户登出，更新登出时间、清空登录服务地址（区分pc、移动）等 -->
+	<update id="userLogout" parameterType="java.util.HashMap">
+  		update sm_users_tb set last_logout_time = #{logout_time}
+		<if test='login_terminal == "1"'>, login_pc_server = '' </if>		<!-- PC -->
+		<if test='login_terminal == "2"'>, login_mobile_server = '' </if>	<!-- 移动端 -->
+  		where user_no = #{user_no} 
+  		and bank_no = #{bank_no} and system_no = #{system_no} and project_no = #{project_no}
+    </update>
+
+    <update id="userLogout2" parameterType="java.util.HashMap">
+  		update sm_users_tb set last_logout_time = #{logout_time}
+  		where user_no = #{user_no}
+  		and bank_no = #{bank_no} and system_no = #{system_no} and project_no = #{project_no}
+    </update>
+
+    <!-- 更新用户登录状态 -->
+    <update id="updateUserLoginState" parameterType="java.util.HashMap">
+    	update sm_users_tb set login_state = '0' where user_no = #{user_no}
+    		and (login_pc_server is null or login_pc_server = '') and (login_mobile_server is null or login_mobile_server = '')
+    </update>
+    
+    <!-- 查询系统参数值 -->
+    <select id="getSysParamValue" parameterType="java.util.HashMap" resultType="java.lang.String">
+		select param_value from sm_sysparameter_tb
+		where param_item = #{param_item}
+		and bank_no = #{bank_no} and system_no = #{system_no} and project_no = #{project_no}
+	</select>
+    
+    <!-- 新增操作日志信息 -->
+	<insert id="insertOperLogInfo" parameterType="java.util.HashMap">
+  		insert into sm_operlog_tb(operator_no, oper_type, oper_content, oper_module, oper_time, oper_date, oper_organ)
+			values(#{user_no}, #{operType}, #{content}, #{module}, #{log_time}, #{log_date}, #{organ_no})
+    </insert>
+</mapper>

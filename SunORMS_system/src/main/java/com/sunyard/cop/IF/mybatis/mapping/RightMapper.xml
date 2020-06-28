@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.RightMapper" >
+	<resultMap id="RightResultMap" type="com.sunyard.cop.IF.mybatis.pojo.Right" >
+	    <id column="ROLE_NO" property="roleNo" jdbcType="VARCHAR" />
+	    <id column="MENU_ID" property="menuId" jdbcType="VARCHAR" />
+	    <id column="BUTTON_ID" property="buttonId" jdbcType="VARCHAR" />
+	    <id column="BANK_NO" property="bankNo" jdbcType="VARCHAR" />
+	    <id column="SYSTEM_NO" property="systemNo" jdbcType="VARCHAR" />
+	    <id column="PROJECT_NO" property="projectNo" jdbcType="VARCHAR" />
+	    <result column="IS_OPEN" property="isOpen" jdbcType="CHAR" />
+	    <result column="IS_LOCK" property="isLock" jdbcType="VARCHAR" />
+	    <result column="LAST_MODI_DATE" property="lastModiDate" jdbcType="VARCHAR" />
+	</resultMap> 
+  
+	<select id="selectRight" resultMap="RightResultMap" parameterType="com.sunyard.cop.IF.mybatis.pojo.Right">
+        select t.menu_id, t.button_id from sm_right_tb t 
+           where t.role_no = #{roleNo,jdbcType=VARCHAR}
+              and t.bank_no=#{bankNo,jdbcType=VARCHAR} 
+              and t.system_no=#{systemNo,jdbcType=VARCHAR} 
+              and t.project_no=#{projectNo,jdbcType=VARCHAR}
+              order by t.menu_id
+	</select>
+	<insert id="insertRight" parameterType="com.sunyard.cop.IF.mybatis.pojo.Right">
+		insert into sm_right_tb (
+			menu_id, button_id, 
+			role_no, is_open, 
+			is_lock, last_modi_date, 
+			bank_no, system_no, project_no
+		) values(
+			#{menuId,jdbcType=VARCHAR}, #{buttonId,jdbcType=VARCHAR}, 
+			#{roleNo,jdbcType=VARCHAR},  #{isOpen,jdbcType=CHAR}, 
+			#{isLock,jdbcType=VARCHAR}, #{lastModiDate,jdbcType=VARCHAR},
+			#{bankNo,jdbcType=VARCHAR}, #{systemNo,jdbcType=VARCHAR}, #{projectNo,jdbcType=VARCHAR })
+	</insert>
+	<delete id="deleteRight" parameterType="com.sunyard.cop.IF.mybatis.pojo.Right">
+        delete from sm_right_tb 
+        where role_no = #{roleNo,jdbcType=VARCHAR}
+           and menu_id = #{menuId,jdbcType=VARCHAR}
+           and bank_no = #{bankNo,jdbcType=VARCHAR} 
+           and system_no = #{systemNo,jdbcType=VARCHAR} 
+           and project_no = #{projectNo,jdbcType=VARCHAR}
+    </delete>
+    <delete id="updateRight" parameterType="com.sunyard.cop.IF.mybatis.pojo.Right">
+        update sm_right_tb 
+        set button_id = #{buttonId,jdbcType=VARCHAR}, 
+        	last_modi_date = #{lastModiDate,jdbcType=VARCHAR}, is_lock = #{isLock,jdbcType=VARCHAR}
+        where role_no = #{roleNo,jdbcType=VARCHAR}
+           and menu_id = #{menuId,jdbcType=VARCHAR}
+           and bank_no = #{bankNo,jdbcType=VARCHAR} 
+           and system_no = #{systemNo,jdbcType=VARCHAR} 
+           and project_no = #{projectNo,jdbcType=VARCHAR}
+    </delete>
+    <select id="selectMenuIdCount" parameterType="com.sunyard.cop.IF.mybatis.pojo.Right" resultType="java.lang.Integer">
+    	SELECT COUNT(menu_id) FROM sm_right_tb 
+    	WHERE menu_id= #{menuId,jdbcType=VARCHAR}
+    	   and bank_no=#{bankNo,jdbcType=VARCHAR} 
+           and system_no=#{systemNo,jdbcType=VARCHAR} 
+           and project_no=#{projectNo,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByMenuId" parameterType="com.sunyard.cop.IF.mybatis.pojo.Right">
+    	DELETE FROM sm_right_tb 
+    	WHERE menu_id= #{menuId,jdbcType=VARCHAR}
+    	   and bank_no=#{bankNo,jdbcType=VARCHAR} 
+           and system_no=#{systemNo,jdbcType=VARCHAR} 
+           and project_no=#{projectNo,jdbcType=VARCHAR}
+    </delete>
+    
+    <select id="getMenuByroleNo" parameterType="java.lang.String" resultType="map">
+    	  select b.menu_id as id, b.menu_name as name, b.parent_id as pId
+    		from (select *
+            		from sm_right_tb
+           			where role_no = #{roleNo, jdbcType = VARCHAR}) a,
+         	sm_menu_tb b
+   			where a. menu_id = b.menu_id
+    </select>
+    
+    <select id="getButtonByroleNo" parameterType="java.lang.String" resultType="map">
+   			select * from  sm_right_tb    where role_no = #{roleNo, jdbcType = VARCHAR}  and button_id is not null
+    </select>
+    
+    <delete id="deleteByRoleNo" parameterType="java.lang.String">
+    	DELETE FROM sm_right_tb  WHERE role_no= #{roleNo}
+    </delete>
+</mapper>

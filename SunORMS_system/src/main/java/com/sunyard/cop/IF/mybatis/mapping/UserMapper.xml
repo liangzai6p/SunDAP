@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.UserMapper">
+	<resultMap id="UserResultMap" type="com.sunyard.cop.IF.mybatis.pojo.User">
+		<id column="USER_NO" jdbcType="VARCHAR" property="userNo" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+		<result column="ORGAN_NO" jdbcType="VARCHAR" property="organNo" />
+		<result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+		<result column="USER_ENABLE" jdbcType="CHAR" property="userEnable" />
+		<result column="LOGIN_MODE" jdbcType="CHAR" property="loginMode" />
+		<result column="LOGIN_STATE" jdbcType="VARCHAR" property="loginState" />
+		<result column="LAST_MODI_DATE" jdbcType="VARCHAR" property="lastModiDate" />
+		<result column="UNDERSIGNED" jdbcType="VARCHAR" property="undersigned" />
+		<result column="TELLERLVL" jdbcType="VARCHAR" property="tellerlvl" />
+		<result column="USER_STATUS" jdbcType="VARCHAR" property="userStatus" />
+		<result column="LAST_LOGIN_TIME" jdbcType="VARCHAR" property="lastLoginTime" />
+		<result column="LAST_LOGOUT_TIME" jdbcType="VARCHAR" property="lastLogoutTime" />
+		<result column="TERMINAL_IP" jdbcType="VARCHAR" property="terminalIp" />
+		<result column="TERMINAL_MAC" jdbcType="VARCHAR" property="terminalMac" />
+		<result column="LOGIN_PC_SERVER" jdbcType="VARCHAR" property="loginPCServer" />
+		<result column="LOGIN_MOBILE_SERVER" jdbcType="VARCHAR" property="loginMobileServer" />
+        <result column="ERROR_COUNT" jdbcType="VARCHAR" property="errorCount" />
+        <result column="SINGLE_LOGIN" jdbcType="VARCHAR" property="singleLogin" />
+	</resultMap>
+	<sql id="User_Column_List">
+		USER_NO, PASSWORD, ORGAN_NO, USER_NAME, USER_ENABLE, LOGIN_MODE, LOGIN_STATE,
+		LAST_MODI_DATE, UNDERSIGNED, TELLERLVL, USER_STATUS, LAST_LOGIN_TIME, LAST_LOGOUT_TIME
+		TERMINAL_IP, TERMINAL_MAC, LOGIN_PC_SERVER, LOGIN_MOBILE_SERVER, BANK_NO, SYSTEM_NO, PROJECT_NO,ERROR_COUNT,SINGLE_LOGIN
+	</sql>
+	<select id="selectByUserNo" parameterType="java.lang.String" resultMap="UserResultMap">
+		select
+		<include refid="User_Column_List" />
+		from SM_USERS_TB
+		where USER_NO = #{userNo,jdbcType=VARCHAR}
+	</select>
+	<select id="findUserByPassword" parameterType="com.sunyard.cop.IF.mybatis.pojo.User" resultMap="UserResultMap">
+		select
+		<include refid="User_Column_List" />
+		from SM_USERS_TB
+		where USER_NO = #{userNo,jdbcType=VARCHAR}
+		and PASSWORD = #{password,jdbcType=VARCHAR}
+	</select>
+	<select id="getUserRole" parameterType="com.sunyard.cop.IF.mybatis.pojo.UserRole" resultType="java.lang.String" >
+		select distinct a.role_no from sm_user_role_tb a, sm_role_tb b 
+		where a.user_no = #{userNo} and a.is_open = '1' 
+		and a.role_no = b.role_no and b.is_open = '1'
+		and b.role_mode = '1'
+		and a.bank_no =  #{bankNo} and a.system_no =  #{systemNo} and a.project_no =  #{projectNo} 
+		and b.bank_no =  #{bankNo} and b.system_no =  #{systemNo} and b.project_no =  #{projectNo} 
+	</select>
+	
+	<!-- 更新用户登录信息 -->
+	<update id="updateUserLoginInfo" parameterType="java.util.HashMap">
+    	update sm_users_tb set last_login_time = #{last_login_time}, login_state = #{login_state}
+    	<if test='login_terminal == "1"'>, login_pc_server = #{login_server} </if>		<!-- PC -->
+    	<if test='login_terminal == "2"'>, login_mobile_server = #{login_server} </if>	<!-- 移动端 -->
+    	where user_no = #{user_no}
+    </update>
+	
+	<select id="chatSearch" resultType="java.util.Map" parameterType="com.sunyard.cop.IF.mybatis.pojo.User" >
+	SELECT (u.user_no || '-' || u.user_name) as user_no,
+           (u.organ_no || '-' || t.organ_name) AS organ_name 
+                 FROM sm_organ_tb t,sm_users_tb u
+                       WHERE t.organ_no = u.organ_no
+                             AND t.SYSTEM_NO =  #{systemNo,jdbcType=VARCHAR} 
+		                     AND t.BANK_NO =  #{bankNo,jdbcType=VARCHAR} 
+		                     AND t.PROJECT_NO =  #{projectNo,jdbcType=VARCHAR} 
+	</select>
+    <!-- 更新用户状态和错误次数 -->
+    <update id="updateStateAndErrorCount" parameterType="java.util.HashMap">
+        update sm_users_tb set
+        <if test="user_status != '' and user_status != null">
+            user_status = #{user_status},
+        </if>
+        error_count = #{error_count}
+        where user_no = #{user_no}
+    </update>
+    <!-- 查询默认输入密码次数上限 -->
+    <select id="selectDefaultErrorCount" resultType="java.lang.String"  >
+		select param_value from sm_sysparameter_tb
+		where param_item ='DEFAULT_ERROR_COUNT'
+	</select>
+</mapper>

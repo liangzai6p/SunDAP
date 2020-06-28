@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.ChatGroupMapper">
+	<resultMap id="ChatGroupResult" type="com.sunyard.cop.IF.mybatis.pojo.ChatGroup">
+		<id column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
+		<id column="BANK_NO" property="bankNo" jdbcType="VARCHAR" />
+		<id column="SYSTEM_NO" property="systemNo" jdbcType="VARCHAR" />
+		<id column="PROJECT_NO" property="projectNo" jdbcType="VARCHAR" />
+		<result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
+		<result column="GROUP_CONTENT" property="groupContent"
+			jdbcType="VARCHAR" />
+		<result column="MASTER_NO" property="masterNo" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+		<result column="IS_OK" property="isOk" jdbcType="CHAR" />
+		<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+		<result column="GROUP_MEMBER" property="groupMember" jdbcType="CLOB" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		GROUP_ID, BANK_NO, SYSTEM_NO, PROJECT_NO, GROUP_NAME, GROUP_CONTENT, MASTER_NO,
+		CREATE_TIME,
+		IS_OK, CREATE_USER
+	</sql>
+	<insert id="insertGroup" parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatGroup">
+		insert into SM_CHATGROUP_TB (GROUP_ID, BANK_NO, SYSTEM_NO,
+		PROJECT_NO, GROUP_NAME, GROUP_CONTENT,
+		MASTER_NO, CREATE_TIME, IS_OK,
+		CREATE_USER, GROUP_MEMBER)
+		values (#{groupId,jdbcType=VARCHAR}, #{bankNo,jdbcType=VARCHAR},
+		#{systemNo,jdbcType=VARCHAR},
+		#{projectNo,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, #{groupContent,jdbcType=VARCHAR},
+		#{masterNo,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR},
+		#{isOk,jdbcType=CHAR},
+		#{createUser,jdbcType=VARCHAR}, #{groupMember,jdbcType=CLOB})
+	</insert>
+	<update id="updateGroup" parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatGroup">
+		update sm_chatgroup_tb
+		set group_member= #{groupMember,jdbcType=CLOB}
+		where group_id=#{groupId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</update>
+	<select id="selectGroup" resultMap="ChatGroupResult"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatGroup">
+		select * from sm_chatgroup_tb
+		where group_member like #{groupMember,jdbcType=CLOB}
+		AND SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		AND BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		AND PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<select id="maxGroupId" resultType="java.lang.String"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatGroup">
+		SELECT NVL(MAX(group_id)+1,'10001') FROM sm_chatgroup_tb
+		where SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		AND BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		AND PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<select id="showMembers" resultType="java.lang.String"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatGroup">
+		select group_member from sm_chatgroup_tb
+		where group_id=#{groupId,jdbcType=VARCHAR}
+		AND SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		AND BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		AND PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteGroup" parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatGroup">
+		delete from sm_chatgroup_tb
+		where group_id = #{groupId,jdbcType=VARCHAR}
+		AND SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		AND BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		AND PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</delete>
+	<select id="showGroupInfor" resultMap="ChatGroupResult"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatGroup">
+		select group_name ,group_content,master_no
+		from sm_chatgroup_tb t
+		where group_id = #{groupId,jdbcType=VARCHAR}
+		AND SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		AND BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		AND PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+</mapper>

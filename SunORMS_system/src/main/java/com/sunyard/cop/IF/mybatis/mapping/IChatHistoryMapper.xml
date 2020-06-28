@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.IChatHistoryMapper">
+	<resultMap id="IChathistoryResult" type="com.sunyard.cop.IF.mybatis.pojo.ChatHistory">
+		<id column="CHAT_ID" property="chatId" jdbcType="VARCHAR" />
+		<id column="BANK_NO" property="bankNo" jdbcType="VARCHAR" />
+		<id column="SYSTEM_NO" property="systemNo" jdbcType="VARCHAR" />
+		<id column="PROJECT_NO" property="projectNo" jdbcType="VARCHAR" />
+		<result column="CHAT_FROM" property="chatFrom" jdbcType="VARCHAR" />
+		<result column="CHAT_TO" property="chatTo" jdbcType="VARCHAR" />
+		<result column="SEND_TIME" property="sendTime" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="CHAR" />
+		<result column="CHATCONTENT" property="chatcontent" jdbcType="CLOB" />
+	</resultMap>
+	
+	<sql id="ChatHistory_List">
+		CHAT_ID, BANK_NO, SYSTEM_NO, PROJECT_NO, CHAT_FROM, CHAT_TO, SEND_TIME,
+		STATUS,CHATCONTENT
+	</sql>
+
+	<insert id="insertChatHistory" parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatHistory">
+		insert into SM_CHATHISTORY_TB (CHAT_ID, BANK_NO, SYSTEM_NO, PROJECT_NO,
+		CHAT_FROM, CHAT_TO, SEND_TIME, STATUS, CHATCONTENT)
+		values (#{chatId,jdbcType=VARCHAR}, #{bankNo,jdbcType=VARCHAR},
+		#{systemNo,jdbcType=VARCHAR},
+		#{projectNo,jdbcType=VARCHAR}, #{chatFrom,jdbcType=VARCHAR}, #{chatTo,jdbcType=VARCHAR},
+		#{sendTime,jdbcType=VARCHAR}, #{status,jdbcType=CHAR},
+		#{chatcontent,jdbcType=CLOB}
+		)
+	</insert>
+
+	<update id="updateChatHistory" parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatHistory">
+		update sm_chathistory_tb set status='1'
+		where chat_from= #{chatFrom,jdbcType=VARCHAR}
+		and chat_to= #{chatTo,jdbcType=VARCHAR}
+		and status='0'
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateHistory" parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatHistory">
+		update sm_chathistory_tb set status='1'
+		where chat_id=#{chatId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</update>
+
+	<select id="getUnreadMsg" resultMap="IChathistoryResult"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatHistory">
+		select
+		<include refid="ChatHistory_List" />
+		from sm_chathistory_tb
+		where CHAT_TO= #{chatTo,jdbcType=VARCHAR}
+		and status=#{status,jdbcType=CHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		order by send_time asc
+	</select>
+
+	<select id="getChatHistoryList" resultMap="IChathistoryResult"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatHistory">
+		select
+		<include refid="ChatHistory_List" />
+		from sm_chathistory_tb
+		where
+		(chat_from=#{chatFrom,jdbcType=VARCHAR} and chat_to=#{chatTo,jdbcType=VARCHAR})
+		or (chat_from=#{chatTo,jdbcType=VARCHAR} and
+		chat_to=#{chatFrom,jdbcType=VARCHAR})
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		order by SEND_TIME desc
+	</select>
+
+	<select id="getTotalPage" resultType="java.lang.Integer"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatHistory">
+		select count(chat_id)
+		from sm_chathistory_tb
+		where
+		(chat_from=#{chatFrom,jdbcType=VARCHAR} and chat_to=#{chatTo,jdbcType=VARCHAR})
+		or (chat_from=#{chatTo,jdbcType=VARCHAR} and
+		chat_to=#{chatFrom,jdbcType=VARCHAR})
+		and SEND_TIME >= #{sendTime,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+
+	<select id="ChatHistoryPage" resultMap="IChathistoryResult"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.ChatHistory">
+		select * from sm_chathistory_tb t
+		WHERE
+		(chat_from=#{chatFrom,jdbcType=VARCHAR} and chat_to=#{chatTo,jdbcType=VARCHAR})
+		or (chat_from=#{chatTo,jdbcType=VARCHAR} and
+		chat_to=#{chatFrom,jdbcType=VARCHAR})
+		and SEND_TIME >= #{sendTime,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		order by send_time desc
+	</select>
+
+</mapper>

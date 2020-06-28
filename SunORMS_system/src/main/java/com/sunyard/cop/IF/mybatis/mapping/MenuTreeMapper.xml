@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.MenuTreeMapper">
+
+	<resultMap id="MenuResultMap" type="com.sunyard.cop.IF.mybatis.pojo.Menu">
+		<id column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
+		<id column="IS_OPEN" jdbcType="CHAR" property="isOpen" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<result column="MENU_NAME" jdbcType="VARCHAR" property="menuName" />
+		<result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+		<result column="MENU_DESC" jdbcType="VARCHAR" property="menuDesc" />
+		<result column="MENU_URL" jdbcType="VARCHAR" property="menuUrl" />
+		<result column="MENU_LEVEL" jdbcType="CHAR" property="menuLevel" />
+		<result column="LAST_MODI_DATE" jdbcType="VARCHAR" property="lastModiDate" />
+		<result column="EDIT_ENABLE" jdbcType="CHAR" property="editEnable" />
+		<result column="MENU_ORDER" jdbcType="VARCHAR" property="menuOrder" />
+		<result column="MENU_BELONG" jdbcType="VARCHAR" property="menuBelong" />
+		<result column="IS_PARENT" jdbcType="CHAR" property="isParent" />
+		<result column="MENU_CLASS" jdbcType="VARCHAR" property="menuClass" />
+		<result column="MENU_TYPE" jdbcType="VARCHAR" property="menuType" />
+		<result column="MENU_ATTR" jdbcType="CHAR" property="menuAttr" />
+		<result column="HOME_SHOW" jdbcType="CHAR" property="homeShow" />
+	</resultMap>
+
+	<resultMap id="RightResultMap" type="com.sunyard.cop.IF.mybatis.pojo.Right">
+		<id column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
+		<id column="IS_OPEN" jdbcType="CHAR" property="isOpen" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<id column="ROLE_NO" jdbcType="VARCHAR" property="roleNo" />
+		<result column="LAST_MODI_DATE" jdbcType="VARCHAR" property="lastModiDate" />
+	</resultMap>
+
+	<sql id="Menu_Column_List">
+		MENU_ID,IS_OPEN,SYSTEM_NO,BANK_NO,PROJECT_NO,MENU_NAME
+		,PARENT_ID,MENU_DESC,MENU_URL,MENU_LEVEL,LAST_MODI_DATE
+		,EDIT_ENABLE,MENU_ORDER,MENU_BELONG,MENU_CLASS,MENU_TYPE,MENU_ATTR,HOME_SHOW
+	</sql>
+
+	<sql id="role">
+		ROLE_NO
+	</sql>
+
+	<select id="selectAdminMenu" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu" resultType="java.util.Map">
+		SELECT
+		<include refid="Menu_Column_List" />
+		from sm_menu_tb
+		WHERE bank_no=#{bankNo,jdbcType=VARCHAR}
+		and system_no=#{systemNo,jdbcType=VARCHAR}
+		and project_no=#{projectNo,jdbcType=VARCHAR}
+		and menu_belong LIKE CONCAT(CONCAT('%',#{menuBelong,jdbcType=VARCHAR}),'%')
+		and is_open='1' ORDER BY menu_level, menu_order, menu_id
+	</select>
+
+	<!-- 
+	<select id="selectdefaultQueryMenu" resultMap="MenuResultMap">
+	select
+	distinct m.* from sm_menu_tb m, sm_right_tb r where m.menu_id = r.menu_id
+	and m.is_open='1' and m.menu_belong like
+	CONCAT(CONCAT('%',#{menu.menuBelong,jdbcType=VARCHAR}),'%')
+	and m.bank_no=#{menu.bankNo,jdbcType=VARCHAR} and
+	m.system_no=#{menu.systemNo,jdbcType=VARCHAR}
+	and m.project_no=#{menu.projectNo,jdbcType=VARCHAR} and r.role_no in
+	<foreach item="item" index="index" collection="ids" open="("
+		separator="," close=")">
+		#{item}
+	</foreach>
+	order by m.menu_level,m.menu_order,m.menu_id
+	</select>
+	-->
+
+	<select id="selectdefaultQueryMenu" parameterType="java.util.Map" resultType="java.util.Map" databaseId="oracle">
+		<!-- 通过 sys_connect_by_path 函数拼接 button_id -->
+		select t.menu_id, max(substr(sys_connect_by_path(t.button_id, '#'), 2)) button_id, t.is_parent, t.menu_name, t.parent_id, t.menu_url, t.menu_level,t.menu_class,t.menu_type,t.menu_attr,t.home_show 
+			from ( select b.*, row_number() over(partition by menu_id, is_open order by button_id) rnm 
+				from ( select distinct m.*, r.button_id from sm_menu_tb m, sm_right_tb r 
+						where m.menu_id = r.menu_id and m.is_open = '1' and r.role_no in (${roles}) and m.menu_belong like '%${menu.menuBelong}%' )b) t 
+		start with rnm = 1 connect by rnm = prior rnm + 1 and menu_id = prior menu_id and is_open = prior is_open 
+		group by t.menu_id, t.menu_name, t.is_parent, t.parent_id, t.menu_url, t.menu_level, t.menu_order,t.menu_class,t.menu_type,t.menu_attr,t.home_show order by t.menu_level, t.menu_order, t.menu_id 
+	</select>
+	
+	<select id="selectdefaultQueryMenu" parameterType="java.util.Map" resultType="java.util.Map" databaseId="db2">
+		<!-- 通过 xml2clob、xmlagg、xmlelement 函数拼接 button_id -->
+		<!--select a.*, rownumber() over() as rn from (
+			select t.menu_id, trim(char(substr(replace(replace(xml2clob(xmlagg(xmlelement(name a, '#' || t.button_id))), '&lt;a&gt;', ''), '&lt;/a&gt;', ''), 2))) button_id, t.menu_name, t.parent_id, t.menu_url, t.menu_level, t.is_parent
+				from ( select distinct m.*, r.button_id from sm_menu_tb m, sm_right_tb r where m.menu_id = r.menu_id and m.is_open = '1' and r.role_no in (${roles}) and m.menu_belong like '%${menu.menuBelong}%' ) t 
+				group by t.menu_id, t.menu_name, t.parent_id, t.menu_url, t.menu_level, t.is_parent, t.menu_order order by t.menu_level, t.menu_order, t.menu_id ) a
+				-->
+		<!--如果button_id是null 是<A/> 否则才是<A></A>,修改查询的列名和oracle一致-->
+		select a.*, rownumber() over() as rn from (
+		select t.menu_id, trim(char(substr(REPLACE(replace(replace(xml2clob(xmlagg(xmlelement(name a, '#' || t.button_id))), '&lt;A&gt;', ''), '&lt;/A&gt;', ''),'&lt;A/&gt;',''), 2))) button_id,
+		t.menu_name, t.parent_id, t.menu_url, t.menu_level,t.menu_class,t.menu_type,t.menu_attr,t.home_show
+		from ( select distinct m.*, r.button_id from sm_menu_tb m, sm_right_tb r where m.menu_id = r.menu_id and m.is_open = '1'
+		and r.role_no in (${roles}) and m.menu_belong like '%${menu.menuBelong}%' ) t
+		group by t.menu_id, t.menu_name, t.is_parent, t.parent_id, t.menu_url, t.menu_level, t.menu_order,t.menu_class,t.menu_type,t.menu_attr,t.home_show
+		order by t.menu_level, t.menu_order, t.menu_id
+		) a
+	</select>
+	
+	<select id="selectdefaultQueryMenu" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
+		<!-- 通过 group_concat 函数 分组拼接 button_id -->
+		 select t.menu_id, group_concat(distinct button_id) as button_id, t.is_parent, t.menu_name, t.parent_id, t.menu_url, t.menu_level
+			from ( select distinct m.*, r.button_id from sm_menu_tb m, sm_right_tb r where m.menu_id = r.menu_id and m.is_open = '1' and r.role_no in (${roles}) and m.menu_belong like '%${menu.menuBelong}%' ) t 
+			group by t.menu_id, t.menu_name, t.is_parent, t.parent_id, t.menu_url, t.menu_level, t.menu_order 
+			order by t.menu_level, t.menu_order, t.menu_id
+	</select>
+
+	<select id="initMenu" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu" resultType="java.util.Map">
+		select menu_id, menu_name, parent_id, is_parent
+		from sm_menu_tb where is_open = #{isOpen,jdbcType=VARCHAR}
+		and bank_no=#{bankNo,jdbcType=VARCHAR}
+		and system_no=#{systemNo,jdbcType=VARCHAR}
+		and project_no=#{projectNo,jdbcType=VARCHAR}
+		order by menu_level, menu_order, menu_id
+	</select>
+	
+	<select id="initButton" parameterType="java.util.Map" resultType="java.util.Map">
+		select * from sm_button_tb
+		where bank_no=#{bankNo,jdbcType=VARCHAR}
+		and system_no=#{systemNo,jdbcType=VARCHAR}
+		and project_no=#{projectNo,jdbcType=VARCHAR}
+		order by menu_id, button_id
+	</select>
+	
+	
+	<select id="selectButtonByMenu" parameterType="java.util.Map" resultType="java.util.Map">
+		select menu_id,button_id from sm_button_tb
+		where is_open='1'
+		and bank_no=#{bankNo,jdbcType=VARCHAR}
+		and system_no=#{systemNo,jdbcType=VARCHAR}
+		and project_no=#{projectNo,jdbcType=VARCHAR}
+		and menu_id in
+		<foreach collection="menuIds" item="menuId" open="(" separator="," close=")">
+			#{menuId}
+		</foreach>
+
+	</select>
+
+</mapper>

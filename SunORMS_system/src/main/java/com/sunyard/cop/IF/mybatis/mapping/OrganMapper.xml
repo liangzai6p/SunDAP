@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.OrganMapper">
+	<resultMap id="OrganResultMap" type="com.sunyard.cop.IF.mybatis.pojo.Organ">
+		<id column="ORGAN_NO" jdbcType="VARCHAR" property="organNo" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<result column="ORGAN_NAME" jdbcType="VARCHAR" property="organName" />
+		<result column="SHNAME" jdbcType="VARCHAR" property="shname" />
+		<result column="ORGAN_LEVEL" jdbcType="VARCHAR" property="organLevel" />
+		<result column="ORGAN_TYPE" jdbcType="CHAR" property="organType" />
+		<result column="PARENT_ORGAN" jdbcType="CHAR" property="parentOrgan" />
+		<result column="LAST_MODI_DATE" jdbcType="CHAR" property="lastModiDate" />
+	</resultMap>
+	<sql id="Organ_Column_List">
+		ORGAN_NO, ORGAN_NAME, SHNAME, ORGAN_LEVEL, ORGAN_TYPE, PARENT_ORGAN,
+		LAST_MODI_DATE, BANK_NO, SYSTEM_NO, PROJECT_NO
+	</sql>
+	
+	<!-- 查询所有机构信息 -->
+	<select id="getAllOrgans" resultType="java.util.Map" parameterType="com.sunyard.cop.IF.mybatis.pojo.Organ">
+		select a.organ_no, concat(concat(a.organ_no, '-'), a.organ_name) as organ_name, 
+		a.parent_organ, a.organ_level, c.organ_count
+		from sm_organ_tb a left join (
+		select b.parent_organ, count(b.organ_no) as organ_count from sm_organ_tb b
+		group by b.parent_organ) c
+		on a.organ_no = c.parent_organ
+		where SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		AND BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		AND PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		order by a.organ_level, a.organ_no
+	</select>
+
+	<!-- 查询指定机构信息 -->
+	<select id="getOrganByNo" resultMap="OrganResultMap" parameterType="java.util.Map">
+		select 
+		<include refid="Organ_Column_List" /> 
+		from sm_organ_tb
+		where organ_no = #{organ_no}
+		and bank_no = #{bank_no} and system_no = #{system_no} and project_no = #{project_no}
+	</select>
+</mapper>

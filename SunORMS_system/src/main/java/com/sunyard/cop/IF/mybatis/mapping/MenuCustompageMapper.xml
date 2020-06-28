@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.MenuCustompageMapper">
+	<resultMap id="MenuCustompageResultMap"
+		type="com.sunyard.cop.IF.mybatis.pojo.MenuCustompage">
+		<id column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
+		<id column="PAGE_ID" jdbcType="VARCHAR" property="pageId" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<result column="LAST_MODI_DATE" jdbcType="VARCHAR" property="lastModiDate" />
+	</resultMap>
+	<sql id="MenuCustompage_Column_List">
+		MENU_ID,PAGE_ID,LAST_MODI_DATE,BANK_NO,SYSTEM_NO,PROJECT_NO
+	</sql>
+	<insert id="insertMenuPage" parameterType="com.sunyard.cop.IF.mybatis.pojo.MenuCustompage">
+		insert into sm_menu_custompage_tb (
+		<include refid="MenuCustompage_Column_List" />
+		)
+		values(#{menuId,jdbcType=VARCHAR},#{pageId,jdbcType=VARCHAR},#{lastModiDate,jdbcType=VARCHAR},
+		#{bankNo,jdbcType=VARCHAR},#{systemNo,jdbcType=VARCHAR},#{projectNo,jdbcType=VARCHAR})
+	</insert>
+	<select id="selectMenuIdCount" resultType="java.lang.Integer"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.MenuCustompage">
+		select count(menu_id) from sm_menu_custompage_tb
+		where menu_id = #{menuId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<update id="updateMenupage" parameterType="com.sunyard.cop.IF.mybatis.pojo.MenuCustompage">
+		update
+		sm_menu_custompage_tb
+		set page_id =#{pageId,jdbcType=VARCHAR},last_modi_date
+		=#{lastModiDate,jdbcType=VARCHAR}
+		where menu_id =#{menuId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</update>
+	<delete id="deleteMenupage" parameterType="com.sunyard.cop.IF.mybatis.pojo.MenuCustompage">
+		delete from
+		sm_menu_custompage_tb
+		where menu_id =#{menuId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</delete>
+</mapper>

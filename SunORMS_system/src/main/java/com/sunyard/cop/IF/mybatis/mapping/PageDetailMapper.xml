@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.PageDetailMapper">
+	<resultMap id="PageDetailResultMap" type="com.sunyard.cop.IF.mybatis.pojo.PageDetail">
+		<id column="PAGE_ID" jdbcType="VARCHAR" property="pageId" />
+		<id column="PAGE_VERSION" jdbcType="VARCHAR" property="pageVersion" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<result column="PAGE_NAME" jdbcType="VARCHAR" property="pageName" />
+		<result column="PAGE_JS" jdbcType="CLOB" property="pageJs" />
+		<result column="PAGE_DEL" jdbcType="VARCHAR" property="pageDel" />
+		<result column="MODEL_ID" jdbcType="VARCHAR" property="modelId" />
+		<result column="LAST_MODI_DATE" jdbcType="VARCHAR" property="lastModiDate" />
+		<result column="EXPIRE_DATE" jdbcType="VARCHAR" property="expireDate" />
+	</resultMap>
+	<sql id="Page_Detail_Column_List">
+		PAGE_ID,PAGE_VERSION,BANK_NO,SYSTEM_NO,PROJECT_NO,PAGE_NAME,
+		PAGE_JS,PAGE_DEL,MODEL_ID,LAST_MODI_DATE,EXPIRE_DATE
+	</sql>
+	<select id="selectAllActivePages" parameterType="com.sunyard.cop.IF.mybatis.pojo.PageDetail"
+		resultMap="PageDetailResultMap">
+		select
+		DISTINCT PAGE_ID,PAGE_NAME,PAGE_VERSION,MODEL_ID,LAST_MODI_DATE
+		from sm_page_detail_tb
+		where PAGE_DEL = '1' 
+		and bank_no=#{bankNo,jdbcType=VARCHAR}
+		and system_no=#{systemNo,jdbcType=VARCHAR}
+		and project_no=#{projectNo,jdbcType=VARCHAR} 
+		order by PAGE_NAME
+	</select>
+	<insert id="insertPage" parameterType="com.sunyard.cop.IF.mybatis.pojo.PageDetail">
+		insert into SM_PAGE_DETAIL_TB(
+            <include refid="Page_Detail_Column_List" />
+		) values (
+            #{pageId,jdbcType=VARCHAR}, #{pageVersion,jdbcType=VARCHAR}, 
+            #{bankNo,jdbcType=VARCHAR}, #{systemNo,jdbcType=VARCHAR},
+            #{projectNo,jdbcType=VARCHAR}, #{pageName,jdbcType=VARCHAR},
+            #{pageJs,jdbcType=CLOB}, #{pageDel,jdbcType=VARCHAR},
+            #{modelId,jdbcType=VARCHAR}, #{lastModiDate,jdbcType=VARCHAR},
+            #{expireDate,jdbcType=VARCHAR}
+        )
+	</insert>
+	<select id="queryPageById" parameterType="java.lang.String" resultMap="PageDetailResultMap">
+		select
+		<include refid="Page_Detail_Column_List" />
+		from SM_PAGE_DETAIL_TB 
+		where PAGE_ID = #{pageId,jdbcType=VARCHAR}
+		and PAGE_DEL = '1'
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		and ROWNUM = 1
+	</select>
+	<select id="queryPageByIdAndDate" parameterType="java.lang.String" resultMap="PageDetailResultMap">
+		select
+		<include refid="Page_Detail_Column_List" />
+		from SM_PAGE_DETAIL_TB 
+		where PAGE_ID = #{pageId,jdbcType=VARCHAR}
+		and (EXPIRE_DATE &gt;= #{expireDate,jdbcType=VARCHAR}
+			OR EXPIRE_DATE IS NULL)
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		and ROWNUM = 1
+		order by PAGE_VERSION
+	</select>
+	<update id="updatePageToDel" parameterType="com.sunyard.cop.IF.mybatis.pojo.PageDetail">
+        UPDATE SM_PAGE_DETAIL_TB
+        set PAGE_DEL='0',
+        	EXPIRE_DATE = #{expireDate,jdbcType=VARCHAR}
+        where PAGE_ID = #{pageId,jdbcType=VARCHAR}
+        and PAGE_VERSION = #{pageVersion,jdbcType=VARCHAR}
+		and BANK_NO=#{bankNo,jdbcType=VARCHAR}
+		and system_no=#{systemNo,jdbcType=VARCHAR}
+		and project_no=#{projectNo,jdbcType=VARCHAR}
+    </update>
+    <select id="countByModelId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select
+		COUNT(PAGE_ID)
+		from SM_PAGE_DETAIL_TB 
+		where MODEL_ID = #{modelId,jdbcType=VARCHAR}
+		and PAGE_DEL = '1'
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+</mapper>

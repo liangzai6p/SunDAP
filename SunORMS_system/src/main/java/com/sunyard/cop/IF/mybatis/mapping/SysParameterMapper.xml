@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.SysParameterMapper">
+	<resultMap id="SysParameterResultMap" type="com.sunyard.cop.IF.mybatis.pojo.SysParameter">
+		<id column="PARAM_ITEM" jdbcType="VARCHAR" property="paramItem" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<result column="PARAM_VALUE" jdbcType="VARCHAR" property="paramValue" />
+		<result column="IS_MODIFY" jdbcType="CHAR" property="isModify" />
+		<result column="MODIFY_USER" jdbcType="VARCHAR" property="modifyUser" />
+		<result column="PARAM_DESC" jdbcType="VARCHAR" property="paramDesc" />
+		<result column="LAST_MODI_DATE" jdbcType="VARCHAR" property="lastModiDate" />
+		<result column="CONTENT_ABOUT" jdbcType="VARCHAR" property="contentAbout" />
+		<result column="CHOOSABLE" jdbcType="VARCHAR" property="choosable" />
+	</resultMap>
+	<sql id="SysParameter_Column_List">
+		PARAM_ITEM,PARAM_VALUE,IS_MODIFY,MODIFY_USER,PARAM_DESC,LAST_MODI_DATE,
+		CONTENT_ABOUT,SYSTEM_NO,BANK_NO,PROJECT_NO,CHOOSABLE
+	</sql>
+	<select id="getSysParameters" resultMap="SysParameterResultMap">
+		select
+		<include refid="SysParameter_Column_List" />
+		from SM_SYSPARAMETER_TB
+		where BANK_NO = 'SUNYARD'
+		AND SYSTEM_NO = 'AOS'
+		AND PROJECT_NO = 'AOS'
+	</select>
+	<select id="selectSysParam" parameterType="com.sunyard.cop.IF.mybatis.pojo.SysParameter"
+		resultMap="SysParameterResultMap">
+		select
+		<include refid="SysParameter_Column_List" />
+		from sm_sysparameter_tb
+		where is_modify = #{isModify,jdbcType=CHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<update id="updateSysParam" parameterType="com.sunyard.cop.IF.mybatis.pojo.SysParameter">
+		update sm_sysparameter_tb
+		set param_value = #{paramValue,jdbcType=VARCHAR}, 
+		modify_user = #{modifyUser,jdbcType=VARCHAR}, 
+		last_modi_date = #{lastModiDate,jdbcType=VARCHAR}
+		where param_item = #{paramItem,jdbcType=VARCHAR} 
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</update>
+</mapper>

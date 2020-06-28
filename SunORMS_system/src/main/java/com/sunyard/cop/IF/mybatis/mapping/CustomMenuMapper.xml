@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.CustomMenuMapper">
+	<resultMap id="CustomMenuResultMap" type="com.sunyard.cop.IF.mybatis.pojo.Menu">
+		<id column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<id column="IS_OPEN" jdbcType="CHAR" property="isOpen" />
+		<result column="MENU_NAME" jdbcType="VARCHAR" property="menuName" />
+		<result column="PARENT_ID" jdbcType="CHAR" property="parentId" />
+		<result column="MENU_DESC" jdbcType="VARCHAR" property="menuDesc" />
+		<result column="MENU_URL" jdbcType="CHAR" property="menuUrl" />
+		<result column="MENU_LEVEL" jdbcType="VARCHAR" property="menuLevel" />
+		<result column="LAST_MODI_DATE" jdbcType="VARCHAR" property="lastModiDate" />
+		<result column="EDIT_ENABLE" jdbcType="CHAR" property="editEnable" />
+		<result column="MENU_ORDER" jdbcType="VARCHAR" property="menuOrder" />
+		<result column="MENU_BELONG" jdbcType="VARCHAR" property="menuBelong" />
+		<result column="IS_PARENT" jdbcType="CHAR" property="isParent" />
+		<result column="MENU_CLASS" jdbcType="VARCHAR" property="menuClass" />
+		<result column="MENU_TYPE" jdbcType="VARCHAR" property="menuType" />
+		<result column="MENU_ATTR" jdbcType="CHAR" property="menuAttr" />
+		<result column="HOME_SHOW" jdbcType="CHAR" property="homeShow" />
+	</resultMap>
+
+	<resultMap id="PagesResultMap" type="com.sunyard.cop.IF.mybatis.pojo.PageDetail">
+		<id column="PAGE_ID" jdbcType="VARCHAR" property="pageId" />
+		<id column="PAGE_VERSION" jdbcType="VARCHAR" property="pageVersion" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<result column="PAGE_NAME" jdbcType="VARCHAR" property="pageName" />
+		<result column="PAGE_JS" jdbcType="CLOB" property="pageJs" />
+		<result column="PAGE_DEL" jdbcType="VARCHAR" property="pageDel" />
+		<result column="MODEL_ID" jdbcType="VARCHAR" property="modelId" />
+		<result column="LAST_MODI_DATE" jdbcType="VARCHAR" property="lastModiDate" />
+	</resultMap>
+	<sql id="CustomMenu_Column_List">
+		MENU_ID,MENU_NAME,PARENT_ID,MENU_DESC,MENU_URL,MENU_LEVEL,IS_OPEN,LAST_MODI_DATE,
+		EDIT_ENABLE,BANK_NO,SYSTEM_NO,PROJECT_NO,MENU_ORDER,MENU_BELONG,IS_PARENT,MENU_CLASS,MENU_TYPE,MENU_ATTR,HOME_SHOW
+	</sql>
+	<select id="selectCustomMenu" resultMap="CustomMenuResultMap"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu">
+		select
+		<include refid="CustomMenu_Column_List" />
+		from sm_menu_tb where is_open = #{isOpen,jdbcType=CHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		order by menu_level, menu_order, menu_id
+	</select>
+	<select id="getMaxMenuId" resultType="java.lang.String"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu">
+		select max(menu_id) from sm_menu_tb
+		where BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<select id="getMaxMenuOrder" resultType="java.lang.String"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu">
+		select max(menu_order) from sm_menu_tb
+		where parent_id = #{parentId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<insert id="insertCustomMenu" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu">
+		INSERT INTO sm_menu_tb(
+		<include refid="CustomMenu_Column_List" />
+		)
+		VALUES(#{menuId,jdbcType=VARCHAR},#{menuName,jdbcType=VARCHAR},#{parentId,jdbcType=VARCHAR},
+		#{menuDesc,jdbcType=VARCHAR},#{menuUrl,jdbcType=VARCHAR},#{menuLevel,jdbcType=CHAR},
+		#{isOpen,jdbcType=CHAR},#{lastModiDate,jdbcType=VARCHAR},#{editEnable,jdbcType=CHAR},
+		#{bankNo,jdbcType=VARCHAR},#{systemNo,jdbcType=VARCHAR},#{projectNo,jdbcType=VARCHAR},
+		#{menuOrder,jdbcType=VARCHAR},#{menuBelong,jdbcType=VARCHAR},#{isParent,jdbcType=CHAR},
+		#{menuClass,jdbcType=VARCHAR},#{menuType,jdbcType=VARCHAR},#{menuAttr,jdbcType=CHAR},#{homeShow,jdbcType=CHAR})
+	</insert>
+	<select id="selectMenuByMenuId" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu"
+		resultMap="CustomMenuResultMap">
+		select
+		<include refid="CustomMenu_Column_List" />
+		from sm_menu_tb
+		where menu_id = #{menuId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<select id="getMenuIdCount" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu"
+		resultType="java.lang.Integer">
+		SELECT COUNT(menu_id) FROM sm_menu_tb
+		where menu_id = #{menuId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<update id="updateCustomMenu" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu">
+		UPDATE sm_menu_tb
+		SET menu_name = #{menuName,jdbcType=VARCHAR},menu_desc =
+		#{menuDesc,jdbcType=VARCHAR},
+		menu_url
+		=#{menuUrl,jdbcType=VARCHAR},last_modi_date=
+		#{lastModiDate,jdbcType=VARCHAR},
+		menu_belong=#{menuBelong,jdbcType=VARCHAR},
+		menu_class=#{menuClass,jdbcType=VARCHAR},
+		menu_type=#{menuType,jdbcType=VARCHAR},
+		menu_attr=#{menuAttr,jdbcType=VARCHAR},
+		home_show=#{homeShow,jdbcType=VARCHAR}
+		WHERE menu_id = #{menuId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</update>
+	<update id="updateParentMenu" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu">
+		UPDATE sm_menu_tb t SET t.is_parent=#{isParent,jdbcType=CHAR},last_modi_date=
+		#{lastModiDate,jdbcType=VARCHAR}
+		WHERE t.menu_id = #{parentId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</update>
+	<select id="getMenuIdCountByParentId" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu"
+		resultType="java.lang.Integer">
+		SELECT COUNT(menu_id) FROM sm_menu_tb
+		WHERE parent_id =#{parentId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<select id="getEditEnable" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu"
+		resultType="java.lang.String">
+		select edit_enable from sm_menu_tb
+		where menu_id = #{menuId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteCustomMenu" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu">
+		DELETE FROM
+		sm_menu_tb
+		WHERE menu_id = #{menuId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</delete>
+	<update id="updateMenuOreder" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu">
+		update sm_menu_tb
+		set menu_order = #{menuOrder,jdbcType=VARCHAR}
+		where menu_id =
+		#{menuId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</update>
+	<select id="getMenuPage" parameterType="com.sunyard.cop.IF.mybatis.pojo.PageDetail"
+		resultMap="PagesResultMap">
+		SELECT page_id,page_name FROM sm_page_detail_tb
+		where page_del = #{pageDel,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+</mapper>

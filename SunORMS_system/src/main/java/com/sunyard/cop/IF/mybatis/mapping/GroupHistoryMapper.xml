@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.GroupHistoryMapper">
+	<resultMap id="GroupHistorytMap" type="com.sunyard.cop.IF.mybatis.pojo.GroupHistory">
+		<id column="CHAT_ID" property="chatId" jdbcType="VARCHAR" />
+		<id column="BANK_NO" property="bankNo" jdbcType="VARCHAR" />
+		<id column="SYSTEM_NO" property="systemNo" jdbcType="VARCHAR" />
+		<id column="PROJECT_NO" property="projectNo" jdbcType="VARCHAR" />
+		<result column="CHAT_FROM" property="chatFrom" jdbcType="VARCHAR" />
+		<result column="SEND_TIME" property="sendTime" jdbcType="VARCHAR" />
+		<result column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
+		<result column="CHAT_CONTENT" property="chatContent" jdbcType="CLOB" />
+	</resultMap>
+	
+	<sql id="GroupHistoryList">
+		CHAT_ID, BANK_NO, SYSTEM_NO, PROJECT_NO, CHAT_FROM, SEND_TIME,
+		GROUP_ID,CHAT_CONTENT
+	</sql>
+
+	<insert id="insertGroupHistory" parameterType="com.sunyard.cop.IF.mybatis.pojo.GroupHistory">
+		insert into SM_GROUP_HISTORY_TB (CHAT_ID, BANK_NO, SYSTEM_NO,
+		PROJECT_NO, CHAT_FROM, SEND_TIME,
+		GROUP_ID, CHAT_CONTENT)
+		values (#{chatId,jdbcType=VARCHAR}, #{bankNo,jdbcType=VARCHAR},
+		#{systemNo,jdbcType=VARCHAR},
+		#{projectNo,jdbcType=VARCHAR}, #{chatFrom,jdbcType=VARCHAR}, #{sendTime,jdbcType=VARCHAR},
+		#{groupId,jdbcType=VARCHAR}, #{chatContent,jdbcType=CLOB})
+	</insert>
+
+	<select id="getGroupMsg" resultMap="GroupHistorytMap"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.GroupHistory">
+		select
+		<include refid="GroupHistoryList" />
+		from sm_group_history_tb
+		where group_id = #{groupId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		order by SEND_TIME desc
+	</select>
+
+	<select id="getUnreadMsg" resultMap="GroupHistorytMap"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.GroupHistory">
+		select
+		<include refid="GroupHistoryList" />
+		from sm_group_history_tb
+		where group_id = #{groupId,jdbcType=VARCHAR}
+		and send_time > #{sendTime,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		order by SEND_TIME asc
+	</select>
+
+	<select id="getToatalGroupHistory" resultType="java.lang.Integer"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.GroupHistory">
+		select count(*)
+		from sm_group_history_tb
+		where group_id =#{groupId,jdbcType=VARCHAR}
+		AND SEND_TIME >= #{sendTime,jdbcType=VARCHAR}
+		AND BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		AND SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		AND PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+
+	<select id="GroupHistoryPage" resultMap="GroupHistorytMap"
+		parameterType="com.sunyard.cop.IF.mybatis.pojo.GroupHistory">
+		select * from sm_group_history_tb
+		where group_id = #{groupId,jdbcType=VARCHAR}
+		and SEND_TIME >= #{sendTime,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		order by SEND_TIME desc
+	</select>
+
+	<delete id="deleteGroupHistory" parameterType="com.sunyard.cop.IF.mybatis.pojo.GroupHistory">
+		delete from sm_group_history_tb t
+		where group_id = #{groupId,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</delete>
+
+</mapper>

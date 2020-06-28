@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.ButtonMapper">
+	<resultMap id="ButtonResultMap" type="com.sunyard.cop.IF.mybatis.pojo.Button">
+		<id column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<id column="IS_OPEN" jdbcType="CHAR" property="isOpen" />
+		<result column="BUTTON_NAME" jdbcType="VARCHAR" property="buttonName" />
+		<result column="BUTTON_ID" jdbcType="CHAR" property="buttonId" />
+		<result column="LAST_MODI_DATE" jdbcType="VARCHAR" property="lastModiDate" />
+		<result column="IS_LOCK" jdbcType="CHAR" property="isLock" />
+	</resultMap>
+	<insert id="insertButton" parameterType="com.sunyard.cop.IF.mybatis.pojo.Button">
+		insert into sm_button_tb(button_id,button_name,menu_id,is_open,is_lock,last_modi_date,bank_no,system_no,project_no)
+		values(#{buttonId},#{buttonName},#{menuId},#{isOpen},#{isLock},#{lastModiDate},#{bankNo},#{systemNo},#{projectNo})
+
+	</insert>
+	<delete id="deleteButton" parameterType="com.sunyard.cop.IF.mybatis.pojo.Button">
+		DELETE FROM sm_button_tb
+		WHERE menu_id = #{menuId,jdbcType=VARCHAR}
+		and bank_no = #{bankNo,jdbcType=VARCHAR}
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+		<if test="buttonId != null and buttonId != '' ">
+			and button_id = #{buttonId,jdbcType=VARCHAR}
+		</if>
+	</delete>
+	<select id="getMenuButtonCount" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu"
+		resultType="java.lang.Integer">
+		select count(menu_id) from sm_button_tb
+		where menu_id = #{menuId,jdbcType=VARCHAR}
+		and bank_no = #{bankNo,jdbcType=VARCHAR}
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	<select id="selectButtonByMenuId" parameterType="com.sunyard.cop.IF.mybatis.pojo.Menu"
+		resultMap="ButtonResultMap">
+		SELECT button_id,button_name,menu_id,last_modi_date FROM sm_button_tb
+		where menu_id = #{menuId,jdbcType=VARCHAR}
+		and bank_no = #{bankNo,jdbcType=VARCHAR}
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	
+	
+	
+	<select id="select" parameterType="com.sunyard.cop.IF.mybatis.pojo.Button" resultType="java.lang.String">
+		 	select  button_name
+   			from sm_button_tb
+  				where 	menu_id = #{menuId,jdbcType=VARCHAR}
+    			and 	button_id = #{buttonId,jdbcType=VARCHAR}
+	</select>
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.WidgetsMapper">
+	<resultMap id="WidgetsResultMap" type="com.sunyard.cop.IF.mybatis.pojo.Widgets">
+		<id column="WIDGET_ID" jdbcType="VARCHAR" property="widgetId" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<result column="PARENT_WIDGET" jdbcType="VARCHAR" property="parentWidget" />
+		<result column="WIDGET_NAME" jdbcType="VARCHAR" property="widgetName" />
+		<result column="WIDGET" jdbcType="CLOB" property="widget" />
+	</resultMap>
+	<sql id="Widgets_Column_List">
+		WIDGET_ID,BANK_NO,SYSTEM_NO,PROJECT_NO,PARENT_WIDGET,WIDGET_NAME,WIDGET
+	</sql>
+	<select id="selectWidgets" parameterType="com.sunyard.cop.IF.mybatis.pojo.Widgets"
+		resultMap="WidgetsResultMap">
+		select
+		<include refid="Widgets_Column_List" />
+		from sm_widgets_tb
+		where bank_no=#{bankNo,jdbcType=VARCHAR}
+		and system_no=#{systemNo,jdbcType=VARCHAR}
+		and project_no=#{projectNo,jdbcType=VARCHAR}
+		order by widget_id
+	</select>
+</mapper>

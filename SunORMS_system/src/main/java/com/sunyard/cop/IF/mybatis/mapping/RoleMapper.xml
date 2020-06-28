@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.RoleMapper">
+	<resultMap id="RoleResultMap" type="com.sunyard.cop.IF.mybatis.pojo.Role">
+		<id column="role_no" property="roleNo" jdbcType="VARCHAR" />
+		<id column="bank_no" property="bankNo" jdbcType="VARCHAR" />
+		<id column="project_no" property="projectNo" jdbcType="VARCHAR" />
+		<id column="system_no" property="systemNo" jdbcType="VARCHAR" />
+		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		<result column="role_des" property="roleDes" jdbcType="VARCHAR" />
+		<result column="role_mode" property="roleMode" jdbcType="CHAR" />
+		<result column="is_open" property="isOpen" jdbcType="CHAR" />
+		<result column="last_modi_date" property="lastModiDate" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="selectRole" resultMap="RoleResultMap" parameterType="com.sunyard.cop.IF.mybatis.pojo.Role">
+		select role_no, role_name from sm_role_tb
+		where bank_no = #{bankNo,jdbcType=VARCHAR}
+		and system_no = #{systemNo,jdbcType=VARCHAR}
+		and project_no = #{projectNo,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="queryRoleByRoleType" resultMap="RoleResultMap" parameterType="com.sunyard.cop.IF.mybatis.pojo.Role">
+		SELECT
+			SRT.ROLE_NO AS ROLE_NO,
+			SRT.ROLE_NO || '-' || SRT.ROLE_NAME AS ROLE_NAME,
+			SRT.BANK_NO,
+			SRT.IS_LOCK,
+			SRT.IS_OPEN,
+			SRT.LAST_MODI_DATE,
+			SRT.PROJECT_NO,
+			SRT.ROLE_DES,
+			SRT.ROLE_NO,
+			SRT.SYSTEM_NO
+		FROM
+			SM_ROLE_TB SRT
+		WHERE
+			SRT.IS_OPEN = '1'
+		AND BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		AND SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		AND PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+		AND SRT.ROLE_MODE = #{roleMode,jdbcType=VARCHAR}
+	</select>
+	
+	<!--根据用户获取用户的【菜单角色】名称-->
+	<select id="selectRoleNameByUserNoAndModel"  parameterType="java.lang.String" resultType="java.util.HashMap">
+  	    select role_name
+                 from sm_role_tb
+         where role_no in
+                (select role_no from sm_user_role_tb where user_no =#{userNo})
+         and role_mode = '1'
+  	</select>
+  	
+  	
+  	<select id="selectRoleByRoleMode" parameterType="java.util.List"  resultType="java.util.HashMap">
+  		select role_no as "id" , 
+  			   role_no || '_' || role_name as "name", 
+  			   role_mode as "pId"
+                from sm_role_tb
+                where role_Mode in ('1', '2', '3')  
+                 <if test="list != null and  list.size >0">
+                			and  ROLE_LEVEL in
+                	<foreach collection="list" item="var" open="(" separator="," close=")">
+							#{var}
+					</foreach>
+				</if>
+                order by role_Mode,role_level,role_no
+  	</select>
+</mapper>

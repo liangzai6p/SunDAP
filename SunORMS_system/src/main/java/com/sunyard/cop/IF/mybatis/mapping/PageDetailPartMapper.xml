@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.PageDetailPartMapper">
+	<resultMap id="PageDetailPartResultMap" type="com.sunyard.cop.IF.mybatis.pojo.PageDetailPart">
+		<id column="PAGE_ID" jdbcType="VARCHAR" property="pageId" />
+		<id column="PAGE_VERSION" jdbcType="VARCHAR" property="pageVersion" />
+		<id column="CONTAINER_ID" jdbcType="VARCHAR" property="containerId" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<result column="CONTENT" jdbcType="CLOB" property="content" />
+	</resultMap>
+	<sql id="Page_Detail_Part_Column_List">
+		PAGE_ID,PAGE_VERSION,CONTAINER_ID,BANK_NO,SYSTEM_NO,PROJECT_NO,CONTENT
+	</sql>
+	<insert id="insert" parameterType="com.sunyard.cop.IF.mybatis.pojo.PageDetailPart">
+		insert into SM_PAGE_DETAIL_PART_TB(
+            <include refid="Page_Detail_Part_Column_List" />
+		) values (
+            #{pageId,jdbcType=VARCHAR}, #{pageVersion,jdbcType=VARCHAR},
+            #{containerId,jdbcType=VARCHAR}, #{bankNo,jdbcType=VARCHAR},
+            #{systemNo,jdbcType=VARCHAR}, #{projectNo,jdbcType=VARCHAR},
+            #{content,jdbcType=CLOB}
+        )
+	</insert>
+	<select id="queryByPageId" parameterType="java.lang.String" resultMap="PageDetailPartResultMap">
+		select CONTAINER_ID, CONTENT 
+		from SM_PAGE_DETAIL_PART_TB 
+		where PAGE_ID = #{pageId,jdbcType=VARCHAR}
+		and PAGE_VERSION = #{pageVersion,jdbcType=VARCHAR}
+		and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+		and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+		and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</select>
+</mapper>

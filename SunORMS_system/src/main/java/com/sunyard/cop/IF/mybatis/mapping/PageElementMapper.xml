@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.cop.IF.mybatis.dao.PageElementMapper">
+	<resultMap id="PageElementResultMap" type="com.sunyard.cop.IF.mybatis.pojo.PageElement">
+		<id column="ELEMENT_ID" jdbcType="VARCHAR" property="elementId" />
+		<id column="SYSTEM_NO" jdbcType="VARCHAR" property="systemNo" />
+		<id column="BANK_NO" jdbcType="VARCHAR" property="bankNo" />
+		<id column="PROJECT_NO" jdbcType="VARCHAR" property="projectNo" />
+		<result column="LABEL_NAME" jdbcType="VARCHAR" property="labelName" />
+		<result column="ELEMENT_NAME" jdbcType="VARCHAR" property="elementName" />
+		<result column="ELEMENT_TYPE" jdbcType="VARCHAR" property="elementType" />
+		<result column="ELEMENT_HTML" jdbcType="VARCHAR" property="elementHtml" />
+		<result column="ELEMENT_JS" jdbcType="VARCHAR" property="elementJs" />
+	</resultMap>
+	
+	<select id="selectAllElement" resultMap="PageElementResultMap" parameterType="com.sunyard.cop.IF.mybatis.pojo.PageElement">
+		select element_id,label_name,element_name,element_type,element_html,element_js
+		from sm_page_element_tb
+		where bank_no = #{bankNo,jdbcType=VARCHAR}
+			and system_no = #{systemNo,jdbcType=VARCHAR}
+			and project_no = #{projectNo,jdbcType=VARCHAR} order by element_id desc
+	</select>
+	
+	<insert id="addElement" parameterType="com.sunyard.cop.IF.mybatis.pojo.PageElement">
+		insert into sm_page_element_tb 
+		(element_id,label_name,element_name,element_type,element_html,element_js,bank_no,system_no,project_no)
+		values( #{elementId,jdbcType=VARCHAR}, #{labelName,jdbcType=VARCHAR}, #{elementName,jdbcType=VARCHAR},
+		       #{elementType,jdbcType=VARCHAR}, #{elementHtml,jdbcType=VARCHAR}, #{elementJs,jdbcType=VARCHAR},
+		        #{bankNo,jdbcType=VARCHAR}, #{systemNo,jdbcType=VARCHAR}, #{projectNo,jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="editElement" parameterType="com.sunyard.cop.IF.mybatis.pojo.PageElement">
+		update sm_page_element_tb 
+		set label_name = #{labelName,jdbcType=VARCHAR},element_name = #{elementName,jdbcType=VARCHAR},
+		element_type =#{elementType,jdbcType=VARCHAR},element_html= #{elementHtml,jdbcType=VARCHAR},
+		element_js=#{elementJs,jdbcType=VARCHAR} 
+		WHERE element_id = #{elementId,jdbcType=VARCHAR}
+			and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+			and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+			and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="delElement" parameterType="com.sunyard.cop.IF.mybatis.pojo.PageElement">
+		delete from sm_page_element_tb
+		WHERE element_id = #{elementId,jdbcType=VARCHAR}
+			and BANK_NO = #{bankNo,jdbcType=VARCHAR}
+			and SYSTEM_NO = #{systemNo,jdbcType=VARCHAR}
+			and PROJECT_NO = #{projectNo,jdbcType=VARCHAR}
+	</delete>
+</mapper>
+
