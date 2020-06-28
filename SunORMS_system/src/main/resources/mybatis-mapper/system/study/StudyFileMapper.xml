@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunyard.ars.system.dao.study.StudyFileDao" >
+	 
+	 <!-- SM_STDUY_FILE_TB 与 bean的映射关系 -->
+	 <resultMap type="com.sunyard.ars.system.bean.study.SmStudyFileTbBean" id="baseMap">
+	 	<id column="ID" property="id" jdbcType="INTEGER"/>
+	 	<result property="fileType" column="FILE_TYPE" jdbcType="VARCHAR"/>
+	 	<result property="fileSource" column="FILE_SOURCE" jdbcType="VARCHAR"/>
+	 	<result property="fileYear" column="FILE_YEAR" jdbcType="VARCHAR"/>
+	 	<result property="fileProof" column="FILE_PROOT" jdbcType="VARCHAR"/>
+	 	<result property="fileName" column="FILE_NAME" jdbcType="VARCHAR"/>
+	 	<result property="fileCreator" column="FILE_CREATE_NO" jdbcType="VARCHAR"/>
+	 	<result property="createDate" column="FILE_CREATE_DATE" jdbcType="VARCHAR"/>
+	 	<result property="filePath" column="FILE_PATH" jdbcType="VARCHAR"/>
+	 	<result property="description" column="FILE_DESCRIPTION" jdbcType="VARCHAR"/>
+	 </resultMap>
+	 
+	 <sql id="baseSql">
+	 	ID,FILE_TYPE,FILE_SOURCE,FILE_YEAR,FILE_PROOT,FILE_NAME,
+	 	FILE_CREATE_NO,FILE_CREATE_DATE,FILE_PATH,FILE_DESCRIPTION
+	 </sql>
+	 
+	 <!-- 按条件查询 -->
+	 <select id="selectStudyFileByConfig" parameterType="java.util.Map" resultMap="baseMap">
+	 	select <include refid="baseSql"></include>
+	 	from SM_STDUY_FILE_TB
+	 	<where>
+	 		<if test="studyFileBean.id != null and studyFileBean.id != 0">
+	 			and ID = #{studyFileBean.id}
+	 		</if>
+	 		<if test="studyFileBean.fileType != null and studyFileBean.fileType != '' ">
+	 			and FILE_TYPE = #{studyFileBean.fileType}
+	 		</if>
+	 		<if test="studyFileBean.fileSource != null and studyFileBean.fileSource != '' ">
+	 			and FILE_SOURCE = #{studyFileBean.fileSource}
+	 		</if>
+	 		<if test="studyFileBean.fileYear != null and studyFileBean.fileYear != '' ">
+	 			and FILE_YEAR = #{studyFileBean.fileYear}
+	 		</if>
+	 		<if test="studyFileBean.fileProof != null and studyFileBean.fileProof != '' ">
+	 			and FILE_PROOT = #{studyFileBean.fileProof}
+	 		</if>
+	 		<if test="studyFileBean.fileName != null and studyFileBean.fileName != '' ">
+	 			and FILE_NAME like  CONCAT(CONCAT('%', #{studyFileBean.fileName}), '%')
+	 		</if>
+	 		<if test="studyFileBean.fileCreator != null and studyFileBean.fileCreator != '' ">
+	 			and FILE_CREATE_NO = #{studyFileBean.fileCreator}
+	 		</if>
+	 		<if test="studyFileBean.createDate != null and studyFileBean.createDate != '' ">
+	 			and FILE_CREATE_DATE = #{studyFileBean.createDate}
+	 		</if>
+	 		<if test="studyFileBean.filePath != null and studyFileBean.filePath != '' ">
+	 			and FILE_PATH = #{studyFileBean.filePath}
+	 		</if>
+	 		<if test="studyFileBean.description != null and studyFileBean.description != '' ">
+	 			and FILE_DESCRIPTION = #{studyFileBean.description}
+	 		</if>
+	 	</where>
+	 </select>
+	 
+	 <!-- 按id查询 -->
+	 <select id="selectStudyFileById" parameterType="int" resultMap="baseMap">
+	 	select <include refid="baseSql"></include>
+	 	from SM_STDUY_FILE_TB
+	 	where ID = #{id}
+	 </select>
+	 
+	 <!-- 新增学习文件记录 -->
+	 <!-- 
+	 oracle 序列
+	 create sequence seq_studyFile
+	increment by 1
+	start with 1 -->
+	 <insert id="insertStudyFile" parameterType="java.util.HashMap">
+	 	<selectKey order="BEFORE"  keyProperty="id" resultType="int">
+			<choose>
+				<!-- db2 -->
+				<when test="dbType == @com.sunyard.ars.common.comm.ARSConstants@DATABASE_TYPE_DB2">
+					select seq_studyFile.nextval from sysibm.sysdummy1
+				</when>
+				<!-- oracle -->
+				<otherwise>
+					select seq_studyFile.nextval from dual
+				</otherwise>
+			</choose>
+	 	</selectKey>
+	 	insert into SM_STDUY_FILE_TB
+	 	<trim prefix="(" suffix=")" suffixOverrides=",">
+	 		<if test="id != null and id != 0">
+	 			ID,
+	 		</if>
+	 		<if test="studyFile.fileType != null and studyFile.fileType != '' ">
+	 			FILE_TYPE,
+	 		</if>
+	 		<if test="studyFile.fileSource != null and studyFile.fileSource != '' ">
+	 			FILE_SOURCE,
+	 		</if>
+	 		<if test="studyFile.fileYear != null and studyFile.fileYear != '' ">
+	 			FILE_YEAR,
+	 		</if>
+	 		<if test="studyFile.fileProof != null and studyFile.fileProof != '' ">
+	 			FILE_PROOT,
+	 		</if>
+	 		<if test="studyFile.fileName != null and studyFile.fileName != '' ">
+	 			FILE_NAME,
+	 		</if>
+	 		<if test="studyFile.fileCreator != null and studyFile.fileCreator != '' ">
+	 			FILE_CREATE_NO,
+	 		</if>
+	 		<if test="studyFile.createDate != null and studyFile.createDate != '' ">
+	 			FILE_CREATE_DATE,
+	 		</if>
+	 		<if test="studyFile.filePath != null and studyFile.filePath != '' ">
+	 			FILE_PATH,
+	 		</if>
+	 		<if test="studyFile.description != null and studyFile.description != '' ">
+	 			FILE_DESCRIPTION,
+	 		</if>
+	 	</trim>
+	 	values
+	 	<trim prefix="(" suffix=")" suffixOverrides=",">
+	 		<if test="id != null and id != 0">
+	 			#{id},
+	 		</if>
+	 		<if test="studyFile.fileType != null and studyFile.fileType != '' ">
+	 			#{studyFile.fileType},
+	 		</if>
+	 		<if test="studyFile.fileSource != null and studyFile.fileSource != '' ">
+	 			#{studyFile.fileSource},
+	 		</if>
+	 		<if test="studyFile.fileYear != null and studyFile.fileYear != '' ">
+	 			#{studyFile.fileYear},
+	 		</if>
+	 		<if test="studyFile.fileProof != null and studyFile.fileProof != '' ">
+	 			#{studyFile.fileProof},
+	 		</if>
+	 		<if test="studyFile.fileName != null and studyFile.fileName != '' ">
+	 			#{studyFile.fileName},
+	 		</if>
+	 		<if test="studyFile.fileCreator != null and studyFile.fileCreator != '' ">
+	 			#{studyFile.fileCreator},
+	 		</if>
+	 		<if test="studyFile.createDate != null and studyFile.createDate != '' ">
+	 			#{studyFile.createDate},
+	 		</if>
+	 		<if test="studyFile.filePath != null and studyFile.filePath != '' ">
+	 			#{studyFile.filePath},
+	 		</if>
+	 		<if test="studyFile.description != null and studyFile.description != '' ">
+	 			#{studyFile.description},
+	 		</if>
+	 	</trim>
+	 	
+	 </insert>
+	
+	<update id="updateStudyFile" parameterType="com.sunyard.ars.system.bean.study.SmStudyFileTbBean">
+		update SM_STDUY_FILE_TB
+		<set>
+	 		<if test="fileType != null and fileType != '' ">
+	 			FILE_TYPE = #{fileType},
+	 		</if>
+	 		<if test="fileSource != null and fileSource != '' ">
+	 			FILE_SOURCE = #{fileSource},
+	 		</if>
+	 		<if test="fileYear != null and fileYear != '' ">
+	 			FILE_YEAR = #{fileYear},
+	 		</if>
+	 		<if test="fileProof != null and fileProof != '' ">
+	 			FILE_PROOT = #{fileProof},
+	 		</if>
+	 		<if test="fileName != null and fileName != '' ">
+	 			FILE_NAME = #{fileName},
+	 		</if>
+	 		<if test="fileCreator != null and fileCreator != '' ">
+	 			FILE_CREATE_NO = #{fileCreator},
+	 		</if>
+	 		<if test="createDate != null and createDate != '' ">
+	 			FILE_CREATE_DATE = #{createDate},
+	 		</if>
+	 		<if test="filePath != null and filePath != '' ">
+	 			FILE_PATH = #{filePath},
+	 		</if>
+	 		<if test="description != null and description != '' ">
+	 			FILE_DESCRIPTION = #{description},
+	 		</if>
+		</set>
+		where ID = #{id}
+	</update>
+	
+	<!-- 根据id删除文件记录  -->
+	<delete id="deleteStudyFile" parameterType="int">
+		delete from SM_STDUY_FILE_TB
+		where ID = #{id}
+	</delete>
+	
+	<delete id="deleteStudyFileByConfig" parameterType="java.util.HashMap">
+		delete from SM_STDUY_FILE_TB
+		<where>
+			<if test="studyFileBean.id != null and studyFileBean.id != 0">
+				and ID = #{studyFileBean.id}
+			</if>
+			<if test="studyFileBean.fileType != null and studyFileBean.fileType != '' ">
+	 			and FILE_TYPE = #{studyFileBean.fileType}
+	 		</if>
+	 		<if test="studyFileBean.fileSource != null and studyFileBean.fileSource != '' ">
+	 			and FILE_SOURCE = #{studyFileBean.fileSource}
+	 		</if>
+	 		<if test="studyFileBean.fileYear != null and studyFileBean.fileYear != '' ">
+	 			and FILE_YEAR = #{studyFileBean.fileYear}
+	 		</if>
+	 		<if test="studyFileBean.fileProof != null and studyFileBean.fileProof != '' ">
+	 			and FILE_PROOT = #{studyFileBean.fileProof}
+	 		</if>
+	 		<if test="studyFileBean.fileName != null and studyFileBean.fileName != '' ">
+	 			and FILE_NAME = #{studyFileBean.fileName}
+	 		</if>
+	 		<if test="studyFileBean.fileCreator != null and studyFileBean.fileCreator != '' ">
+	 			and FILE_CREATE_NO = #{studyFileBean.fileCreator}
+	 		</if>
+	 		<if test="studyFileBean.createDate != null and studyFileBean.createDate != '' ">
+	 			and FILE_CREATE_DATE = #{studyFileBean.createDate}
+	 		</if>
+	 		<if test="studyFileBean.filePath != null and studyFileBean.filePath != '' ">
+	 			and FILE_PATH = #{studyFileBean.filePath}
+	 		</if>
+	 		<if test="studyFileBean.description != null and studyFileBean.description != '' ">
+	 			and FILE_DESCRIPTION = #{studyFileBean.description}
+	 		</if>
+		</where>
+	</delete>
+	
+</mapper>

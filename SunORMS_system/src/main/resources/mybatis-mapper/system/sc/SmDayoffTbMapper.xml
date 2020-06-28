@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.ars.system.dao.sc.SmDayoffTbMapper">
+<!-- 节假日信息查询 -->
+	<select id="select" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from sm_dayoff_tb where  1 = 1
+			<if test="dayOffBean.date_name != '' and dayOffBean.date_name != null"> and date_name like CONCAT(CONCAT('%', #{dayOffBean.date_name}),'%')</if>
+			<if test="dayOffBean.is_open != '' and dayOffBean.date_name != null"> and is_open = #{dayOffBean.is_open}</if>
+			<if test="start_time != '' and start_time != null"> and start_date &gt;= #{start_time}</if>
+			<if test="end_time != '' and end_time != null"> and end_date &lt;= #{end_time}</if>
+		order by start_date
+	</select>
+	
+	<!-- 查询是否已经存在节假日 -->
+	<select id="selectDateName" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  		select date_name from sm_dayoff_tb where ((start_date &gt;= #{start_time} and start_date 
+  		&lt;= #{end_time}) or (end_date &gt;= #{start_time} and end_date &lt;= #{end_time}) or 
+  		(start_date  &lt;= #{start_time} and end_date &gt;= #{start_time}))
+  			<if test="date_id != '' and date_id != null"> and date_id &lt;&gt; #{date_id}</if>
+  	</select>
+  	
+	<!-- 新增节假日信息 -->
+	<insert id="insert" parameterType="java.util.HashMap">
+		insert into sm_dayoff_tb (date_name,date_msg,is_open,start_date,end_date,is_lock,last_modi_date,date_id, 
+		bank_no, system_no, project_no) values (#{dayOffBean.date_name}, #{dayOffBean.date_msg}, 
+		#{dayOffBean.is_open}, #{start_time}, #{end_time}, #{is_lock}, #{last_modi_date}, #{date_id}, #{bank_no}, #{system_no}, #{project_no})
+    </insert>
+    
+	  <!-- 修改节假日信息 -->
+	<insert id="update" parameterType="java.util.HashMap" databaseId="oracle">
+		merge into sm_dayoff_tb a using (select #{offDate} off_date from dual) b
+		on (a.off_date = b.off_date)
+		when matched then update set is_open = #{isOpen}, is_lock = #{isLock}, LAST_MODI_DATE = to_char(sysdate,'yyyyMMddHH24Miss'),BANK_NO='SUNYARD',SYSTEM_NO='AOS',PROJECT_NO='AOS'
+		when not matched then insert (off_date, is_open, is_lock, LAST_MODI_DATE, BANK_NO, SYSTEM_NO,PROJECT_NO)
+		values(#{offDate}, #{isOpen}, #{isLock}, to_char(sysdate,'yyyyMMddHH24Miss'), 'SUNYARD', 'AOS','AOS')
+    </insert>
+    
+    <insert id="update" parameterType="java.util.HashMap" databaseId="db2">
+		merge into sm_dayoff_tb a using (select  #{off_date} off_date from sysibm.sysdummy1) b
+		on (a.off_date = b.off_date)
+		when matched then update set is_open = #{isOpen}, is_lock = #{isLock}, LAST_MODI_DATE = to_char(sysdate,'yyyyMMddHH24Miss'),BANK_NO='SUNYARD',SYSTEM_NO='AOS',PROJECT_NO='AOS'
+		when not matched then insert (off_date, is_open, is_lock, LAST_MODI_DATE, BANK_NO, SYSTEM_NO,PROJECT_NO)
+		values(#{offDate}, #{isOpen}, #{isLock}, to_char(sysdate,'yyyyMMddHH24Miss'), 'SUNYARD', 'AOS','AOS')
+    </insert>
+    
+    <insert id="update" parameterType="java.util.HashMap" databaseId="mysql">
+		replace into sm_dayoff_tb (date_name,off_date, is_open, is_lock, last_modi_date, bank_no, system_no, project_no)
+		values(#{date_name},#{off_date}, #{is_open}, #{is_lock}, #{last_modi_date}, #{bank_no}, #{system_no}, #{project_no})
+    </insert>
+    
+    
+    <!-- 批量导入节假日信息 -->
+	<insert id="insertOrUpdate" parameterType="java.util.HashMap" databaseId="oracle">
+		merge into sm_dayoff_tb a using (select #{start_time} start_date,#{end_time} end_date from dual) b
+		on (a.start_date = b.start_date and a.end_date = b.end_date )
+		when matched then update set is_lock = #{user_no}, last_modi_date = #{last_modi_date}
+		when not matched then insert (date_id, date_name, date_msg, start_date, end_date, is_open, is_lock, last_modi_date, bank_no, system_no, project_no)
+		values(#{date_id}, #{date_name}, #{date_msg}, #{start_time}, #{end_time}, #{is_open}, #{user_no}, #{last_modi_date}, #{bank_no}, #{system_no}, #{project_no})
+    </insert>
+    
+    <insert id="insertOrUpdate" parameterType="java.util.HashMap" databaseId="db2">
+		merge into sm_dayoff_tb a using (select #{start_time} start_date,#{end_time} end_date from sysibm.sysdummy1) b
+		on (a.start_date = b.start_date and a.end_date = b.end_date )
+		when matched then update set is_lock = #{user_no}, last_modi_date = #{last_modi_date}
+		when not matched then insert (date_id, date_name, date_msg, start_date, end_date, is_open, is_lock, last_modi_date, bank_no, system_no, project_no)
+		values(#{date_id}, #{date_name}, #{date_msg}, #{start_time}, #{end_time}, #{is_open}, #{user_no}, #{last_modi_date}, #{bank_no}, #{system_no}, #{project_no})
+    </insert>
+    
+    <insert id="insertOrUpdate" parameterType="java.util.HashMap" databaseId="mysql">
+		replace into sm_dayoff_tb (date_id, date_name, date_msg, start_date, end_date, is_open, is_lock, last_modi_date, bank_no, system_no, project_no)
+		values(#{date_id}, #{date_name}, #{date_msg}, #{start_time}, #{end_time}, #{is_open}, #{user_no}, #{last_modi_date}, #{bank_no}, #{system_no}, #{project_no})
+    </insert>
+    
+  <select id="smDayoffTbQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    	select OFF_DATE,IS_OPEN from SM_DAYOFF_TB
+    </select>
+</mapper>

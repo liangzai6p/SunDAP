@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.ars.system.dao.et.ProcessNodeMapper">
+  <resultMap id="BaseResultMap" type="com.sunyard.ars.system.bean.et.ProcessNodeBean">
+    <result column="NODE_NO" jdbcType="VARCHAR" property="nodeNo" />
+    <result column="NODE_NAME" jdbcType="VARCHAR" property="nodeName" />
+    <result column="SEARCH_ISCENTER" jdbcType="VARCHAR" property="searchIscenter" />
+    <result column="NODE_DESCRIPTION" jdbcType="VARCHAR" property="nodeDescription" />
+    <result column="FORM_STATE_TEXT" jdbcType="VARCHAR" property="formStateText" />
+    <result column="IS_STORE_HISTORY" jdbcType="VARCHAR" property="isStoreHistory" />
+    <result column="IS_FOR_SEARCH" jdbcType="VARCHAR" property="isForSearch" />
+    <result column="LABEL_PROCESS" jdbcType="VARCHAR" property="labelProcess" />
+    <result column="IS_FOR_ADD" jdbcType="VARCHAR" property="isForAdd" />
+    <result column="PURVIEW" jdbcType="VARCHAR" property="purview" />
+    <result column="ONLY_SHOW_LASTPROCESS" jdbcType="VARCHAR" property="onlyShowLastprocess" />
+    <result column="STATE_TEXT" jdbcType="VARCHAR" property="stateText" />
+    <result column="IS_SHOW_ACTION_MODEL" jdbcType="VARCHAR" property="isShowActionModel" />
+    <result column="ADD_PURVIEW" jdbcType="VARCHAR" property="addPurview" />
+    <result column="SEARCH_PURVIEW" jdbcType="VARCHAR" property="searchPurview" />
+    <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName" />
+    <result column="FLOW_CHART" jdbcType="VARCHAR" property="flowChart" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    NODE_NO,NODE_NAME,SEARCH_ISCENTER,NODE_DESCRIPTION,FORM_STATE_TEXT,IS_STORE_HISTORY,IS_FOR_SEARCH,
+    	LABEL_PROCESS,IS_FOR_ADD,PURVIEW,ONLY_SHOW_LASTPROCESS,STATE_TEXT,IS_SHOW_ACTION_MODEL,ADD_PURVIEW,SEARCH_PURVIEW,ROLE_NAME,FLOW_CHART
+  </sql>
+    
+  <select id="selectNodeByKey" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    select NODE_NO,NODE_NAME,SEARCH_ISCENTER,NODE_DESCRIPTION,FORM_STATE_TEXT,IS_STORE_HISTORY,IS_FOR_SEARCH,
+    	LABEL_PROCESS,IS_FOR_ADD,PURVIEW,ONLY_SHOW_LASTPROCESS,STATE_TEXT,IS_SHOW_ACTION_MODEL,ADD_PURVIEW,SEARCH_PURVIEW,ROLE_NAME,FLOW_CHART
+    from sm_process_node_tb
+    <where>
+	    <if test="nodeNo != null">
+	        and NODE_NO=#{nodeNo,jdbcType=VARCHAR}
+	    </if>
+    </where> 
+    order by NODE_NO
+  </select>
+  
+   <select id="selectBySelective"  parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/> from sm_process_node_tb
+  	<where>
+	    <if test="nodeNo != null">
+	        and NODE_NO=#{nodeNo,jdbcType=VARCHAR}
+	    </if>
+    </where> 
+    order by NODE_NO
+  </select>
+  
+  <select id="selectEndNodeList" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/> from sm_process_node_tb n
+  	where node_no not in (select BOFORE_NODE_NO from sm_process_line_tb l where n.flow_chart=l.flow_chart) order by n.flow_chart
+  </select>
+  
+  <select id="selectFlowEndNodes" resultType="java.util.HashMap">
+	  select * from ARMS_WORKFLOW_NODE where is_end = '1' order by form_type,node_code
+  </select>
+</mapper>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.ars.system.dao.mc.McAutoyjFieldTbMapper">
+  <resultMap id="BaseResultMap" type="com.sunyard.ars.system.pojo.mc.McAutoyjFieldTb">
+    <id column="MODEL_ID" jdbcType="VARCHAR" property="modelId" />
+    <result column="NET_NO" jdbcType="VARCHAR" property="netNo" />
+    <result column="TELLER_NO" jdbcType="VARCHAR" property="tellerNo" />
+    <result column="OPERATION_DATE" jdbcType="VARCHAR" property="operationDate" />
+    <result column="ACCOUNT_NO" jdbcType="VARCHAR" property="accountNo" />
+    <result column="ACCOUNT_NAME" jdbcType="VARCHAR" property="accountName" />
+    <result column="ACCOUNT_MONEY" jdbcType="VARCHAR" property="accountMoney" />
+    <result column="VOUCHER_NO" jdbcType="VARCHAR" property="voucherNo" />
+    <result column="VOUCHER_DATE" jdbcType="VARCHAR" property="voucherDate" />
+    <result column="FLOW_NO" jdbcType="VARCHAR" property="flowNo" />
+    <result column="MODEL_NAME" jdbcType="VARCHAR" property="modelName" />
+    <result column="MODELROW_ID" jdbcType="VARCHAR" property="modelrowId" />
+    <result column="CURRENCY_TYPE" jdbcType="VARCHAR" property="currencyType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MODEL_ID, NET_NO, TELLER_NO, OPERATION_DATE, ACCOUNT_NO, ACCOUNT_NAME, ACCOUNT_MONEY, 
+    VOUCHER_NO, VOUCHER_DATE, FLOW_NO, MODEL_NAME, MODELROW_ID, CURRENCY_TYPE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from MC_AUTOYJ_FIELD_TB
+    where MODEL_ID = #{modelId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from MC_AUTOYJ_FIELD_TB
+    where MODEL_ID = #{modelId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sunyard.ars.system.pojo.mc.McAutoyjFieldTb">
+    insert into MC_AUTOYJ_FIELD_TB (MODEL_ID, NET_NO, TELLER_NO, 
+      OPERATION_DATE, ACCOUNT_NO, ACCOUNT_NAME, 
+      ACCOUNT_MONEY, VOUCHER_NO, VOUCHER_DATE, 
+      FLOW_NO, MODEL_NAME, MODELROW_ID, 
+      CURRENCY_TYPE)
+    values (#{modelId,jdbcType=VARCHAR}, #{netNo,jdbcType=VARCHAR}, #{tellerNo,jdbcType=VARCHAR}, 
+      #{operationDate,jdbcType=VARCHAR}, #{accountNo,jdbcType=VARCHAR}, #{accountName,jdbcType=VARCHAR}, 
+      #{accountMoney,jdbcType=VARCHAR}, #{voucherNo,jdbcType=VARCHAR}, #{voucherDate,jdbcType=VARCHAR}, 
+      #{flowNo,jdbcType=VARCHAR}, #{modelName,jdbcType=VARCHAR}, #{modelrowId,jdbcType=VARCHAR}, 
+      #{currencyType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sunyard.ars.system.pojo.mc.McAutoyjFieldTb">
+    insert into MC_AUTOYJ_FIELD_TB
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="modelId != null">
+        MODEL_ID,
+      </if>
+      <if test="netNo != null">
+        NET_NO,
+      </if>
+      <if test="tellerNo != null">
+        TELLER_NO,
+      </if>
+      <if test="operationDate != null">
+        OPERATION_DATE,
+      </if>
+      <if test="accountNo != null">
+        ACCOUNT_NO,
+      </if>
+      <if test="accountName != null">
+        ACCOUNT_NAME,
+      </if>
+      <if test="accountMoney != null">
+        ACCOUNT_MONEY,
+      </if>
+      <if test="voucherNo != null">
+        VOUCHER_NO,
+      </if>
+      <if test="voucherDate != null">
+        VOUCHER_DATE,
+      </if>
+      <if test="flowNo != null">
+        FLOW_NO,
+      </if>
+      <if test="modelName != null">
+        MODEL_NAME,
+      </if>
+      <if test="modelrowId != null">
+        MODELROW_ID,
+      </if>
+      <if test="currencyType != null">
+        CURRENCY_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="modelId != null">
+        #{modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="netNo != null">
+        #{netNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tellerNo != null">
+        #{tellerNo,jdbcType=VARCHAR},
+      </if>
+      <if test="operationDate != null">
+        #{operationDate,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNo != null">
+        #{accountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null">
+        #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountMoney != null">
+        #{accountMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherNo != null">
+        #{voucherNo,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherDate != null">
+        #{voucherDate,jdbcType=VARCHAR},
+      </if>
+      <if test="flowNo != null">
+        #{flowNo,jdbcType=VARCHAR},
+      </if>
+      <if test="modelName != null">
+        #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="modelrowId != null">
+        #{modelrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="currencyType != null">
+        #{currencyType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sunyard.ars.system.pojo.mc.McAutoyjFieldTb">
+    update MC_AUTOYJ_FIELD_TB
+    <set>
+      <if test="netNo != null">
+        NET_NO = #{netNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tellerNo != null">
+        TELLER_NO = #{tellerNo,jdbcType=VARCHAR},
+      </if>
+      <if test="operationDate != null">
+        OPERATION_DATE = #{operationDate,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNo != null">
+        ACCOUNT_NO = #{accountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null">
+        ACCOUNT_NAME = #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountMoney != null">
+        ACCOUNT_MONEY = #{accountMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherNo != null">
+        VOUCHER_NO = #{voucherNo,jdbcType=VARCHAR},
+      </if>
+      <if test="voucherDate != null">
+        VOUCHER_DATE = #{voucherDate,jdbcType=VARCHAR},
+      </if>
+      <if test="flowNo != null">
+        FLOW_NO = #{flowNo,jdbcType=VARCHAR},
+      </if>
+      <if test="modelName != null">
+        MODEL_NAME = #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="modelrowId != null">
+        MODELROW_ID = #{modelrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="currencyType != null">
+        CURRENCY_TYPE = #{currencyType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MODEL_ID = #{modelId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sunyard.ars.system.pojo.mc.McAutoyjFieldTb">
+    update MC_AUTOYJ_FIELD_TB
+    set NET_NO = #{netNo,jdbcType=VARCHAR},
+      TELLER_NO = #{tellerNo,jdbcType=VARCHAR},
+      OPERATION_DATE = #{operationDate,jdbcType=VARCHAR},
+      ACCOUNT_NO = #{accountNo,jdbcType=VARCHAR},
+      ACCOUNT_NAME = #{accountName,jdbcType=VARCHAR},
+      ACCOUNT_MONEY = #{accountMoney,jdbcType=VARCHAR},
+      VOUCHER_NO = #{voucherNo,jdbcType=VARCHAR},
+      VOUCHER_DATE = #{voucherDate,jdbcType=VARCHAR},
+      FLOW_NO = #{flowNo,jdbcType=VARCHAR},
+      MODEL_NAME = #{modelName,jdbcType=VARCHAR},
+      MODELROW_ID = #{modelrowId,jdbcType=VARCHAR},
+      CURRENCY_TYPE = #{currencyType,jdbcType=VARCHAR}
+    where MODEL_ID = #{modelId,jdbcType=VARCHAR}
+  </update>
+</mapper>

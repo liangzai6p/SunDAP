@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<forms>
+	<form form_type="0" form_name="差错单">
+		<states>
+			<state value="" text="--所有状态--"  ></state>
+			<state value="51,56,57,61,62,63,71,72,73,93,94,95,96" text="--已下发--" only_center_user="yes"/> 
+			<state value="-1,15" text="--待修改--" only_center_user="yes"   />
+			<state value="21,19,20" text="--待审核--" only_center_user="yes"   />
+			<state value="61,62,63,71,72,73" text="--待复核--" only_center_user="yes"   />
+			<state value="51,56,57" text="--待整改--" />
+			<state value="71" text="--已整改--" />		
+			<state value="93,95,96" text="--已核销--" />
+			<state value="94" text="--已撤单办结--" />
+		</states>
+	</form>
+	
+	<form form_type="2" form_name="核实单">
+		<states>
+			<state value="" text="--所有状态--"  ></state>
+			<state value="21,61,29,93,95" text="--已下发--"   only_center_user="yes"/>
+			<state value="-1" text="--待修改--" only_center_user="yes"   />
+			<state value="21,56"  text="--待回复--"  />
+			<state value="71" text="--待核销--"  />
+			<state value="93,95" text="--已核销--"  />
+			<state value="95" text="--转差错--"  />
+		</states>
+	</form>
+	
+	<form form_type="3" form_name="预警单">
+        <states>
+            <state value="" text="--所有状态--"  ></state>
+            <state value="12,24,29,93,95" text="--已下发--"   only_center_user="yes"/>
+            <state value="-1" text="--待修改--" only_center_user="yes"   />
+            <state value="24,12"  text="--待回复--"  />
+            <state value="29" text="--待核销--"  />
+            <state value="93,95" text="--已核销--"  />
+            <state value="95" text="--转差错--"  />
+        </states>
+    </form>
+    
+	<form form_type="6" form_name="质检单">
+		<states>
+			<state value="" text="--所有状态--"  ></state>
+			<state value="23,56,57,61,62,71,93,94,95" text="--已下发--" />
+			<state value="23,56,57"  text="--待回复--"  />
+			<state value="71" text="--待仲裁--" />	
+			<state value="93,94,95" text="--已办结--"  />
+			<state value="95" text="--仲裁办结--"  />
+		</states>
+	</form>
+</forms>

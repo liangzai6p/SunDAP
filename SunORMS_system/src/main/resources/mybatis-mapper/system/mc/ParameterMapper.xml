@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.ars.system.dao.mc.ParameterMapper">
+  <resultMap id="VersionMap" type="com.sunyard.ars.system.pojo.mc.VersionModel">
+     <result column="VERSIONNO" jdbcType="VARCHAR" property="versionNo" />
+      <result column="COUNT" jdbcType="VARCHAR" property="count" />
+  </resultMap>
+  
+  <select id="selectParamVersion" resultMap="VersionMap">
+  
+  SELECT to_char(T.TYRQ,'yyyy-MM-dd HH24:mi:ss') AS VERSIONNO,COUNT(0) AS COUNT FROM ${tableName}_HIS T
+  <where>
+  	<if test="vStartDate !=null and vStartDate !=''">
+  		AND to_char(T.TYRQ,'yyyy-MM-dd') <![CDATA[>=]]> #{vStartDate}
+  	</if>
+  	<if test="vEndDate !=null and vEndDate !=''">
+  		AND to_char(T.TYRQ,'yyyy-MM-dd') <![CDATA[<=]]> #{vEndDate}
+  	</if>
+  	<if test="bankCode !=null and bankCode !=''">
+  		AND BANKCODE IN (SELECT ORGAN_NO FROM SM_ORGAN_PARENT_TB WHERE PARENT_ORGAN = #{bankCode})
+  	</if>
+  </where>
+    GROUP BY T.TYRQ ORDER BY T.TYRQ DESC
+  </select>
+  
+    
+  <update id="setParameterEndTime" >
+  	update ${tableName} set TYRQ=to_date(#{date},'yyyy-MM-dd HH24:mi:ss')
+  	   <where>
+	  	<if test="bankCode !=null and bankCode !=''">
+	  		BANKCODE IN (SELECT ORGAN_NO FROM SM_ORGAN_PARENT_TB WHERE PARENT_ORGAN = #{bankCode})
+	  	</if>
+	   </where>
+  </update>
+  
+  <insert id="addParameterInHisTable">
+  		INSERT INTO ${tableName}_HIS SELECT * FROM ${tableName}
+  	   <where>
+	  	<if test="bankCode !=null and bankCode !=''">
+	  		BANKCODE IN (SELECT ORGAN_NO FROM SM_ORGAN_PARENT_TB WHERE PARENT_ORGAN = #{bankCode})
+	  	</if>
+	   </where>  		
+  </insert>
+  
+  <delete id="deleteParameter">
+ 	 	DELETE FROM ${tableName}
+  	   <where>
+	  	<if test="bankCode !=null and bankCode !=''">
+	  		BANKCODE IN (SELECT ORGAN_NO FROM SM_ORGAN_PARENT_TB WHERE PARENT_ORGAN = #{bankCode})
+	  	</if>
+	   </where>
+  </delete>
+  
+  <insert id="insertParameter">
+  		INSERT INTO ${tableName} SELECT * FROM ${tableName}_HIS WHERE TYRQ=to_date(#{versionNo},'yyyy-MM-dd HH24:mi:ss')
+	  	<if test="bankCode !=null and bankCode !=''">
+	  		AND BANKCODE IN (SELECT ORGAN_NO FROM SM_ORGAN_PARENT_TB WHERE PARENT_ORGAN = #{bankCode})
+	  	</if>
+  </insert>
+  
+  <delete id="deleteHisParameter">
+ 		 DELETE FROM ${tableName}_HIS WHERE TYRQ=to_date(#{versionNo},'yyyy-MM-dd HH24:mi:ss')  
+	  	<if test="bankCode !=null and bankCode !=''">
+	  		AND BANKCODE IN (SELECT ORGAN_NO FROM SM_ORGAN_PARENT_TB WHERE PARENT_ORGAN = #{bankCode})
+	  	</if>
+  </delete>
+  <select id="selectParamData" resultType="java.util.HashMap" databaseId="oracle">
+  		SELECT 
+  		 <foreach collection="tableCols" item="tableCol" index="index"  separator="," >  
+            t.${tableCol.NAME}
+     	</foreach>  
+     	,rowidtochar(t.rowid) rowid_exist
+  		 FROM ${tableName} t 
+  		<where>
+  		 <if test="filterList != null">
+	 		  <foreach collection="filterList" item="filter" index="filterIndex"  >  
+		          <if test="filter.value !=null and filter.value != '' and filter.propertyName != 'BANKCODE'">
+		          		AND ${filter.propertyName} = #{filter.value}
+		          </if>
+		          <if test="filter.value !=null and filter.value != '' and filter.propertyName == 'BANKCODE'">
+		          		AND  BANKCODE in (select organ_no from sm_organ_parent_tb where parent_organ = #{filter.value})
+		          </if>             
+     	  	  </foreach> 
+     	  </if>
+     	  
+			<if test="startDate !=null and startDate !=''">
+			 	AND to_char(QYRQ,'yyyy-MM-dd') <![CDATA[>=]]> #{startDate}
+			</if>
+			
+			<if test="endDate !=null and endDate !=''">
+				AND to_char(QYRQ,'yyyy-MM-dd') <![CDATA[<=]]> #{endDate}
+			</if>
+			
+			<if test="userNo !=null and userNo !='' and hasPrivOrganFlag != 0">
+				AND EXISTS (SELECT 1 FROM SM_USER_ORGAN_TB O WHERE O.ORGAN_NO=BANKCODE AND O.USER_NO =#{userNo,jdbcType=VARCHAR})
+			</if> 	
+			<if test="userNo !=null and userNo !='' and hasPrivOrganFlag == 0">
+				AND EXISTS (select 1
+			from sm_organ_tb sot, sm_organ_parent_tb sopt
+			where
+			exists (select 1
+			from sm_users_tb sut
+			where sut.user_no = #{userNo,jdbcType=VARCHAR}
+			and sot.organ_no = sut.organ_no)
+			and sot.organ_no = sopt.parent_organ
+			and sopt.organ_no=BANKCODE
+			)
+			</if> 	
+  		</where>
+  		${orderby}
+  		 <!-- <foreach collection="tableCols" item="tableCol" index="index">  
+           <if test="tableCol.NAME == 'ROW_ID'.toString()">
+           			ORDER BY ROW_ID 
+           </if>
+     	</foreach>  -->
+  </select>
+
+
+
+	<select id="selectParamData" resultType="java.util.HashMap" databaseId="db2">
+		SELECT
+		<foreach collection="tableCols" item="tableCol" index="index"  separator="," >
+			t.${tableCol.NAME}
+		</foreach>
+		,to_char(t.rowid) rowid_exist
+		FROM ${tableName} t
+		<where>
+			<if test="filterList != null">
+				<foreach collection="filterList" item="filter" index="filterIndex"  >
+					<if test="filter.value !=null and filter.value != '' and filter.propertyName != 'BANKCODE'">
+						AND ${filter.propertyName} = #{filter.value}
+					</if>
+					<if test="filter.value !=null and filter.value != '' and filter.propertyName == 'BANKCODE'">
+						AND  BANKCODE in (select organ_no from sm_organ_parent_tb where parent_organ = #{filter.value})
+					</if>
+				</foreach>
+			</if>
+
+			<if test="startDate !=null and startDate !=''">
+			 	AND to_char(QYRQ,'yyyy-MM-dd') <![CDATA[>=]]> #{startDate}
+			</if>
+			
+			<if test="endDate !=null and endDate !=''">
+				AND to_char(QYRQ,'yyyy-MM-dd') <![CDATA[<=]]> #{endDate}
+			</if>
+
+			<if test="userNo !=null and userNo !='' and hasPrivOrganFlag != 0">
+				AND EXISTS (SELECT 1 FROM SM_USER_ORGAN_TB O WHERE O.ORGAN_NO=BANKCODE AND O.USER_NO =#{userNo,jdbcType=VARCHAR})
+			</if>
+			<if test="userNo !=null and userNo !='' and hasPrivOrganFlag == 0">
+				AND EXISTS (select 1
+				from sm_organ_tb sot, sm_organ_parent_tb sopt
+				where
+				exists (select 1
+				from sm_users_tb sut
+				where sut.user_no = #{userNo,jdbcType=VARCHAR}
+				and sot.organ_no = sut.organ_no)
+				and sot.organ_no = sopt.parent_organ
+				and sopt.organ_no=BANKCODE
+				)
+			</if>
+		</where>
+		${orderby}
+		<!-- <foreach collection="tableCols" item="tableCol" index="index">
+        <if test="tableCol.NAME == 'ROW_ID'.toString()">
+                    ORDER BY ROW_ID
+        </if>
+      </foreach>  -->
+	</select>
+
+
+  <insert id="addParamData" >
+  ${addSql}
+  		<!-- insert into  ${tableName}   		
+  		 <selectKey resultType="INTEGER" order="BEFORE" keyProperty="id">  
+      		select  case when max(ROW_ID)+1 is null  then 1 else max(ROW_ID)+1 end  as id from ${tableName}
+ 	 	</selectKey>         
+  		 <foreach collection="tableCols" item="tableCol" index="index"  open="(" separator="," close=")">  
+            ${tableCol.NAME}
+     	</foreach> 
+          		values
+          		( 
+          		#{id},
+          <foreach collection="fieldValues" item="fieldValue" index="index"  separator="," close=")">  
+           #{fieldValue}
+     	</foreach>  -->
+  </insert>
+  
+  <update id="modifyParamData">
+  			${modifySql}
+  </update>
+  
+  <delete id="deleteParamData">
+  	delete  from ${tableName}   where rowid = #{rowId}
+  </delete>
+  
+  <select id="selectParamTableType" parameterType="java.lang.String" resultType="java.util.HashMap"> 
+   select CODE, CONTENT,MENU_ID
+    from sm_dictionary_tb A
+    join (select MENU_NAME,menu_id
+            from sm_menu_tb
+           where PARENT_ID in
+                 (select MENU_ID
+                    from sm_menu_tb t
+                   where t.menu_class = 'mcParameter')
+             and menu_id in (select distinct (menu_id)
+                               from sm_right_tb r
+                               join sm_user_role_tb ur
+                                 on r.role_no = ur.role_no
+                              where ur.user_no =#{userNo})) B
+     on A.Content = B.MENU_NAME
+   where field_name = 'MC_TABLE_TYPE'
+   order by code
+  </select>
+</mapper>

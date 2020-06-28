@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.ars.system.dao.et.ProcessChartMapper">
+  <resultMap id="BaseResultMap" type="com.sunyard.ars.system.bean.et.ProcessChartBean">
+    <result column="CHART_NO" jdbcType="VARCHAR" property="chartNo" />
+    <result column="CHART_NAME" jdbcType="VARCHAR" property="chartName" />
+    <result column="CHART_DESCRIPTION" jdbcType="VARCHAR" property="chartDescription" />
+    <result column="ORGAN_AREA" jdbcType="VARCHAR" property="organArea" />
+    <result column="ROLE_NO" jdbcType="VARCHAR" property="roleNo" />
+    <result column="OTHER_ESSENTIAL_FACTOR" jdbcType="VARCHAR" property="otherEssentialFactor" />
+    <result column="CHART_START" jdbcType="VARCHAR" property="chartStart" />
+    <result column="SLIP_LEVEL" jdbcType="VARCHAR" property="slipLevel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    CHART_NO,CHART_NAME,CHART_DESCRIPTION,ORGAN_AREA,ROLE_NO,OTHER_ESSENTIAL_FACTOR,CHART_START,SLIP_LEVEL
+  </sql>
+    
+  <select id="selectChartByKey" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    select CHART_NO,CHART_NAME,CHART_DESCRIPTION,ORGAN_AREA,ROLE_NO,OTHER_ESSENTIAL_FACTOR,CHART_START,SLIP_LEVEL
+    from sm_process_chart_tb
+    <where>
+	    <if test="chartStart != null">
+	        and CHART_START=#{chartStart,jdbcType=VARCHAR}
+	    </if>
+	    <if test="chartNo != null">
+	        and CHART_NO=#{chartNo,jdbcType=DECIMAL}
+	    </if>
+    </where> 
+    order by CHART_NO
+  </select>
+  
+  <select id="selectBySelective"  parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/> from sm_process_chart_tb
+  	<where>
+	    <if test="chartStart != null">
+	        and CHART_START=#{chartStart,jdbcType=VARCHAR}
+	    </if>
+	    <if test="chartNo != null">
+	        and CHART_NO=#{chartNo,jdbcType=DECIMAL}
+	    </if>
+    </where> 
+    order by CHART_NO
+  </select>
+  
+</mapper>

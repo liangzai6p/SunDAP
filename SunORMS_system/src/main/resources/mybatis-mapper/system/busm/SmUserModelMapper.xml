@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunyard.ars.system.dao.busm.SmUserModelMapper" >
+  <resultMap id="BaseResultMap" type="com.sunyard.ars.system.bean.busm.SmUserModel" >
+    <id column="ROLE_NO" property="roleNo" jdbcType="VARCHAR" />
+    <id column="MODEL_ID" property="modelId" jdbcType="VARCHAR" />
+    <result column="IS_OPEN" property="isOpen" jdbcType="CHAR" />
+    <result column="IS_LOCK" property="isLock" jdbcType="VARCHAR" />
+    <result column="LAST_MODI_DATE" property="lastModiDate" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ROLE_NO, MODEL_ID, IS_OPEN, IS_LOCK, LAST_MODI_DATE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from SM_USER_MODEL_TB
+    where ROLE_NO = #{roleNo,jdbcType=VARCHAR}
+      and MODEL_ID = #{modelId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from SM_USER_MODEL_TB
+    where ROLE_NO = #{roleNo,jdbcType=VARCHAR}
+      and MODEL_ID = #{modelId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sunyard.ars.system.bean.busm.SmUserModel" >
+    insert into SM_USER_MODEL_TB (ROLE_NO, MODEL_ID, IS_OPEN, 
+      IS_LOCK, LAST_MODI_DATE)
+    values (#{roleNo,jdbcType=VARCHAR}, #{modelId,jdbcType=VARCHAR}, #{isOpen,jdbcType=CHAR}, 
+      #{isLock,jdbcType=VARCHAR}, #{lastModiDate,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sunyard.ars.system.bean.busm.SmUserModel" >
+    insert into SM_USER_MODEL_TB
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleNo != null" >
+        ROLE_NO,
+      </if>
+      <if test="modelId != null" >
+        MODEL_ID,
+      </if>
+      <if test="isOpen != null" >
+        IS_OPEN,
+      </if>
+      <if test="isLock != null" >
+        IS_LOCK,
+      </if>
+      <if test="lastModiDate != null" >
+        LAST_MODI_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleNo != null" >
+        #{roleNo,jdbcType=VARCHAR},
+      </if>
+      <if test="modelId != null" >
+        #{modelId,jdbcType=VARCHAR},
+      </if>
+      <if test="isOpen != null" >
+        #{isOpen,jdbcType=CHAR},
+      </if>
+      <if test="isLock != null" >
+        #{isLock,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModiDate != null" >
+        #{lastModiDate,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sunyard.ars.system.bean.busm.SmUserModel" >
+    update SM_USER_MODEL_TB
+    <set >
+      <if test="isOpen != null" >
+        IS_OPEN = #{isOpen,jdbcType=CHAR},
+      </if>
+      <if test="isLock != null" >
+        IS_LOCK = #{isLock,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModiDate != null" >
+        LAST_MODI_DATE = #{lastModiDate,jdbcType=CHAR},
+      </if>
+    </set>
+    where ROLE_NO = #{roleNo,jdbcType=VARCHAR}
+      and MODEL_ID = #{modelId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sunyard.ars.system.bean.busm.SmUserModel" >
+    update SM_USER_MODEL_TB
+    set IS_OPEN = #{isOpen,jdbcType=CHAR},
+      IS_LOCK = #{isLock,jdbcType=VARCHAR},
+      LAST_MODI_DATE = #{lastModiDate,jdbcType=CHAR}
+    where ROLE_NO = #{roleNo,jdbcType=VARCHAR}
+      and MODEL_ID = #{modelId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectBySelective" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from SM_USER_MODEL_TB
+    where 1=1
+      <if test="roleNo != null" >
+       and ROLE_NO = #{roleNo,jdbcType=VARCHAR}
+      </if>
+      <if test="modelId != null" >
+       and MODEL_ID = #{modelId,jdbcType=VARCHAR}
+      </if>         
+      <if test="isOpen != null" >
+       and IS_OPEN = #{isOpen,jdbcType=CHAR}
+      </if>
+      <if test="isLock != null" >
+       and IS_LOCK = #{isLock,jdbcType=VARCHAR}
+      </if>
+      <if test="lastModiDate != null" >
+       and LAST_MODI_DATE = #{lastModiDate,jdbcType=CHAR}
+      </if>
+  </select>
+   <delete id="deleteByRoleNo" parameterType="java.lang.String" >
+    	delete from SM_USER_MODEL_TB where ROLE_NO = #{roleNo}
+  </delete>
+</mapper>

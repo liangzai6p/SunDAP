@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunyard.ars.system.dao.busm.ArmsUserTaltTbMapper" >
+	 <!-- 查询 -->
+      <select id="select" resultType="java.util.HashMap" parameterType="java.util.HashMap"  >
+			select * from ARMS_USER_TALT_TB   
+			where  1 = 1 
+			<if test="status!=null">
+				and STATUS=#{status}
+			</if>
+			<if test="userNo!= null">
+				and USER_NO=#{userNo}
+			</if> 
+			<if test="startTime!=null">
+				and EFFECT_DATE=#{startTime}
+			</if>
+			<if test="targetNo!=null">
+				and TARGET_USER_NO=#{targetNo}
+			</if>
+	  </select>
+		 <!-- 添加 -->
+	  <insert id="save" parameterType="java.util.HashMap" >
+			insert into	ARMS_USER_TALT_TB
+				<trim prefix="(" suffix=")" suffixOverrides="," >
+					<if test="Bean.bankcode!= null">
+						bankcode,
+					 </if>
+					<if test="Bean.status!= null">
+						status,
+					 </if>
+					<if test="Bean.revTime!= null">
+						rev_time,
+					 </if>
+					<if test="Bean.revDate!= null">
+						rev_date,
+					 </if>
+					<if test="Bean.expDate!= null">
+						exp_date,
+					 </if>
+					<if test="Bean.effectDate!= null">
+						effect_date,
+					 </if>
+					<if test="Bean.transtime!= null">
+						transtime,
+					 </if>
+					<if test="Bean.transdate!= null">
+						transdate,
+					 </if>
+					<if test="Bean.prmRoleNo!= null">
+						prm_role_no,
+					 </if>
+					<if test="Bean.roleNo!= null">
+						role_no,
+					 </if>
+					<if test="Bean.targetUserNo!= null">
+						target_user_no,
+					 </if>
+					<if test="Bean.userNo!= null">
+						user_no
+					 </if>
+				</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+					<if test="Bean.bankcode!= null">
+						#{Bean.bankcode},
+					</if>
+					<if test="Bean.status!= null">
+						#{Bean.status},
+					</if>
+					<if test="Bean.revTime!= null">
+						#{Bean.revTime},
+					</if>
+					<if test="Bean.revDate!= null">
+						#{Bean.revDate},
+					</if>
+					<if test="Bean.expDate!= null">
+						#{Bean.expDate},
+					</if>
+					<if test="Bean.effectDate!= null">
+						#{Bean.effectDate},
+					</if>
+					<if test="Bean.transtime!= null">
+						#{Bean.transtime},
+					</if>
+					<if test="Bean.transdate!= null">
+						#{Bean.transdate},
+					</if>
+					<if test="Bean.prmRoleNo!= null">
+						#{Bean.prmRoleNo},
+					</if>
+					<if test="Bean.roleNo!= null">
+						#{Bean.roleNo},
+					</if>
+					<if test="Bean.targetUserNo!= null">
+						#{Bean.targetUserNo},
+					</if>
+					<if test="Bean.userNo!= null">
+						#{Bean.userNo}
+					</if>
+				</trim>
+		</insert>
+	  
+	   <delete id="delete" parameterType="java.util.HashMap" >
+		  delete from ARMS_USER_TALT_TB
+		   where 1=1
+				and TARGET_USER_NO=#{targetNo}
+				and ROLE_NO=#{RoleNo}
+				and TRANSDATE=#{startTime}
+	   </delete>
+	   <!-- 收回权限的下拉框数据！ -->
+	   <select  id="selectGroup" parameterType="java.lang.String"  resultType="java.util.HashMap">
+	   		select TARGET_USER_NO, EFFECT_DATE, EXP_DATE
+			  from ARMS_USER_TALT_TB
+			 where USER_NO = #{userNO} and STATUS=#{status}
+			 group by TARGET_USER_NO, EFFECT_DATE, EXP_DATE
+	   </select>
+	 	  
+	   <!-- 修改状态 --> 
+		<update  id="update" parameterType="map">
+			update  ARMS_USER_TALT_TB
+				<set>
+					<if test="STATUS!= null">
+						STATUS= #{STATUS},
+					</if>
+					<if test="REVDATE!= null">
+						REV_DATE= #{REVDATE},
+					</if>
+					<if test="REVTIME!= null">
+						REV_TIME= #{REVTIME},
+					</if>
+				</set>
+			where  TARGET_USER_NO=#{TARGET_USER_NO} and EFFECT_DATE=#{EFFECT_DATE}
+		</update> 
+		
+	<select id="selectCountByUserNo" resultType="java.lang.Integer" parameterType="java.lang.String"  >
+		SELECT COUNT(*) FROM ARMS_USER_TALT_TB WHERE USER_NO = #{userNo,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="queryUserInfoFromPri" resultType="java.lang.Integer" parameterType="java.lang.String"  >
+		select COUNT(*) from  arms_user_talt_tb  where 
+		(user_no=#{userNo,jdbcType=VARCHAR}or target_user_no=#{userNo,jdbcType=VARCHAR}) 
+		and status ='0' 
+	</select>
+		
+</mapper>

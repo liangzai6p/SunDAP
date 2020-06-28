@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 机构信息sql -->
+
+<mapper namespace="com.sunyard.ars.system.dao.busm.OrganInfoDao" >
+	
+	<!-- 查询机构信息 -->
+	<select id="select" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from sm_organ_tb a where 1 = 1 and a.organ_no in (select organ_no from sm_organ_parent_tb  where 
+		parent_organ = #{maxOrganNo}) and bank_no = #{bank_no} and system_no = #{system_no} and project_no = #{project_no} 
+			<if test="parent_organ != '' and parent_organ != null"> and a.parent_organ = #{parent_organ} </if>
+			<if test="organ_type != '' and organ_type != null"> and a.organ_type = #{organ_type}</if>
+			<if test="status != '' and status != null"> and a.status = #{status}</if>
+			<if test="organ_name != '' and organ_name != null"> and a.ORGAN_NAME LIKE '%' || #{organ_name} || '%'</if>
+			<if test="organ_no != '' and organ_no != null"> and a.organ_no =  #{organ_no} </if>
+		order by parent_organ,organ_level,organ_no
+	</select>
+	
+	<!-- 查询修改前机构信息 -->
+	<select id="selectOldOrgan" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  		select * from sm_organ_tb where organ_no = #{organBean.organ_no} 
+  		and bank_no = #{bank_no} and system_no = #{system_no} and project_no = #{project_no}
+  	</select>
+  	
+  	<!-- 用户表中查看该机构下是否有用户 -->
+  	<select id="selectUserCount" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  		select count(*) from sm_users_tb where organ_no in
+		<foreach collection="organs" item="organNo" open="(" separator="," close=")">
+			#{organNo}
+		</foreach>
+  		and bank_no = #{bank_no} and system_no = #{system_no} and project_no = #{project_no}
+  	</select>
+  	
+  	<!-- 查看是否存在子机构 -->
+  	<select id="selectSonOrganCount" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  		select max(t.num) totalNum from (select count(*) num from sm_organ_parent_tb where parent_organ in
+		<foreach collection="organs" item="organNo" open="(" separator="," close=")">
+			#{organNo}
+		</foreach>
+		 and bank_no = #{bank_no} and system_no = #{system_no} and project_no = #{project_no}
+  		group by parent_organ) t 
+  	</select>
+	
+	<!-- 查询该机构号是否存在 -->
+	<select id="getTemp" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select count(*) from sm_organ_tb where organ_no = #{organBean.organ_no} 
+		and bank_no = #{bank_no} and system_no = #{system_no} 
+		and project_no = #{project_no}
+	</select>
+	
+	<!-- 查询机构详情  -->
+	<select id="selectOrganDetail" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from sm_organ_tb where organ_no = #{organ_no} 
+		and bank_no = #{bank_no} and system_no = #{system_no} 
+		and project_no = #{project_no}
+	</select>
+	
+	<!-- 查询新父机构的原父子关系信息  -->
+	<select id="selectOrganInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select CONCAT(CONCAT(parent_organ, '-'), organ_level) from sm_organ_parent_tb where organ_no = #{organ.dragedNewParOrgan} 
+		and bank_no = #{bank_no} and system_no = #{system_no} 
+		and project_no = #{project_no}
+	</select>
+	
+	<!-- 新增机构基本信息 -->
+	<insert id="insert" parameterType="java.util.HashMap">
+		insert into sm_organ_tb(organ_no,organ_name,organ_level,parent_organ,organ_type,
+		status,last_modi_date, bank_no, system_no, project_no,is_center,is_zy) values(#{organBean.organ_no}, 
+		#{organBean.organ_name}, #{organBean.organ_level}, #{organBean.parent_organ}, 
+		#{organBean.organ_type}, #{organBean.status}, #{organBean.last_modi_date}, #{bank_no}, #{system_no}, #{project_no},#{organBean.is_center},#{organBean.is_zy})
+    </insert>
+    
+    <!-- 往机构父子表加一条自身对应基本信息 -->
+	<insert id="insertOrganParent" parameterType="java.util.HashMap">
+		insert into sm_organ_parent_tb (organ_no,parent_organ,organ_level,last_modi_date, 
+		bank_no, system_no, project_no) values(#{organBean.organ_no}, #{organBean.organ_no}, 
+		#{organBean.organ_level},  #{organBean.last_modi_date}, #{bank_no}, #{system_no}, #{project_no})
+    </insert>
+    
+     <!-- 往机构父子表加所有对应关系信息 -->
+	<insert id="insertOrganParents" parameterType="java.util.HashMap">
+		insert into sm_organ_parent_tb (organ_no,parent_organ,organ_level,last_modi_date,bank_no, system_no, project_no)
+		select  #{organBean.organ_no} organ_no, a.parent_organ, a.organ_level, #{organBean.last_modi_date} last_modi_date, 
+		a.bank_no, a.system_no, a.project_no from sm_organ_parent_tb a where a.organ_no = #{organBean.parent_organ} and 
+		a.bank_no = #{bank_no} and a.system_no = #{system_no} and a.project_no = #{project_no}
+    </insert>
+    
+     <!-- 重构机构父子关系 -->
+	<insert id="insertResetOrganParents" parameterType="java.util.HashMap">
+		insert into sm_organ_parent_tb (organ_no,parent_organ,organ_level,last_modi_date, bank_no, system_no, project_no)
+		values (#{organ.dragOrgan}, #{parent_organ}, #{organ_level}, #{last_modi_date}, #{bank_no}, #{system_no}, #{project_no})
+    </insert>
+    
+	<!-- 修改机构信息信息 -->
+	<update id="update" parameterType="java.util.HashMap">
+		update  sm_organ_tb set organ_name = #{organBean.organ_name},organ_type = #{organBean.organ_type},
+		status = #{organBean.status},organ_level = #{organBean.organ_level},last_modi_date = #{organBean.last_modi_date},is_center = #{organBean.is_center,jdbcType=INTEGER},is_zy = #{organBean.is_zy,jdbcType=INTEGER}
+		where organ_no = #{organBean.organ_no} and bank_no = #{bank_no} and system_no = #{system_no} 
+		and project_no = #{project_no}
+    </update>
+    <!-- 更新mc_organ_tb_kj中的是否作业中心和是否专营机构 -->
+    <update id="updateMcOrganTbKj" parameterType="java.util.HashMap">
+		update  sm_organ_tb_kj set is_center = #{organBean.is_center,jdbcType=INTEGER},is_zy = #{organBean.is_zy,jdbcType=INTEGER}
+		where organ_no = #{organBean.organ_no} 	
+    </update>
+    
+    <!-- 更新机构表里父机构字段 -->
+    <update id="updateOrganParent" parameterType="java.util.HashMap">
+    	update sm_organ_tb set parent_organ = #{organ.dragedNewParOrgan} where organ_no = #{organ.dragOrgan} and 
+    	bank_no = #{bank_no} and system_no = #{system_no} and project_no = #{project_no}
+    </update>
+    
+    <!-- 删除机构信息 -->
+	<delete id="delete" parameterType="java.util.HashMap">
+		delete from sm_organ_tb where organ_no in
+		<foreach collection="organs" item="organNo" open="(" separator="," close=")">
+			#{organNo}
+		</foreach>
+		and bank_no = #{bank_no} and system_no = #{system_no} 
+		and project_no = #{project_no}
+    </delete>
+    
+    <!-- 删除父子机构信息(模块删除) -->
+	<delete id="deleteOrganParent" parameterType="java.util.HashMap">
+		delete from sm_organ_parent_tb where organ_no in
+		<foreach collection="organs" item="organNo" open="(" separator="," close=")">
+			#{organNo}
+		</foreach>
+		and bank_no = #{bank_no} and system_no = #{system_no} 
+		and project_no = #{project_no}
+    </delete>
+    
+    <!-- 删除父子机构信息 （机构树图标拖拽修改）-->
+	<delete id="deleteOrganParents" parameterType="java.util.HashMap">
+		delete from sm_organ_parent_tb where organ_no = (#{organ.dragOrgan})
+		and bank_no = #{bank_no} and system_no = #{system_no} 
+		and project_no = #{project_no}
+    </delete>
+    
+    <select id="getOrganList" resultType="java.util.HashMap">
+   		select a.organ_no,
+		       concat(concat(a.organ_no, '-'), a.organ_name) as organ_name,
+		       a.parent_organ,
+		       a.organ_level,
+		       c.organ_count,
+        <if test="hasPrivOrganFlag != 0">
+            (select 1 from sm_user_organ_tb u where a.organ_no=u.organ_no and user_no =#{userNo}) has
+        </if>
+        <if test="hasPrivOrganFlag == 0">
+            (select 0 from sm_users_tb sut,sm_organ_parent_tb sopt where sut.user_no=#{userNo} and sut.organ_no=sopt.parent_organ and a.organ_no=sopt.organ_no) has
+        </if>
+		  from sm_organ_tb a
+		  left join (select b.parent_organ, count(b.organ_no) as organ_count
+		               from sm_organ_tb b
+		              group by b.parent_organ) c
+		    on a.organ_no = c.parent_organ
+		 order by a.organ_level, a.organ_no
+    </select>
+  	
+  	<select id="selectSiteInfo" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select * from sm_organ_tb where organ_no = #{siteNo}
+	</select>
+	
+		
+	<!-- 获取用户权限机构（用于展现机构树） -->
+	<select id="getUserPrivOrganList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select a.organ_no, concat(concat(a.organ_no, '-'), a.organ_name) as organ_name, 
+		a.parent_organ, a.organ_level, c.organ_count
+		from sm_organ_tb a left join (
+		select b.parent_organ, count(b.organ_no) as organ_count from sm_organ_tb b
+		group by b.parent_organ) c
+		on a.organ_no = c.parent_organ
+		where 
+		<if test="hasPrivOrganFlag != 0">
+			a.organ_no in (select organ_no from sm_user_organ_tb where user_no=#{userNo})
+		</if>
+		 <if test="hasPrivOrganFlag == 0">
+		 EXISTS (select 1
+				from sm_organ_tb sot, sm_organ_parent_tb sopt
+				where
+				exists (select 1
+				from sm_users_tb sut
+				where sut.user_no = #{userNo}
+				and sot.organ_no = sut.organ_no)
+				and sot.organ_no = sopt.parent_organ
+				and sopt.organ_no=a.organ_no
+		)
+		</if>
+			order by a.organ_level, a.organ_no
+	</select>
+	<!-- 获取下级机构（包括自己，用于展现机构树）-->
+	<select id="getChildOrganList" parameterType="java.lang.String" resultType="java.util.HashMap">
+
+		<choose>
+			<when test="dbType == @com.sunyard.ars.common.comm.ARSConstants@DATABASE_TYPE_DB2">
+				<!--db2 的机构数 -->
+				WITH ORGAN_TREE_TEMP(organ_no) AS
+				(
+					select organ_no from sm_organ_tb WHERE ORGAN_NO = #{organNo}
+
+					union all
+
+					SELECT child.organ_no
+					from sm_organ_tb child,ORGAN_TREE_TEMP super
+					where child.parent_organ = super.organ_no
+				)
+				select a.organ_no, concat(concat(a.organ_no, '-'), a.organ_name) as organ_name,
+				a.parent_organ, a.organ_level, c.organ_count
+				from sm_organ_tb a left join (
+				select b.parent_organ, count(b.organ_no) as organ_count from sm_organ_tb b
+				group by b.parent_organ) c
+				on a.organ_no = c.parent_organ
+				where a.organ_no in (
+					SELECT organ_no FROM ORGAN_TREE_TEMP
+				)
+				order by a.organ_level, a.organ_no
+			</when>
+			<!-- oracle -->
+			<otherwise>
+				select a.organ_no, concat(concat(a.organ_no, '-'), a.organ_name) as organ_name,
+				a.parent_organ, a.organ_level, c.organ_count
+				from sm_organ_tb a left join (
+				select b.parent_organ, count(b.organ_no) as organ_count from sm_organ_tb b
+				group by b.parent_organ) c
+				on a.organ_no = c.parent_organ
+				where a.organ_no in (select organ_no from sm_organ_tb start with organ_no=#{organNo} connect by parent_organ=prior organ_no)
+				order by a.organ_level, a.organ_no
+			</otherwise>
+		</choose>
+
+	</select>
+	 <!--
+	<select id="getChildOrganList" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select a.organ_no,
+		       concat(concat(a.organ_no, '-'), o.organ_name) as organ_name,
+		       a.parent_organ,
+		       a.organ_level,
+		       c.organ_count
+		  from SM_ORGAN_PARENT_TB a
+		  left join (select b.parent_organ, count(b.organ_no) - 1 as organ_count
+		               from SM_ORGAN_PARENT_TB b
+		              group by b.parent_organ) c
+		    on a.organ_no = c.parent_organ
+		  left join sm_organ_tb o on a.organ_no = o.organ_no
+		 where a.parent_organ = #{organNo}
+		 order by a.organ_level, a.organ_no
+	</select>-->
+	<!--获取指定级别的机构信息-->
+	<select id="getThisLevelOrganLisr" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT P.organ_no as "organNo",O.organ_name as "organName"
+		FROM SM_ORGAN_PARENT_TB P,SM_ORGAN_TB O
+		where P.ORGAN_NO = O.ORGAN_NO
+		AND P.PARENT_ORGAN = #{userOrganNo,jdbcType=VARCHAR}
+		AND O.ORGAN_LEVEL <![CDATA[ <= ]]>  #{organ_level,jdbcType=INTEGER}
+		ORDER BY O.ORGAN_LEVEL,O.organ_no
+	</select>
+
+	<select id="getLowerOrgans" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT * FROM SM_ORGAN_PARENT_TB P
+		WHERE P.PARENT_ORGAN = #{userOrganNo,jdbcType=VARCHAR} 
+		<if test="hasPrivOrganFlag != 0">
+		AND
+		EXISTS (SELECT 1 FROM SM_USER_ORGAN_TB O WHERE O.ORGAN_NO = P.ORGAN_NO AND O.USER_NO = #{userNo,jdbcType=VARCHAR})
+	</if>
+	 <if test="hasPrivOrganFlag == 0">
+	AND EXISTS (select 1
+			from sm_organ_tb sot, sm_organ_parent_tb sopt
+			where
+			exists (select 1
+			from sm_users_tb sut
+			where sut.user_no = #{userNo,jdbcType=VARCHAR}
+			and sot.organ_no = sut.organ_no)
+			and sot.organ_no = sopt.parent_organ
+			and sopt.organ_no=P.ORGAN_NO
+	)
+	</if>
+	</select>
+
+	<!-- 获取所有机构（用于展现机构树） -->
+	<select id="getAllOrganList" resultType="java.util.HashMap">
+		select a.organ_no, concat(concat(a.organ_no, '-'), a.organ_name) as organ_name, 
+		a.parent_organ, a.organ_level, c.organ_count
+		from sm_organ_tb a left join (
+		select b.parent_organ, count(b.organ_no) as organ_count from sm_organ_tb b
+		group by b.parent_organ) c
+		on a.organ_no = c.parent_organ
+		order by a.organ_level, a.organ_no
+	</select>
+   
+    <select id="selectAllOrgans"  parameterType="java.util.List"  resultType="java.util.HashMap">
+		select parent_organ  as "pId", organ_no||'-'|| ORGAN_NAME  "name",organ_no as "id",ORGAN_LEVEL from sm_organ_tb   
+		where  <if test="list != null and  list.size >0">
+                 organ_level in 
+               	<foreach collection="list" item="var" open="(" separator="," close=")">
+						#{var}
+				</foreach>
+			</if> 
+			 order by ORGAN_LEVEL, organ_no
+	</select>
+	
+	 <select id="getChildByOrganNo"  parameterType="java.lang.String"  resultType="java.util.HashMap" databaseId="oracle">
+			select a.organ_no as "id", concat(concat(a.organ_no, '-'), a.organ_name) as "name", 
+			a.parent_organ as "pId", a.organ_level, c.organ_count
+			from sm_organ_tb a left join (
+			select b.parent_organ, count(b.organ_no) as organ_count from sm_organ_tb b
+			group by b.parent_organ) c
+			on a.organ_no = c.parent_organ
+			where a.organ_no in (select organ_no from sm_organ_tb start with organ_no=#{organNo} connect by parent_organ=prior organ_no)
+			order by a.organ_level, a.organ_no
+	</select>
+
+	<select id="getChildByOrganNo"  parameterType="java.lang.String"  resultType="java.util.HashMap" databaseId="db2">
+		<!--db2 的机构数 -->
+		WITH ORGAN_TREE_TEMP(organ_no) AS
+		(
+		select organ_no from sm_organ_tb WHERE ORGAN_NO = #{organNo}
+
+		union all
+
+		SELECT child.organ_no
+		from sm_organ_tb child,ORGAN_TREE_TEMP super
+		where child.parent_organ = super.organ_no
+		)
+		select a.organ_no as "id", concat(concat(a.organ_no, '-'), a.organ_name) as "name",
+		a.parent_organ as "pId", a.organ_level, c.organ_count
+		from sm_organ_tb a left join (
+		select b.parent_organ, count(b.organ_no) as organ_count from sm_organ_tb b
+		group by b.parent_organ) c
+		on a.organ_no = c.parent_organ
+		where a.organ_no in (
+			select organ_no from ORGAN_TREE_TEMP
+		)
+		order by a.organ_level, a.organ_no
+	</select>
+
+
+
+	 <select id="getprivOgranOfMine"
+	parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	select a.organ_no as "id", concat(concat(a.organ_no, '-'),
+	a.organ_name) as "name",
+	a.parent_organ as "pId", a.organ_level, c.organ_count
+	from sm_organ_tb a left join (
+	select b.parent_organ, count(b.organ_no) as organ_count from sm_organ_tb b
+	group by b.parent_organ) c
+	on a.organ_no = c.parent_organ
+	<where>
+	<if test="hasPrivOrganFlag != 0">
+	</if>
+	a.organ_no in (select organ_no from sm_user_organ_tb where
+	user_no=#{userNo})
+	<if test="hasPrivOrganFlag == 0">
+		EXISTS (select 1
+		from sm_organ_tb sot, sm_organ_parent_tb sopt
+		where
+		exists (select 1
+		from sm_users_tb sut
+		where sut.user_no = #{userNo}
+		and sot.organ_no = sut.organ_no)
+		and sot.organ_no = sopt.parent_organ
+		and sopt.organ_no=a.organ_no
+		)
+	</if>
+	</where>
+	order by a.organ_level, a.organ_no
+</select>
+	<!-- 获取下级机构（过滤权限机构）-->
+	<select id="getUserPrivChildOrganList" parameterType="java.util.HashMap" resultType="java.util.HashMap" databaseId="oracle">
+		select a.organ_no, concat(concat(a.organ_no, '-'), a.organ_name) as organ_name, 
+		a.parent_organ, a.organ_level, c.organ_count
+		from sm_organ_tb a left join (
+		select b.parent_organ, count(b.organ_no) as organ_count from sm_organ_tb b
+		group by b.parent_organ) c
+		on a.organ_no = c.parent_organ
+		where a.organ_no in (select organ_no from sm_organ_tb start with organ_no=#{organNo} connect by parent_organ=prior organ_no)
+		and a.organ_no in (select organ_no from sm_user_organ_tb where user_no=#{userNo})
+		order by a.organ_level, a.organ_no
+	</select>
+
+	<!-- 获取下级机构（过滤权限机构）db2 -->
+	<select id="getUserPrivChildOrganList" parameterType="java.util.HashMap" resultType="java.util.HashMap" databaseId="db2">
+		<!--db2 的机构数 不要分页-->
+		WITH ORGAN_TREE_TEMP(organ_no) AS
+		(
+		select organ_no from sm_organ_tb WHERE ORGAN_NO = #{organNo}
+
+		union all
+
+		SELECT child.organ_no
+		from sm_organ_tb child,ORGAN_TREE_TEMP super
+		where child.parent_organ = super.organ_no
+		)
+		select a.organ_no, concat(concat(a.organ_no, '-'), a.organ_name) as organ_name,
+		a.parent_organ, a.organ_level, c.organ_count
+		from sm_organ_tb a left join (
+		select b.parent_organ, count(b.organ_no) as organ_count from sm_organ_tb b
+		group by b.parent_organ) c
+		on a.organ_no = c.parent_organ
+		where a.organ_no in (
+			select organ_no from ORGAN_TREE_TEMP
+		)
+		and a.organ_no in (select organ_no from sm_user_organ_tb where user_no=#{userNo})
+		order by a.organ_level, a.organ_no
+	</select>
+
+	
+	<!-- 获取机构级别 -->
+	<select id="getOrganLevel" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select distinct(organ_level) from sm_organ_tb 
+		<where>
+			organ_no in
+			<foreach collection="organNoList" item="organNo" index="index" open="(" close=")" separator="," >
+				#{organNo}
+			</foreach>
+		</where>
+		order by organ_level
+	</select>
+
+
+	<select id="getOrganLevel2" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select distinct(organ_level) from sm_organ_tb
+		<where>
+			<if test="organNoLists != null">
+				<foreach collection="organNoLists" item="organNoList" open="(" separator="OR" close=")">
+					organ_no in
+					<foreach collection="organNoList" item="organNo" open="(" separator="," close=")">
+						#{organNo}
+					</foreach>
+				</foreach>
+			</if>
+		</where>
+		order by organ_level
+	</select>
+
+	<!-- 获取用户一级分行，总行获取总行信息 -->
+	<select id="getCenterOrganLevel" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select parent_organ from sm_organ_parent_tb where organ_level <![CDATA[ <= ]]> '2' and organ_no=#{organ_no} order by organ_level desc
+	</select>
+	
+	<!--增加用户权限机构表-->
+	<insert id="addUserOrgan" parameterType="java.lang.String" >
+		INSERT INTO SM_USER_ORGAN_TB SUT
+		  (USER_NO, ORGAN_NO)
+		  (SELECT DISTINCT #{userNo} AS USER_NO, T1.ORGAN_NO AS ORGAN_NO
+		     FROM SM_ORGAN_PARENT_TB T1
+		    WHERE NOT EXISTS (SELECT *
+		             FROM SM_USER_ORGAN_TB SUT
+		            WHERE SUT.USER_NO = #{userNo}
+		              AND SUT.ORGAN_NO IN
+		                  (SELECT DISTINCT SPT.ORGAN_NO
+		                     FROM SM_ORGAN_PARENT_TB SPT
+		                    WHERE SPT.PARENT_ORGAN = #{organNo}))
+		      AND T1.PARENT_ORGAN = #{organNo})
+    </insert>
+    
+    <!-- 删除制定用户号的所有授权机构 -->
+	<delete id="deleteUserAllOrgan">
+		DELETE FROM SM_USER_ORGAN_TB SUT WHERE SUT.USER_NO = #{userNo}
+    </delete>
+    
+    <select id="getUserPrivOrganCount" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    <if test="hasPrivOrganFlag !=0">
+	SELECT COUNT(0) RETCOUNT FROM SM_USER_ORGAN_TB T WHERE T.USER_NO =
+	#{userNo,jdbcType=VARCHAR} AND T.ORGAN_NO= #{organNo,jdbcType=VARCHAR}
+    </if>
+	<if test="hasPrivOrganFlag ==0">
+	select count(sopt.organ_no) RETCOUNT from sm_organ_tb sot, sm_users_tb
+	sut, sm_organ_parent_tb sopt
+	where sut.user_no = #{userNo,jdbcType=VARCHAR}
+	and sut.organ_no = sot.organ_no
+	and sot.organ_no = sopt.parent_organ
+	and sopt.organ_no =#{organNo,jdbcType=VARCHAR}
+	</if>
+	</select>
+	
+	<!-- 获取下级机构 -->
+	<select id="belongOrganList" parameterType="java.util.HashMap"
+	resultType="java.util.HashMap">
+	WITH temptab(organ_no,
+	organ_name,
+	organ_level,
+	parent_organ,
+	w_level) AS
+	(SELECT root.organ_no,
+	root.organ_name,
+	root.organ_level,
+	root.parent_organ,
+	4
+	FROM sm_organ_tb root
+	WHERE root.organ_no = #{organNo,jdbcType=VARCHAR}
+	UNION ALL
+	SELECT sub.organ_no,
+	sub.organ_name,
+	sub.organ_level,
+	sub.parent_organ,
+	super.w_level + 1
+	FROM sm_organ_tb sub, temptab super
+	WHERE sub.parent_organ = super.organ_no)
+	SELECT ORGAN_NO, ORGAN_NAME, ORGAN_LEVEL, PARENT_ORGAN
+	FROM temptab
+	<where>
+		1=1
+		<if test="hasPrivOrganFlag != 0">
+			and exists
+			(select t.* from SM_USER_ORGAN_TB t where t.USER_NO =
+			#{userNo,jdbcType=VARCHAR}) order by ORGAN_NO
+		</if>
+		<if test="hasPrivOrganFlag == 0">
+		</if>
+	</where>
+</select>
+    <select id="hasPrivOrgan" parameterType="java.util.HashMap" resultType="int">
+        select count(*) from sm_user_organ_tb where user_no=#{userNo}
+    </select>
+</mapper>

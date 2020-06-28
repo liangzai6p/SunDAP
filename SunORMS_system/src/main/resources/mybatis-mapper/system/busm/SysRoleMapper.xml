@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- SysRoleDao -->
+
+<mapper namespace="com.sunyard.ars.system.dao.busm.SysRoleDao" >
+	
+	<!-- 查询角色信息 -->
+	<select id="select" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from sm_role_tb a
+		<where>
+			1=1
+			<if test="role_no != null and role_no != '' ">
+		    	and (a.role_no like CONCAT(CONCAT('%', #{role_no}), '%') or a.role_name like CONCAT(CONCAT('%', #{role_no}), '%'))
+		    </if>
+			<if test="is_open != null and is_open != '' ">
+				and a.is_open = #{is_open}
+		    </if>
+			<if test="role_mode != null and role_mode != '' ">
+				and a.role_mode = #{role_mode}
+		    </if>
+		    <if test="levelList != null and levelList.size() != 0 ">
+		    	and a.ROLE_LEVEL in
+		    	<foreach collection="levelList" item="roleLevel" open="(" separator="," close=")">
+		    	 #{roleLevel}
+		    	</foreach>
+		    </if>
+	    </where> 
+		order by a.role_no
+	</select>
+	
+	<!-- 查询角色号是否已存在 -->
+	<select id="selectRole" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) from sm_role_tb a where a.role_no = #{role.role_no}
+		and a.bank_no = #{bank_no}
+    	and a.system_no = #{system_no}
+    	and a.project_no = #{project_no}
+	</select>
+	
+	<!-- 新增角色信息 -->
+	<insert id="insert" parameterType="java.util.HashMap">
+  		insert into sm_role_tb (role_no,role_name,role_des,role_mode,role_level,is_open,last_modi_date,bank_no,system_no,project_no)
+  		values (#{role.role_no},
+  				#{role.role_name},
+  				#{role.role_des},
+  				#{role.role_mode},
+  				#{role.role_level},
+  				#{role.is_open},
+  				#{role.last_modi_date},
+  				#{bank_no},
+  				#{system_no},
+  				#{project_no})
+    </insert>
+    
+	<!-- 修改角色信息 -->
+	<update id="update" parameterType="java.util.HashMap">
+		update sm_role_tb 
+		<set>
+			<if test="role.role_name != null and role.role_name != ''">
+		        role_name = #{role.role_name},
+		    </if>
+		    <if test="role.role_des != null and role.role_des != ''">
+		        role_des = #{role.role_des},
+		    </if>
+		    <if test="role.role_mode != null and role.role_mode != ''">
+		        role_mode = #{role.role_mode},
+		    </if>
+		    <if test="role.is_open != null and role.is_open != ''">
+		        is_open = #{role.is_open},
+		    </if>
+		    <if test="role.role_level != null and role.role_level != ''">
+		        role_level = #{role.role_level},
+		    </if>
+		    <if test="role.last_modi_date != null and role.last_modi_date != ''">
+		        last_modi_date = #{role.last_modi_date},
+		    </if>
+		</set>
+		where role_no = #{role.role_no}
+		and bank_no = #{bank_no}
+    	and system_no = #{system_no}
+    	and project_no = #{project_no}
+    </update>
+    
+     <!-- 删除角色信息 -->
+	<delete id="delete" parameterType="java.util.HashMap">
+		delete from sm_role_tb a 
+		where a.role_no in 
+		<foreach item="item" index="index" collection="role_nos" open="(" separator="," close=")">  
+			#{item}  
+		</foreach>  
+		and a.bank_no = #{bank_no}
+    	and a.system_no = #{system_no}
+    	and a.project_no = #{project_no}
+    </delete>
+    
+    <!-- 查询角色信息 -->
+	<select id="selectByRoleNo" parameterType="java.util.HashMap" resultType="java.lang.String">
+		SELECT SRT.ROLE_MODE FROM SM_ROLE_TB SRT
+		WHERE SRT.BANK_NO = #{bankNo}
+    	AND SRT.SYSTEM_NO = #{systemNo}
+    	AND SRT.PROJECT_NO = #{projectNo}
+		<if test="roleNo != null and roleNo != '' ">
+	    	AND SRT.ROLE_NO = #{roleNo}
+	    </if>
+	</select>
+	
+	<!-- 查询角色信息根据ROLENO-->
+	<select id="selectAllByRoleNo" parameterType="java.lang.String" resultType="com.sunyard.ars.system.bean.busm.RoleBean" >
+		SELECT *  FROM SM_ROLE_TB 
+		WHERE   ROLE_NO = #{roleNo}
+	</select>
+	
+</mapper>

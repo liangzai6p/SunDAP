@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.ars.system.dao.busm.HomePageMapper">
+  <resultMap id="BaseResultMap" type="com.sunyard.ars.system.bean.busm.HomePage">
+    <result column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="USER_NO" jdbcType="VARCHAR" property="userNo" />
+    <result column="PAGE_NO" jdbcType="VARCHAR" property="pageNo" />
+    <result column="PAGE_STATE" jdbcType="VARCHAR" property="pageState" />
+    <result column="PAGE_WIDTH" jdbcType="VARCHAR" property="pageWidth" />
+    <result column="PAGE_HEIGHT" jdbcType="VARCHAR" property="pageHeight" />
+    <result column="MENU_CLASS" jdbcType="VARCHAR" property="menuClass" />
+  </resultMap>
+   <sql id="Base_Column_List">
+   ID,USER_NO,PAGE_NAME,PAGE_URL,PAGE_NO,PAGE_STATE,PAGE_WIDTH,PAGE_HEIGHT,MENU_CLASS
+  </sql>
+  
+  <insert id="insert" parameterType="com.sunyard.ars.system.bean.busm.HomePage">
+    insert into SM_HOMEPAGE_TB (ID, USER_NO, 
+      PAGE_NO, PAGE_STATE,PAGE_WIDTH,PAGE_HEIGHT,MENU_CLASS)
+    values (#{id,jdbcType=DECIMAL}, #{userNo,jdbcType=VARCHAR},#{pageNo,jdbcType=VARCHAR}, #{pageState,jdbcType=VARCHAR},
+     #{pageWidth,jdbcType=VARCHAR}, #{pageHeight,jdbcType=VARCHAR},#{menuClass,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sunyard.ars.system.bean.busm.HomePage">
+    insert into SM_HOMEPAGE_TB
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="userNo != null">
+        USER_NO,
+      </if>
+      <if test="pageNo != null">
+        PAGE_NO,
+      </if>
+      <if test="pageState != null">
+        PAGE_STATE,
+      </if>
+      <if test="pageWidth != null">
+        PAGE_WIDTH,
+      </if>
+      <if test="pageHeight != null">
+        PAGE_HEIGHT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="userNo != null">
+        #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="pageNo != null">
+        #{pageNo,jdbcType=VARCHAR},
+      </if>
+      <if test="pageState != null">
+        #{pageState,jdbcType=VARCHAR},
+      </if>
+       <if test="pageWidth != null">
+        #{pageWidth,jdbcType=VARCHAR},
+      </if>
+       <if test="pageHeight != null">
+        #{pageHeight,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!--查询主页配置信息  -->
+ <select id="selectBySelective" parameterType="java.util.HashMap" resultMap="BaseResultMap" >
+  select
+     ID,USER_NO,PAGE_NO,PAGE_STATE,PAGE_WIDTH,PAGE_HEIGHT,T1.MENU_CLASS
+    from SM_HOMEPAGE_TB T1 JOIN SM_MENU_TB T2 ON T1.MENU_CLASS = T2.MENU_CLASS
+    <where>
+    	T2.HOME_SHOW !='0'
+      <if test="id !=null and id !=''">
+       AND id=#{id}
+      </if>      
+      <if test="userNo !=null and userNo !=''">
+       AND USER_NO=#{userNo,jdbcType=VARCHAR}
+      </if>
+       <if test = "menuClass != null">
+	   AND T1.MENU_CLASS = #{menuClass,jdbcType=VARCHAR}
+	    </if>            
+    </where>
+  	order by page_no
+  </select>
+  
+  <!--更新主页信息  -->
+  <update id="updateBySelective" parameterType="com.sunyard.ars.system.bean.busm.HomePage">
+  	UPDATE SM_HOMEPAGE_TB
+  		<set> 		
+	      <if test="pageNo != null">
+	       PAGE_NO = #{pageNo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="pageState != null">
+	      PAGE_STATE =  #{pageState,jdbcType=VARCHAR},
+	      </if>
+	       <if test="pageWidth != null">
+	      PAGE_WIDTH = #{pageWidth,jdbcType=VARCHAR},
+	      </if>
+	       <if test="pageHeight != null">
+	       PAGE_HEIGHT =  #{pageHeight,jdbcType=VARCHAR},
+	      </if>
+  		</set>
+  		<where>
+  		   <if test="id != null">
+	       AND ID =  #{id,jdbcType=DECIMAL}
+	      </if>
+	      
+	      <if test = "menuClass != null">
+	      AND MENU_CLASS = #{menuClass,jdbcType=VARCHAR}
+	      </if>
+	    
+	       AND USER_NO =  #{userNo,jdbcType=VARCHAR}
+	     
+  		</where>
+  </update>
+    
+    	  <!--删除不在用户权限内的配置  -->
+  <delete id="delUserHomePage"  parameterType="java.util.HashMap">
+	DELETE FROM SM_HOMEPAGE_TB T1 
+	       WHERE T1.USER_NO = #{userNo,jdbcType=VARCHAR}
+	       AND T1.MENU_CLASS NOT IN (
+	        select m.MENU_CLASS from sm_menu_tb m, sm_right_tb r 
+				where m.menu_id = r.menu_id and m.is_open = '1' and r.role_no in
+                  <foreach collection="roles" item="roleNo" open="(" separator="," close=")">
+                      #{roleNo}
+                   </foreach>
+				 and m.menu_belong = #{menuBelong} and m.home_show !='0'
+	       )  
+  </delete>
+  
+  <!--删除不在超级管理员主页面展现的的配置  -->
+  <delete id="delAdminHomePage" parameterType="java.util.HashMap">
+  		DELETE FROM SM_HOMEPAGE_TB T1 WHERE T1.USER_NO = #{userNo,jdbcType=VARCHAR}
+	       AND T1.MENU_CLASS NOT IN (  
+  		SELECT
+		T2.MENU_CLASS
+		FROM SM_MENU_TB T2
+		WHERE BANK_NO=#{bankNo,jdbcType=VARCHAR}
+		AND SYSTEM_NO=#{systemNo,jdbcType=VARCHAR}
+		AND PROJECT_NO=#{projectNo,jdbcType=VARCHAR}
+		AND MENU_BELONG LIKE CONCAT(CONCAT('%',#{menuBelong,jdbcType=VARCHAR}),'%')
+		AND IS_OPEN='1' 
+		AND T2.HOME_SHOW != '0' 
+  )
+  </delete>
+  
+  <!--添加超级管理员的主页配置项  -->
+  <insert id="addAdminHomePage" parameterType="java.util.HashMap">
+  		insert into SM_HOMEPAGE_TB T1
+		(ID, USER_NO, 
+         PAGE_STATE,MENU_CLASS)
+        SELECT SEQ_HOMEPAGE_ID.NEXTVAL,#{userNo},'0',MENU_CLASS FROM SM_MENU_TB T2 WHERE T2.HOME_SHOW != '0' AND IS_OPEN='1' AND T2.MENU_CLASS IS NOT NULL
+        AND T2.MENU_CLASS NOT IN (
+        	SELECT T3.MENU_CLASS FROM SM_MENU_TB T3 join SM_HOMEPAGE_TB T4 on T3.MENU_CLASS = T4.MENU_CLASS WHERE  T4.USER_NO = #{userNo}
+        )  
+  </insert>
+  
+  <insert id="addUserHomePage" parameterType="java.util.HashMap">
+  		insert into SM_HOMEPAGE_TB T1
+		(ID, USER_NO, 
+         PAGE_STATE,MENU_CLASS)
+          SELECT SEQ_HOMEPAGE_ID.NEXTVAL,#{userNo},'0',MENU_CLASS FROM SM_MENU_TB T2 WHERE T2.HOME_SHOW != '0' AND IS_OPEN='1' AND T2.MENU_CLASS IS NOT NULL
+          AND T2.MENU_CLASS IN (        	
+	        select m.MENU_CLASS from sm_menu_tb m, sm_right_tb r
+						where m.menu_id = r.menu_id and m.is_open = '1' and r.role_no in
+                          <foreach collection="roles" item="roleNo" open="(" separator="," close=")">
+                               #{roleNo}
+                           </foreach>
+                       and m.menu_belong = #{menuBelong})
+         AND T2.MENU_CLASS NOT IN (
+                  select m2.menu_class from sm_menu_tb m2,sm_homepage_tb s where  m2.menu_class = s.menu_class and s.user_no=#{userNo}
+             )
+  
+  </insert>
+  
+  <select id="selParentMenu" parameterType="java.lang.String" resultType="java.lang.String">
+  	select t2.menu_class from (
+		select * from sm_menu_tb t start with menu_class = #{menuClass} connect by prior t.parent_id = t.menu_id 
+		)t2 where t2.menu_level ='2'
+  </select>
+  
+  <select id="querAllTaskMenu" parameterType="java.lang.String" resultType="java.lang.String">
+  	select menu_url from sm_menu_tb t where t.menu_class = 'AllTask'
+   		and menu_id in(select menu_id from sm_right_tb where role_no in
+               (select role_no from sm_user_role_tb where user_no = #{userNo,jdbcType=VARCHAR}))
+  </select>
+</mapper>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="pragram" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="0">
+    <title>运营风险监控平台</title>
+    <link href="static/js/plugin/layer/theme/default/layer.css" rel="stylesheet" type="text/css"/>
+    <link href="static/css/main.css" rel="stylesheet" type="text/css"/>
+    <link href="static/css/login.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="login_bg">
+    <div id="login" v-cloak>
+        <!--内容区域--begin-->
+        <div class="main_box">
+            <div class="logo"></div><!--logo-->
+            <!--标题-->
+            <div class="login_title"><span>{{ title }}</span></div>
+            <!--表单区域--begin-->
+            <form id="loginForm" method="post">
+                <template v-for="user in users">
+                    <div :class="user.sideClass">
+                        <input :type="user.type" :id="user.id" :name="user.name" :placeholder="user.placeholder" :class="user.inputClass"
+                               v-model='user.value' :maxlength="user.maxLength" :autocomplete="user.autoComplete"
+                                @focus="focus($event)" @keydown.enter="keyForm($event)"/>
+                    </div>
+                </template>
+                <div class="login_button">
+                    <button type="button" :name="button.name" :class="button.classBtn" :id="button.id" @click="login()">{{ button.value }}</button>
+                </div>
+            </form>
+            <!--表单区域--end-->
+            <div class="login_footer">
+                <span>{{ footer }}</span>
+            </div>
+        </div>
+        <!--内容区域--end-->
+    </div>
+</div>
+<script src="static/js/plugin/jquery/jquery-1.11.3.min.js"></script>
+<script src="static/js/plugin/vue/vue.js?v=2.6.10"></script><!--兼容性为ie9+-->
+<script src="static/js/action/login/login.js?v=sunars5.2"></script>
+
+<script src="static/js/action/common/jQuery.Common.js?v=sunars5.2"></script><!--加密、解密封装-->
+<script src="static/js/action/common/aes.js?v=sunars5.2"></script><!--加密、解密-->
+<script src="static/js/action/common/jquery.json-2.4.js?v=sunars5.2"></script>
+<script src="static/js/action/common/common/common.js?v=sunars5.2"></script>
+<script src="static/js/action/common/common/common-ars.js?v=sunars5.2"></script>
+<script src="static/js/plugin/layer/layer.js?v=sunars5.2"></script>
+</body>
+</html>

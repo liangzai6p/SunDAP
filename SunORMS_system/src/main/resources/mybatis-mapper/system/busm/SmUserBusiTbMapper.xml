@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunyard.ars.system.dao.busm.SmUserBusiTbMapper" >
+			 <select id="select" resultType="java.util.HashMap" parameterType="java.util.HashMap"  >
+				select * from SM_USER_BUSI_TB  
+				where  1 = 1
+			   <if test="userNo != null and userNo !='' ">
+				   AND USER_NO = #{userNo}
+			   </if>
+			   <if test="busiNo != null and busiNo !='' ">
+				   AND BUSI_NO = #{busiNo}
+			   </if>
+	 		</select>
+		<!-- 添加 -->
+	  	<insert id="save" parameterType="com.sunyard.ars.system.bean.busm.SmUserBusiTbBean" >
+			insert into	SM_USER_BUSI_TB
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+					<if test="userNo!= null">
+						USER_NO,
+					 </if>
+					<if test="busiNo!= null">
+						BUSI_NO,
+					 </if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+					<if test="userNo!= null">
+						#{userNo},
+					</if>
+					<if test="busiNo!= null">
+						#{busiNo},
+					</if>
+				</trim>
+		</insert>
+	  
+	   <delete id="delete" parameterType="java.util.HashMap" >
+		  delete from SM_USER_BUSI_TB
+		   where 1=1
+				and USER_NO=#{userNo}
+				and BUSI_NO=#{busiNo}
+	   </delete>	
+	   
+	   
+	   <delete id="deleteBusNoByUserno" parameterType="java.lang.String" >
+		 	delete from SM_USER_BUSI_TB  where 1=1 and USER_NO=#{userNo}
+	   </delete>	
+</mapper>

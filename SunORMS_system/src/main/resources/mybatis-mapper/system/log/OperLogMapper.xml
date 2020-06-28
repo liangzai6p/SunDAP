@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.ars.system.dao.log.OperLogMapper">
+  <resultMap id="BaseResultMap" type="com.sunyard.ars.system.bean.log.OperLog">
+    <result column="OPERATOR_NO" jdbcType="VARCHAR" property="operatorNo" />
+    <result column="OPER_TYPE" jdbcType="CHAR" property="operType" />
+    <result column="OPER_CONTENT" jdbcType="VARCHAR" property="operContent" />
+    <result column="OPER_MODULE" jdbcType="VARCHAR" property="operModule" />
+    <result column="OPER_TIME" jdbcType="CHAR" property="operTime" />
+    <result column="OPER_DATE" jdbcType="CHAR" property="operDate" />
+    <result column="OPER_ORGAN" jdbcType="VARCHAR" property="operOrgan" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+     OPERATOR_NO,OPER_TYPE,OPER_CONTENT,OPER_MODULE,OPER_TIME,OPER_DATE,OPER_ORGAN
+  </sql>
+  
+  <insert id="insert" parameterType="com.sunyard.ars.system.bean.log.OperLog">
+    insert into SM_OPERLOG_TB (OPER_NO, OPER_TYPE, OPER_CONTENT, 
+      OPER_MODULE, OPER_TIME, OPER_DATE,OPER_ORGAN
+      )
+    values (#{operatorNo,jdbcType=VARCHAR}, #{operType,jdbcType=CHAR}, #{operContent,jdbcType=VARCHAR}, 
+      #{operModule,jdbcType=VARCHAR}, #{operTime,jdbcType=CHAR}, #{operDate,jdbcType=CHAR}, #{operOrgan,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sunyard.ars.system.bean.log.OperLog">
+    insert into SM_OPERLOG_TB
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="operatorNo != null">
+        OPERATOR_NO,
+      </if>
+      <if test="operType != null">
+        OPER_TYPE,
+      </if>
+      <if test="operContent != null">
+        OPER_CONTENT,
+      </if>
+      <if test="operModule != null">
+        OPER_MODULE,
+      </if>
+      <if test="operTime != null">
+        OPER_TIME,
+      </if>
+      <if test="operDate != null">
+        OPER_DATE,
+      </if>
+      <if test="operOrgan != null">
+        OPER_ORGAN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="operatorNo != null">
+        #{operatorNo,jdbcType=VARCHAR},
+      </if>
+      <if test="operType != null">
+        #{operType,jdbcType=CHAR},
+      </if>
+      <if test="operContent != null">
+        #{operContent,jdbcType=VARCHAR},
+      </if>
+      <if test="operModule != null">
+        #{operModule,jdbcType=VARCHAR},
+      </if>
+      <if test="operTime != null">
+        #{operTime,jdbcType=CHAR},
+      </if>
+      <if test="operDate != null">
+        #{operDate,jdbcType=CHAR},
+      </if>
+      <if test="operOrgan != null">
+        #{operOrgan,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+	<select id="queryBySelective" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from SM_OPERLOG_TB
+		<where>
+			<if test="operatorNo !=null and operatorNo !=''">
+				AND OPERATOR_NO = #{operatorNo,jdbcType=VARCHAR}
+			</if>
+			<if test="operType !=null and operType !=''">
+				AND OPER_TYPE = #{operType,jdbcType=VARCHAR}
+			</if>
+			<if test="operContent !=null and operContent !=''">
+				AND OPER_CONTENT like '%'||#{operContent,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="operModule !=null and operModule !=''">
+				AND OPER_MODULE = #{operModule,jdbcType=VARCHAR}
+			</if>
+			<if test="startDate !=null and startDate != ''">
+				AND OPER_DATE &gt;= #{startDate,jdbcType=VARCHAR}
+			</if>
+			<if test="endDate !=null and endDate !=''">
+				AND OPER_DATE &lt;= #{endDate,jdbcType=VARCHAR}
+			</if>
+			<if test="operOrgan !=null and operOrgan !=''">
+				AND OPER_ORGAN = #{operOrgan,jdbcType=VARCHAR}
+			</if>
+			<if test="hasPrivOrganFlag != 0">
+			AND EXISTS (SELECT 1 FROM SM_USER_ORGAN_TB O WHERE O.ORGAN_NO=OPER_ORGAN AND O.USER_NO =#{userNo,jdbcType=VARCHAR})	
+			</if>
+		    <if test="hasPrivOrganFlag == 0">
+			AND EXISTS (select 1
+			from sm_organ_tb sot, sm_organ_parent_tb sopt
+			where
+			exists (select 1
+			from sm_users_tb sut
+			where sut.user_no = #{userNo,jdbcType=VARCHAR}
+			and sot.organ_no = sut.organ_no)
+			and sot.organ_no = sopt.parent_organ
+			and sopt.organ_no=OPER_ORGAN
+			)
+			</if>
+													
+		</where>
+		ORDER BY OPER_DATE desc, OPER_TIME desc,OPER_TYPE, OPER_MODULE,  OPERATOR_NO DESC
+	</select>
+  <select id="queryByCondition" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select <include refid="Base_Column_List" /> from SM_OPERLOG_TB
+		<where>
+			<if test="operatorNo !=null and operatorNo !=''">
+				AND OPERATOR_NO = #{operatorNo,jdbcType=VARCHAR}
+			</if>
+			<if test="operType !=null and operType !=''">
+				AND OPER_TYPE = #{operType,jdbcType=VARCHAR}
+			</if>
+			<if test="operContent !=null and operContent !=''">
+				AND OPER_CONTENT like '%'||#{operContent,jdbcType=VARCHAR}||'%'
+			</if>
+			<if test="operModule !=null and operModule !=''">
+				AND OPER_MODULE = #{operModule,jdbcType=VARCHAR}
+			</if>
+			<if test="startDate !=null and startDate != ''">
+				AND OPER_DATE &gt;= #{startDate,jdbcType=VARCHAR}
+			</if>
+			<if test="endDate !=null and endDate !=''">
+				AND OPER_DATE &lt;= #{endDate,jdbcType=VARCHAR}
+			</if>
+			<if test="operOrgan !=null and operOrgan !=''">
+				AND OPER_ORGAN = #{operOrgan,jdbcType=VARCHAR}
+			</if>
+			<if test="hasPrivOrganFlag != 0">
+			AND EXISTS (SELECT 1 FROM SM_USER_ORGAN_TB O WHERE O.ORGAN_NO=OPER_ORGAN AND O.USER_NO =#{userNo,jdbcType=VARCHAR})		
+			</if>
+		    <if test="hasPrivOrganFlag == 0">
+			AND EXISTS (select 1
+			from sm_organ_tb sot, sm_organ_parent_tb sopt
+			where
+			exists (select 1
+			from sm_users_tb sut
+			where sut.user_no =#{userNo,jdbcType=VARCHAR}
+			and sot.organ_no = sut.organ_no)
+			and sot.organ_no = sopt.parent_organ
+			and sopt.organ_no=OPER_ORGAN
+			)
+			</if>
+												
+		</where>
+		ORDER BY OPER_TYPE,OPER_MODULE,OPER_DATE,OPER_TIME,OPERATOR_NO DESC
+	</select>
+	<select id="reLogQuery" resultType="map">
+	select smrslogtb0_.CREATE_DATE ,
+	smrslogtb0_.CREATE_TIME ,
+	smrslogtb0_.RESUPERVISOR_NO ,
+	smrslogtb0_.ALERT_CONTENT ,
+	smrslogtb0_.BUSI_DATA_DATE ,
+	smrslogtb0_.ERROR_FLAG ,
+	smrslogtb0_.MODEL_ID ,
+	smrslogtb0_.MODEL_NAME ,
+	smrslogtb0_.MODELROW_ID ,
+	smrslogtb0_.OCCUR_DATE ,
+	smrslogtb0_.OPERATOR_NO ,
+	smrslogtb0_.RESUPERVISOR_NAME ,
+	smrslogtb0_.SERIAL_NO ,
+	smrslogtb0_.SITE_NO
+	from SM_RS_LOG_TB smrslogtb0_
+	<where>
+	<!-- (#{organNo,jdbcType=VARCHAR}) -->
+		<if test="organNo !=null and organNo !=''">
+			smrslogtb0_.SITE_NO IN 
+			 <foreach collection="organNo" item="organNoTmp" open="("
+				separator="," close=")">
+				#{organNoTmp}
+			</foreach> 
+		</if>
+		<if test="operator !=null and operator !=''">
+			and smrslogtb0_.OPERATOR_NO = #{operator,jdbcType=VARCHAR}
+		</if>
+		<if test="startDate !=null and startDate !=''">
+			and smrslogtb0_.OCCUR_DATE <![CDATA[>=]]> #{startDate,jdbcType=VARCHAR}
+		</if>
+		<if test="endDate !=null and endDate !=''">
+			and smrslogtb0_.OCCUR_DATE <![CDATA[<=]]> #{endDate,jdbcType=VARCHAR}
+		</if>
+	</where>
+</select>
+
+</mapper>

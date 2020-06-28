@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 机构信息sql -->
+
+<mapper namespace="com.sunyard.ars.system.dao.et.ModelDataQueryMapper" >
+    <!--统计页面查询预警统计信息-->
+    <select id="getModelData" resultType="java.util.HashMap">
+            ${queryDataSql}
+    </select>
+
+    <select id="getModelDataCount"     resultType="java.lang.Integer">
+        ${queryDataSql}
+    </select>
+
+
+    <!--根据模型Id 及 modelRowId 查询-->
+    <select id="getThisModelData" resultType="java.util.HashMap">
+        SELECT A.* FROM ${tableName} A
+        WHERE A.ENTRY_ID = #{modelId,jdbcType = INTEGER} AND A.ENTRYROW_ID = #{modelRowId,jdbcType = INTEGER}
+        <if test="ishandle != null and ishandle != ''">
+         AND A.ISHANDLE = #{ishandle,jdbcType = VARCHAR}
+        </if>
+    </select>
+
+    <!--根据模型Id 及 modelRowId 查询-->
+    <select id="getThisModelDataCount" resultType="java.lang.Integer">
+        SELECT count(1) FROM ${tableName}
+        WHERE ENTRY_ID = #{modelId,jdbcType = INTEGER} AND ENTRYROW_ID = #{modelRowId,jdbcType = INTEGER}
+        <if test="ishandle != null and ishandle != ''">
+            AND ISHANDLE = #{ishandle,jdbcType = VARCHAR}
+        </if>
+    </select>
+
+
+
+
+    <!--根据模型Id 及 modelRowId 查询-->
+    <select id="getManyModelData" resultType="java.util.HashMap">
+        SELECT A.* FROM ${tableName} A
+        WHERE A.ENTRY_ID = #{modelId,jdbcType = INTEGER}
+        AND
+        A.ENTRYROW_ID IN
+        <foreach item="modelRowId" index="index" collection="modelRowIds" open="(" separator="," close=")">
+            #{modelRowId}
+        </foreach>
+    </select>
+
+
+    <!--根据模型Id 及 modelRowId 查询-->
+    <select id="getRelatingModelData" resultType="java.util.HashMap">
+        select t.* from (SELECT * FROM ${tableName}
+		        WHERE RELATE_EXHIBITID = #{modelId,jdbcType = INTEGER} AND RELATE_ENTRYROWID = #{modelRowId,jdbcType = INTEGER}
+		        AND LIST_FLAG='1'
+		union all
+		SELECT * FROM ${tableName}_his
+		        WHERE RELATE_EXHIBITID = #{modelId,jdbcType = INTEGER} AND RELATE_ENTRYROWID = #{modelRowId,jdbcType = INTEGER}
+		        AND LIST_FLAG='1') t
+        ORDER BY
+        t.CREATE_DATE DESC,
+        t.BANKCODE,
+        t.ENTRYROW_ID
+    </select>
+
+    <!--根据模型Id 及 modelRowId 查询-->
+    <select id="getRelatingModelDataToMany" resultType="java.util.HashMap">
+        SELECT * FROM ${tableName} A
+        WHERE A.RELATE_EXHIBITID = #{modelId,jdbcType = INTEGER}
+        AND A.LIST_FLAG='1'
+        AND A.RELATE_ENTRYROWID IN
+        <foreach item="modelRowId" index="index" collection="modelRowIds" open="(" separator="," close=")">
+            #{modelRowId}
+        </foreach>
+        ORDER BY A.RELATE_ENTRYROWID,A.ENTRYROW_ID
+    </select>
+
+
+
+    <!--根据模型Id 及 modelRowId   已阅处理-->
+    <update id="checkPromptArms">
+        UPDATE  ${tableName} SET CHECK_STATE='1', CHECK_INFO=#{checkInfo,jdbcType = VARCHAR}
+        WHERE ENTRY_ID = #{modelId,jdbcType = INTEGER}
+        AND  ENTRYROW_ID = #{modelRowId,jdbcType = INTEGER}
+    </update>
+
+    <!--根据模型Id 及 modelRowId   撤销处理-->
+    <update id="dealExhibit">
+        UPDATE  ${tableName}
+        SET
+        FORMTYPE=99,
+        ISHANDLE ='99' ,
+        ALERT_CONTENT=#{mark,jdbcType = VARCHAR},
+        CHECKER_NO=#{alertUserNo,jdbcType = VARCHAR},
+        ALERT_DATE=#{alertDate,jdbcType = VARCHAR}
+        WHERE ENTRY_ID = #{modelId,jdbcType = INTEGER}
+        AND  ENTRYROW_ID = #{modelRowId,jdbcType = INTEGER}
+    </update>
+
+    <!--根据模型Id 及 modelRowId   取消撤销处理  更新数据-->
+    <update id="armsDealBack">
+        UPDATE  ${tableName}
+        SET
+        FORMTYPE=0,
+        ISHANDLE ='0'
+        WHERE ENTRY_ID = #{modelId,jdbcType = INTEGER}
+        AND  ENTRYROW_ID = #{modelRowId,jdbcType = INTEGER}
+    </update>
+
+    <!--模型数据下发通过处理-->
+    <update id = "handleModelTask">
+        UPDATE ${tableName} T
+        SET T.FORMTYPE = #{formType,jdbcType = VARCHAR},
+        T.ISHANDLE  = '-1',
+        T.CHECKER_NO = #{checkerNo,jdbcType = VARCHAR}<!-- , -->
+       <!--  T.ALERT_DATE = #{alertDate,jdbcType = VARCHAR} -->
+        <if test="isBf != 1">
+           ,T.ALERT_DATE = #{alertDate,jdbcType = VARCHAR}
+       </if>
+        <if test="formId != null and formId != ''">
+            ,T.MONITORID = #{formId,jdbcType = VARCHAR}
+        </if>
+        <if test="formId == null or formId == ''">
+            ,T.CHECK_STATE = '0'
+        </if>
+        WHERE
+        T.LIST_FLAG = '0' AND ( T.ISHANDLE = '0' OR T.ISHANDLE = '-1' OR T.ISHANDLE = '99')
+        AND T.ENTRY_ID = #{modelId,jdbcType = VARCHAR}
+        AND T.ENTRYROW_ID = #{modelRowId,jdbcType = VARCHAR}
+    </update>
+    
+    
+    <!-- 删除 -->
+	<delete id="eWICDetailDelete">
+           DELETE FROM ARMS_FAVORITE_TB WHERE ENTRY_ID=#{entryId,jdbcType = VARCHAR} AND ENTRYROW_ID=#{entryRowId,jdbcType = VARCHAR} AND FAVORITE_USER=#{loginUserNo,jdbcType = VARCHAR}
+    </delete>
+    
+    <!-- 设为公有 -->
+    <update id="eWICDetailSetCommon">
+           UPDATE ARMS_FAVORITE_TB SET REMARK_COMMON=#{eWICDetailSetRemarkCommonTextareaVal,jdbcType = VARCHAR} , ISCOMMON = '1' WHERE ID = #{armsFavoriteId,jdbcType = VARCHAR}
+    </update>
+    
+     <!--根据模型Id 及 modelRowId 查询-->
+    <select id="selectByPrimaryKey" resultType="java.util.HashMap">
+         SELECT ${fields} FROM ${tableName}
+         WHERE ENTRY_ID = #{modelId,jdbcType = INTEGER}
+         AND  ENTRYROW_ID = #{modelRowId,jdbcType = INTEGER}
+    </select>
+
+    <!--根据模型Id 及 modelRowId 查询-->
+    <select id="getHisRelatingModelDataToMany" resultType="java.util.HashMap">
+        select * from (SELECT * FROM ${tableName} A
+        WHERE A.RELATE_EXHIBITID = #{modelId,jdbcType = INTEGER}
+        AND A.LIST_FLAG='1'
+        AND A.RELATE_ENTRYROWID IN
+        <foreach item="modelRowId" index="index" collection="modelRowIds" open="(" separator="," close=")">
+            #{modelRowId}
+        </foreach>
+        union all
+        SELECT * FROM ${tableName}_HIS A
+        WHERE A.RELATE_EXHIBITID = #{modelId,jdbcType = INTEGER}
+        AND A.LIST_FLAG='1'
+        AND A.RELATE_ENTRYROWID IN
+        <foreach item="modelRowId" index="index" collection="modelRowIds" open="(" separator="," close=")">
+            #{modelRowId}
+        </foreach>) B
+        ORDER BY B.RELATE_ENTRYROWID,B.ENTRYROW_ID
+    </select>
+</mapper>

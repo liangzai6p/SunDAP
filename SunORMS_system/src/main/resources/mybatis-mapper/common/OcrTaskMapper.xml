@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.ars.common.dao.OcrTaskMapper">
+	<resultMap id="ResultMap" type="com.sunyard.ars.common.pojo.OcrTaskBean">
+		<id column="TASK_ID" jdbcType="VARCHAR" property="taskId" />
+		<id column="MESSAGE" jdbcType="CLOB" property="message" />
+		<id column="BATCH_ID" jdbcType="VARCHAR" property="taskState" />
+		<id column="TASK_STATE" jdbcType="VARCHAR" property="taskState" />
+		<id column="TASK_DATE" jdbcType="VARCHAR" property="taskDate" />
+		<id column="ERR_RESULT" jdbcType="VARCHAR" property="errResult" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.sunyard.ars.common.pojo.OcrTaskBean">
+		insert into OCR_TASK_TB(TASK_ID,MESSAGE,BATCH_ID,TASK_DATE)
+		values(#{taskId,jdbcType=VARCHAR},#{message,jdbcType=CLOB},#{batchId,jdbcType=VARCHAR},#{taskDate,jdbcType=VARCHAR})
+	</insert>
+
+	<select  id="select" resultMap="ResultMap" databaseId="oracle">
+		select re.TASK_ID, re.MESSAGE from (
+		select dbms_random.value randnum, tba.TASK_ID, tba.MESSAGE from OCR_TASK_TB tba
+		where tba.TASK_STATE='1' order by randnum asc ) re where rownum = 1
+	</select>
+
+	<select  id="select" resultMap="ResultMap" databaseId="db2">
+		select re.TASK_ID, re.MESSAGE from (
+			select rand() randnum, tba.TASK_ID, tba.MESSAGE
+			from OCR_TASK_TB tba
+			where tba.TASK_STATE='1' order by randnum asc
+		) re  fetch first 1 rows only
+	</select>
+
+	<update id="lock"  >
+		update OCR_TASK_TB set TASK_STATE = '2' where TASK_ID = #{taskId,jdbcType=VARCHAR} and TASK_STATE='1'
+	</update>
+
+	<update id="update">
+		update OCR_TASK_TB set TASK_STATE = '3' where TASK_ID = #{taskId,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateWrong">
+		update OCR_TASK_TB set TASK_STATE = '4',ERR_RESULT = #{errResult,jdbcType=VARCHAR}  where TASK_ID = #{taskId,jdbcType=VARCHAR}
+	</update>
+	
+	
+	
+
+	
+</mapper>

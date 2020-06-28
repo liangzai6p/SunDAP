@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- NoticeDao -->
+<mapper namespace="com.sunyard.ars.system.dao.notice.NoticeDao" >
+	
+	<!-- 查询发布公告信息 -->
+	<select id="selectNotice" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select a.*,b.user_name as publish_username from sm_notice_tb a,sm_users_tb b 
+		where b.user_no = a.publish_user 
+		and a.publish_organ in (select organ_no from sm_organ_parent_tb c where c.parent_organ = #{organ_no})
+    	and a.bank_no = #{bank_no}
+    	and a.system_no = #{system_no}
+    	and a.project_no = #{project_no}
+		
+		<if test="notice_keyword != null and notice_keyword != '' ">
+	    	and (a.notice_title like CONCAT(CONCAT('%', #{notice_keyword}), '%') or a.notice_content LIKE CONCAT(CONCAT('%', #{notice_keyword}), '%'))
+	    </if>
+		<if test="publish_time1 != null and publish_time1 != '' ">
+	    	and a.publish_time &gt;= #{publish_time1}
+	    </if>
+		<if test="publish_time2 != null and publish_time2 != '' ">
+	    	and a.publish_time &lt;= #{publish_time2}
+	    </if>
+	    <if test="publish_user != null and publish_user != '' ">
+	    	and a.publish_user = #{publish_user}
+	    </if>
+	    order by a.notice_id desc
+	</select>
+	
+	<!-- 查询可查看公告信息 -->
+	<select id="selectNoticeInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select a.notice_id,a.read_state,b.notice_title,b.publish_time,b.file_url,u.user_name as publish_username  from sm_notice_user_tb a,sm_notice_tb b,sm_users_tb u 
+		where a.notice_id = b.notice_id 
+		and b.publish_user = u.user_no
+		and a.user_no = #{user_no} 
+		and a.read_state = #{read_state} 
+    	and a.bank_no = #{bank_no}
+    	and a.system_no = #{system_no}
+    	and a.project_no = #{project_no}
+		order by b.publish_time DESC
+	</select>
+	
+	<!-- 查询可查看公告数量 -->
+	<select id="selectNoticeNum" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) from sm_notice_user_tb a  
+		where a.user_no = #{user_no}
+    	and a.bank_no = #{bank_no}
+    	and a.system_no = #{system_no}
+    	and a.project_no = #{project_no}
+	</select>
+	
+	<!-- 查询公告详情 -->
+	<select id="selectNoticeDetails" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select a.*,b.user_name as publish_username from sm_notice_tb a,sm_users_tb b 
+		where a.publish_user = b.user_no 
+		and a.notice_id = #{notice_id} 
+		and a.bank_no = #{bank_no}
+    	and a.system_no = #{system_no}
+    	and a.project_no = #{project_no}
+	</select>
+	
+	<!-- 查询阅读情况 -->
+	<select id="selectRead" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select a.*,b.user_name from sm_notice_user_tb a,sm_users_tb b
+		where a.user_no = b.user_no 
+		and a.notice_id = #{notice_id}
+		and a.bank_no = #{bank_no}
+    	and a.system_no = #{system_no}
+    	and a.project_no = #{project_no}
+    	<if test="read_state != null and read_state != '' ">
+	    	and a.read_state = #{read_state}
+	    </if>
+	</select>
+	
+	<!-- 查询阅读人数占比信息 -->
+	<!-- 和查询阅读情况一样,关联sm_users_tb，防止用户增添和删除带来总数不对 -->
+	<select id="selectReadNum" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select count(*) NUM,a.read_state from sm_notice_user_tb a ,sm_users_tb b
+		where a.notice_id = #{notice_id} 
+		and a.user_no = b.user_no
+		and a.bank_no = #{bank_no}
+    	and a.system_no = #{system_no}
+    	and a.project_no = #{project_no}
+    	group by a.read_state
+	</select>
+	
+	<!-- 查询在线可阅用户信息 -->
+	<select id="selectUsers" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select distinct a.user_no,b.login_pc_server,b.login_mobile_server,c.login_terminal from sm_notice_user_tb a,sm_users_tb b,sm_loginhistory_tb c 
+		where a.notice_id = #{notice.notice_id} 
+		and a.user_no = b.user_no 
+		and b.login_state = '1' 
+		and b.last_login_time = c.login_time
+		and a.bank_no = #{bank_no}
+    	and a.system_no = #{system_no}
+    	and a.project_no = #{project_no}
+	</select>
+	
+	<!-- 新增公告信息 -->
+	<insert id="insert" parameterType="java.util.HashMap">
+  		insert into sm_notice_tb(notice_id,
+  								 notice_title,
+  								 notice_content,
+  								 file_url,
+  								 publish_organ,
+  								 publish_user,
+  								 publish_time,
+  								 bank_no,
+  								 system_no,
+  								 project_no
+  								 )
+  		values (#{notice.notice_id},
+  				#{notice.notice_title},
+  				#{notice.notice_content},
+  				#{notice.file_url},
+  				#{notice.publish_organ},
+  				#{notice.publish_user},
+  				#{notice.publish_time},
+  				#{bank_no},
+  				#{system_no},
+  				#{project_no}
+  				)
+    </insert>
+    
+	<!-- 新增公告用户关联信息 -->
+	<insert id="insert2" parameterType="java.util.HashMap">
+  		insert into sm_notice_user_tb(notice_id,
+  									  user_no,
+  									  organ_no,
+  									  read_state,
+  									  bank_no,
+	  								  system_no,
+	  								  project_no) 
+  		select distinct #{notice.notice_id},
+  						b.user_no,
+  						b.organ_no,
+  						#{notice.read_state},
+  						b.bank_no,
+		  				b.system_no,
+		  				b.project_no
+		from sm_user_role_tb b 
+  		where 1 = 1  <!-- b.user_no != #{notice.publish_user}去掉不对自己发送 -->
+  		and b.bank_no = #{bank_no}
+    	and b.system_no = #{system_no}
+    	and b.project_no = #{project_no}
+  		<if test="organinfo != null and organinfo != '' ">
+	    	and b.organ_no in 
+			<foreach item="item" index="index" collection="organinfo" open="(" separator="," close=")">  
+				#{item}  
+			</foreach> 
+	    </if>
+  		<if test="roleinfo != null and roleinfo != '' ">
+	    	and b.role_no in 
+			<foreach item="item" index="index" collection="roleinfo" open="(" separator="," close=")">  
+				#{item}  
+			</foreach> 
+	    </if>
+    </insert>
+    
+	<!-- 更新阅读状态 -->
+	<update id="update" parameterType="java.util.HashMap">
+		update sm_notice_user_tb a 
+		set a.read_state = '1',a.read_time = #{read_time} 
+		where a.user_no = #{user_no}
+		and a.notice_id = #{notice_id} 
+		and a.bank_no = #{bank_no}
+    	and a.system_no = #{system_no}
+    	and a.project_no = #{project_no}
+    </update>
+
+	<!-- 删除公告信息 -->
+	<delete id="deleteNotice" parameterType="java.util.HashMap">
+		delete from sm_notice_tb
+		where notice_id in 
+		<foreach item="item" index="index" collection="notice_ids" open="(" separator="," close=")">  
+			#{item}  
+		</foreach>  
+		and bank_no = #{bank_no}
+		and system_no = #{system_no}
+		and project_no = #{project_no}
+	</delete>
+
+	<!-- 删除公告用户关联信息 -->
+	<delete id="deleteUsers" parameterType="java.util.HashMap">
+		delete from
+		sm_notice_user_tb
+		where notice_id in 
+		<foreach item="item" index="index" collection="notice_ids" open="(" separator="," close=")">  
+			#{item}  
+		</foreach>  
+		and bank_no = #{bank_no}
+		and system_no = #{system_no}
+		and project_no = #{project_no}
+	</delete>
+  <!--首页展示查询公告信息，以时间排序 -->
+	<select id="initIndexPageNoticeInfoQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select n.*,u.read_state ,su.user_name from sm_notice_tb n
+		inner join sm_notice_user_tb u on n.notice_id = u.notice_id
+		left join sm_users_tb su on n.publish_user = su.user_no
+		where u.organ_no = #{organ_no}
+		and u.user_no = #{user_no}
+		<!-- and sendType = #{sendType} -->
+		order by n.publish_time desc
+	</select>
+	
+	
+	<!-- 加上read_num阅读量，保持和运管一样 -->
+	 <update id="updateReadNum" parameterType="java.util.HashMap">
+		update sm_notice_user_tb a 
+		set a.read_num = a.read_num+1
+		where a.user_no = #{user_no}
+		and a.notice_id = #{notice_id} 
+		and a.bank_no = #{bank_no}
+    	and a.system_no = #{system_no}
+    	and a.project_no = #{project_no}
+    </update> 
+    
+    
+    
+    <!-- 查询公告详情 自己发送的公告-->
+	<select id="selectNoticeDetailsMyself" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select a.*,b.user_name as publish_username from sm_notice_tb a,sm_users_tb b    
+		where a.publish_user = b.user_no 
+		and a.notice_id = #{notice_id} 
+		and a.bank_no = #{bank_no}
+    	and a.system_no = #{system_no}
+    	and a.project_no = #{project_no}
+    	and a.publish_user = #{publish_user}
+	</select>
+	
+	<!-- 查询自己发的公告 -->
+	<select id="selectNoticeInfoMyself" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select b.notice_id,b.notice_title,b.publish_time,b.file_url,u.user_name as publish_username  from sm_notice_tb b,sm_users_tb u 
+		where  b.publish_user = u.user_no
+		and b.publish_user = #{publish_user}
+    	and b.bank_no = #{bank_no}
+    	and b.system_no = #{system_no}
+    	and b.project_no = #{project_no}
+		order by b.publish_time DESC
+	</select>
+	
+	
+	<!-- 查询阅读量  -->
+    <select id="selecthaveReadNum" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select sum(read_num)
+		from sm_notice_user_tb
+		where  notice_id = #{notice_id} 
+		and bank_no = #{bank_no}
+    	and system_no = #{system_no}
+    	and project_no = #{project_no}
+	</select>
+	
+	
+</mapper>

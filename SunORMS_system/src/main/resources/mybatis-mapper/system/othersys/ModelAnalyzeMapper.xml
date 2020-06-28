@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.ars.system.dao.othersys.ModelAnalyzeMapper">
+	<resultMap id="TableInfoResultMap"
+		type="com.sunyard.ars.system.pojo.mc.TableInfo">
+		<id column="ID" jdbcType="DECIMAL" property="tableFieldId" />
+		<result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
+		<result column="NAME" jdbcType="VARCHAR" property="columnName" />
+		<result column="TYPE" jdbcType="DECIMAL" property="columnType" />
+		<result column="LENGTH" jdbcType="DECIMAL" property="columnLength" />
+		<result column="ISNULL" jdbcType="DECIMAL" property="columnIsNull" />
+		<result column="CH_NAME" jdbcType="VARCHAR" property="columnChName" />
+		<result column="DEFVALUE" jdbcType="VARCHAR" property="columnDefValue" />
+		<result column="LIMITED" jdbcType="VARCHAR" property="columnLimited" />
+		<result column="SPREC" jdbcType="VARCHAR" property="columnSprec" />
+	</resultMap>
+
+	<delete id="deleteModelDataByModelInfo">
+		DELETE FROM ${tableName} WHERE ENTRY_ID=#{modelId}
+		AND BUSI_DATA_DATE=#{dataDate}
+	</delete>
+
+	<delete id="deleteHisDataByModelInfo">
+		DELETE FROM ${tableName} WHERE ENTRY_ID=#{modelId}
+		AND ISHANDLE!=0 AND BUSI_DATA_DATE<![CDATA[<=]]>#{dataDate}
+	</delete>
+
+	<select id="getTableInfoByTableId" resultMap="TableInfoResultMap">
+		SELECT A.TABLE_NAME,B.ID,B.NAME,C.TYPE,C.LENGTH,C.ISNULL,C.CH_NAME,C.DEFVALUE,C.LIMITED,C.SPREC 
+			FROM MC_TABLE_TB A,MC_TABLE_FIELD_TB B,MC_FIELD_TB C WHERE  A.ID=B.TABLE_ID AND C.ID=B.FIELD_ID 
+			AND B.TABLE_ID=#{tableId} ORDER BY B.ID
+	</select>
+
+	<insert id="insertHistTable">
+		INSERT INTO ${hisTableName} SELECT * FROM ${tableName} WHERE ENTRY_ID=#{modelId} AND <![CDATA[ISHANDLE<>0]]>
+	</insert>
+	
+	<insert id="insertHistTableColums">
+		INSERT INTO ${hisTableName} (${modelColumns}) SELECT ${modelColumns} FROM ${tableName} WHERE ENTRY_ID=#{modelId} AND <![CDATA[ISHANDLE<>0]]>
+	</insert>
+	
+	<delete id="deleteTempTable">
+		DELETE FROM ${tableName} WHERE ENTRY_ID=#{modelId}
+		AND <![CDATA[ISHANDLE<>0]]>
+	</delete>
+	
+	<select id="getMaxRowNum" resultType="java.lang.Integer">
+		select NVL(max(rowno),0) from (select max(ENTRYROW_ID) rowno from ${tableName}
+		UNION select max(ENTRYROW_ID) rowno from ${hisTableName})
+	</select>
+	
+	<select id="getViewColsInfoByViewId" resultType="java.util.Map">
+		SELECT A2.TABLE_NAME,A3.NAME,A1.GROUP_COMPUTE,A1.MODEL_FIELD_ID,A1.VALUE 
+			FROM MC_VIEW_COLS_TB A1,MC_TABLE_TB A2,MC_TABLE_FIELD_TB A3
+			 WHERE A2.ID = A1.TABLE_ID AND A1.TABLE_ID=A3.TABLE_ID AND A1.FIELD_ID=A3.FIELD_ID 
+					 AND A1.VIEW_ID = #{viewId}  AND A1.MODEL_FIELD_ID>0 
+			 UNION ALL SELECT \'\',\'\',GROUP_COMPUTE,MODEL_FIELD_ID,VALUE FROM MC_VIEW_COLS_TB 
+					WHERE <![CDATA[TABLE_ID <0]]>  AND MODEL_FIELD_ID>0 AND VIEW_ID= #{viewId}
+	</select>
+	
+	<select id="getViewConditionInfoByViewId" resultType="java.util.Map">
+		SELECT A4.TABLE_NAME,A2.NAME,A1.COMPUTE_FLAG,A1.OPERATOR,A1.VALUE,
+					  A1.CON_NOT,A1.COMPOSITE_TYPE,A1.VIEW_COLS_ID,A1.ID,A1.ROWNO,A5.TYPE,A1.PARAM_NAME
+					  FROM MC_VIEW_CONDITION_TB A1,MC_VIEW_COLS_TB A3,MC_TABLE_FIELD_TB A2,MC_TABLE_TB A4,MC_FIELD_TB A5
+					  WHERE A1.VIEW_COLS_ID = A3.ID AND A3.FIELD_ID = A2.FIELD_ID AND A4.ID=A3.TABLE_ID
+					  AND A5.ID=A2.FIELD_ID AND A4.ID=A2.TABLE_ID AND A1.VIEW_ID =#{viewId}
+			 UNION ALL  SELECT '','',A1.COMPUTE_FLAG,A1.OPERATOR,A1.VALUE,A1.CON_NOT,
+					A1.COMPOSITE_TYPE,A1.VIEW_COLS_ID,A1.ID,A1.ROWNO,'1',A1.PARAM_NAME
+					  FROM MC_VIEW_CONDITION_TB A1
+					  WHERE <![CDATA[A1.VIEW_COLS_ID <=0]]>  AND A1.VIEW_ID =#{viewId}
+					  ORDER BY 10,9
+	</select>
+	
+</mapper>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<forms>
+	<form form_type="0" form_name="差错单" discription="差错单查询页面配置" is_count="no">
+		<actions>
+			<action text="查看" method="search!showBusiform.action" purview="ET_SEARCH_BUSIFORM"/>
+		</actions>
+		<heads>
+			<head is_form="1" property="nodeNo" method="getNodeNo" format="" text="状态" title_method="" />
+			<head is_form="1" property="formId" method="getFormId" format="" text="编号" title_method="" />
+			<head is_form="1" property="checkerNo" method="getCheckerNo" format="" text="监督员号" title_method="" />
+			<head is_form="1" property="checkerName" method="getCheckerName" format="" text="监督员名称" title_method=""  />
+			<head is_form="1" property="netNo" method="getNetNo" format="" text="机构代号" title_method="" />
+<!-- 			<head is_form="1" property="netName" method="getNetName" format="" text="机构名称" title_method="" /> -->
+			<head is_form="1" property="workDate" method="getWorkDate" format="" text="登记日期" title_method="" />
+			<head is_form="1" property="xfDate" method="getXfDate" format="" text="下发日期" title_method="" />
+			<head is_form="1" property="backDate" method="getBackDate" format="" text="反馈日期" title_method="" />
+			<head is_form="1" property="operationDate" method="getOperationDate" format="" text="交易日期" title_method="" />
+			<head is_form="1" property="accountNo" method="getAccountNo" format="" text="账户代号" title_method="" />
+			<head is_form="1" property="currencytype" method="getCurrencyType" format="" text="货币代码" title_method="" />
+			<head is_form="1" property="accountMoney" method="getAccountMoney" format="com.sunyard.format.FormatMoneyImpl" text="交易金额" title_method="" />
+			<head is_form="1" property="flowNo" method="getFlowNo" format="" text="柜员流水" title_method="" />
+			<head is_form="1" property="voucherName" method="getVoucherName" format="" text="凭证种类" title_method="" />
+			<head is_form="1" property="tellerNo" method="getTellerNo" format="" text="柜员ID" title_method="" />
+			<head is_form="1" property="tellerName" method="getTellerName" format="" text="柜员名称" title_method="" />
+		    <head is_form="1" property="tellerNo2" method="getTellerNo2" format="" text="授权1" title_method="" />
+<!-- 			<head is_form="1" property="tellerNo3" method="getTellerNo3" format="" text="授权2" title_method="" />  -->
+<!-- 			<head is_form="1" property="checkerno2" method="getCheckerNo2" format="" text="原监督员号" title_method="" /> -->
+			<head is_form="1" property="slipType" method="getSlipType" format="" text="差错归类" title_method="" />
+			<head is_form="1" property="slipName" method="getSlipName" format="" text="差错名称" title_method="" />
+			<head is_form="1" property="slipLevel" method="getSlipLevel" format="slipLevelFormat" text="差错等级" title_method="" />
+			<head is_form="1" property="amerceMoney" method="getAmerceMoney" format="com.sunyard.format.FormatMoneyImpl" text="处罚金额" title_method="" />
+			<head is_form="1" property="amerceScore" method="getAmerceScore" format="com.sunyard.format.FormatMoneyImpl" text="处罚分数" title_method="" />
+			<!-- <head is_form="0" node_no="21" property="dealUserNo" method="getDealUserNo" format="" text="审核员" title_Method=""  />
+			<head is_form="0" node_no="24" property="dealUserNo" method="getDealUserNo" format="" text="网点整改" title_Method=""  />
+			<head is_form="0" node_no="27,28" property="dealUserNo" method="getDealUserNo" format="" text="网点主管审核" title_Method=""  />
+			<head is_form="0" node_no="42,43" property="dealUserNo" method="getDealUserNo" format="" text="中心回复" title_Method=""  /> -->
+<!-- 			<head is_form="1" property="formDescription" method="getFormDescription" format="" text="详情描述" title_method="" /> -->
+			<head is_form="1" property="correlativeId" method="getCorrelativeId" format="" text="关联编号" title_method="" />
+		</heads>
+	</form>
+	
+	<form form_type="2" form_name="核实单" discription="" >
+		<actions>
+			<action text="查看" method="search!showBusiform.action" purview="ET_SEARCH_BUSIFORM" />
+		</actions>
+		<heads>
+			<head is_form="1" property="nodeNo" method="getNodeNo" format="" text="状态" title_method="" />
+			<head is_form="1" property="formId" method="getFormId" format="" text="编号" title_method="" />
+			
+			<head is_form="1" property="checkerNo" method="getCheckerNo" format="" text="监督员号" title_method="" />
+			<head is_form="1" property="checkerName" method="getCheckerName" format="" text="监督员名称" title_method=""  />
+			<head is_form="1" property="netNo" method="getNetNo" format="" text="机构代号" title_method="" />
+<!-- 			<head is_form="1" property="netName" method="getNetName" format="" text="机构名称" title_method="" /> -->
+			<head is_form="1" property="workDate" method="getWorkDate" format="" text="登记日期" title_method="" />
+			<head is_form="1" property="xfDate" method="getXfDate" format="" text="下发日期" title_method="" />
+			<head is_form="1" property="backDate" method="getBackDate" format="" text="反馈日期" title_method="" />
+			<head is_form="1" property="operationDate" method="getOperationDate" format="" text="交易日期" title_method="" />
+			<head is_form="1" property="accountNo" method="getAccountNo" format="" text="账户代号" title_method="" />
+			<head is_form="1" property="currencytype" method="getCurrencyType" format="" text="货币代码" title_method="" />
+			<head is_form="1" property="accountMoney" method="getAccountMoney" format="com.sunyard.format.FormatMoneyImpl" text="交易金额" title_method="" />
+			<head is_form="1" property="flowNo" method="getFlowNo" format="" text="柜员流水" title_method="" />
+			<head is_form="1" property="voucherName" method="getVoucherName" format="" text="凭证种类" title_method="" />
+			<head is_form="1" property="tellerNo" method="getTellerNo" format="" text="柜员ID" title_method="" />
+			<head is_form="1" property="tellerName" method="getTellerName" format="" text="柜员名称" title_method="" />
+			<head is_form="1" property="tellerNo2" method="getTellerNo2" format="" text="授权1" title_method="" />
+			<!--
+			<head is_form="1" property="tellerNo3" method="getTellerNo3" format="" text="授权2" title_method="" />
+			<head is_form="0" node_no="21" property="dealUserNo" method="getDealUserNo" format="" text="审核" title_Method=""  />
+			<head is_form="0" node_no="24" property="dealUserNo" method="getDealUserNo" format="" text="网点整改" title_Method=""  /> -->
+<!-- 			<head is_form="1" property="formDescription" method="getFormDescription" format="" text="详情描述" title_method="" /> -->
+			<head is_form="1" property="correlativeId" method="getCorrelativeId" format="" text="关联编号" title_method="" />
+		</heads>
+	</form>
+	<form form_type="6" form_name="质检单" discription="" >
+		<actions>
+			<action text="查看" method="search!showBusiform.action" purview="ET_SEARCH_BUSIFORM"/>
+		</actions>
+		<heads>
+			<head is_form="1" property="nodeNo" method="getNodeNo" format="" text="状态" title_method="" />
+			<head is_form="1" property="formId" method="getFormId" format="" text="编号" title_method="" />			
+			<head is_form="1" property="checkerNo" method="getCheckerNo" format="" text="监督员号" title_method="" />
+			<head is_form="1" property="checkerName" method="getCheckerName" format="" text="监督员名称" title_method=""  />
+			<head is_form="1" property="netNo" method="getNetNo" format="" text="机构代号" title_method="" />
+<!-- 			<head is_form="1" property="netName" method="getNetName" format="" text="机构名称" title_method="" /> -->
+			<head is_form="1" property="workDate" method="getWorkDate" format="" text="登记日期" title_method="" />
+			<head is_form="1" property="xfDate" method="getXfDate" format="" text="下发日期" title_method="" />
+			<head is_form="1" property="operationDate" method="getOperationDate" format="" text="交易日期" title_method="" />
+			<head is_form="1" property="accountNo" method="getAccountNo" format="" text="账户代号" title_method="" />
+			<head is_form="1" property="currencytype" method="getCurrencyType" format="" text="货币代码" title_method="" />
+			<head is_form="1" property="accountMoney" method="getAccountMoney" format="com.sunyard.format.FormatMoneyImpl" text="交易金额" title_method="" />
+			<head is_form="1" property="flowNo" method="getFlowNo" format="" text="柜员流水" title_method="" />
+			<head is_form="1" property="voucherName" method="getVoucherName" format="" text="凭证种类" title_method="" />
+			<head is_form="1" property="tellerNo" method="getTellerNo" format="" text="柜员ID" title_method="" />
+			<head is_form="1" property="tellerName" method="getTellerName" format="" text="柜员名称" title_method="" /> 
+		    <head is_form="1" property="tellerNo2" method="getTellerNo2" format="" text="授权1" title_method="" />
+<!-- 			<head is_form="1" property="tellerNo3" method="getTellerNo3" format="" text="授权2" title_method="" />  -->
+<!-- 			<head is_form="1" property="checkerno2" method="getCheckerNo2" format="" text="原监督员号" title_method="" /> -->
+			<head is_form="1" property="slipType" method="getSlipType" format="" text="差错归类" title_method="" />
+			<head is_form="1" property="slipName" method="getSlipName" format="" text="差错名称" title_method="" />	
+			<head is_form="1" property="slipLevel" method="getSlipLevel" format="slipLevelFormat" text="差错等级" title_method="" />	
+			<head is_form="1" property="amerceMoney" method="getAmerceMoney" format="com.sunyard.format.FormatMoneyImpl" text="处罚金额" title_method="" />
+			<head is_form="1" property="amerceScore" method="getAmerceScore" format="com.sunyard.format.FormatMoneyImpl" text="处罚分数" title_method="" />			
+			<!-- <head is_form="0" node_no="21" property="dealUserNo" method="getDealUserNo" format="" text="审核员" title_Method=""  />
+			<head is_form="0" node_no="24" property="dealUserNo" method="getDealUserNo" format="" text="网点整改" title_Method=""  />
+			<head is_form="0" node_no="27,28" property="dealUserNo" method="getDealUserNo" format="" text="网点主管审核" title_Method=""  />
+			<head is_form="0" node_no="42,43" property="dealUserNo" method="getDealUserNo" format="" text="中心回复" title_Method=""  /> -->
+<!-- 			<head is_form="1" property="formDescription" method="getFormDescription" format="" text="详情描述" title_method="" /> -->
+			<head is_form="1" property="correlativeId" method="getCorrelativeId" format="" text="关联编号" title_method="" />
+		</heads>
+	</form>
+	
+	<form form_type="3" form_name="预警单" discription="" > 
+		<actions>
+			<action text="查看" method="search!showBusiform.action" purview="ET_SEARCH_BUSIFORM" />
+		</actions>
+		<heads>
+			<head is_form="1" property="nodeNo" method="getNodeNo" format="" text="状态" title_method="" />
+			<head is_form="1" property="formId" method="getFormId" format="" text="编号" title_method="" />
+			<head is_form="1" property="checkerNo" method="getCheckerNo" format="" text="监督员号" title_method="" />
+			<head is_form="1" property="checkerName" method="getCheckerName" format="" text="监督员名称" title_method=""  />
+			<head is_form="1" property="netNo" method="getNetNo" format="" text="机构代号" title_method="" />
+			<head is_form="1" property="netName" method="getNetName" format="" text="机构名称" title_method="" />
+			<head is_form="1" property="workDate" method="getWorkDate" format="" text="登记日期" title_method="" />
+			<head is_form="1" property="backDate" method="getBackDate" format="" text="反馈日期" title_method="" />
+			<head is_form="1" property="operationDate" method="getOperationDate" format="" text="交易日期" title_method="" />
+			<head is_form="1" property="voucherName" method="getAccountName" format="" text="账户代号" title_method="" />
+			<head is_form="1" property="currencytype" method="getCurrencyType" format="" text="货币代码" title_method="" />
+			<head is_form="1" property="accountMoney" method="getAccountMoney" format="com.sunyard.format.FormatMoneyImpl" text="交易金额" title_method="" />
+			<head is_form="1" property="flowNo" method="getFlowNo" format="" text="柜员流水" title_method="" />
+			<head is_form="1" property="voucherName" method="getVoucherName" format="" text="凭证种类" title_method="" />
+			<head is_form="1" property="tellerNo" method="getTellerNo" format="" text="柜员ID" title_method="" />
+			<head is_form="1" property="tellerName" method="getTellerName" format="" text="柜员名称" title_method="" />
+			<head is_form="1" property="tellerNo2" method="getTellerNo2" format="" text="授权1" title_method="" />
+			
+			<head is_form="1" property="tellerNo3" method="getTellerNo3" format="" text="授权2" title_method="" />
+			<head is_form="0" node_no="24" property="dealUserNo" method="getDealUserNo" format="" text="网点回复" title_Method=""  /> -->
+			<head is_form="1" property="correlativeId" method="getCorrelativeId" format="" text="关联编号" title_method="" />
+		</heads>
+	</form> 
+	
+	<form form_type="9" form_name="处理单" discription="用于从别的系统查询处理单,必须配置，且form_type=9不能改" >
+		<actions>
+			<action text="查看" method="search!showBusiform.action" purview="ET_SEARCH_BUSIFORM" />
+		</actions>
+		<heads>
+			<head is_form="1" property="formId" method="getFormId" format="" text="编号" title_method="" />
+			<head is_form="1" property="checkerNo" method="getCheckerNo" format="" text="监督员" title_method="" />
+			<head is_form="1" property="checkerName" method="getCheckerName" format="" text="监督员名称" title_method=""  />
+			<head is_form="1" property="netNo" method="getNetNo" format="" text="机构代号" title_method="" />
+<!-- 			<head is_form="1" property="netName" method="getNetName" format="" text="机构名称" title_method="" /> -->
+			<head is_form="1" property="workDate" method="getWorkDate" format="" text="登记日期" title_method="" />
+			<head is_form="1" property="operationDate" method="getOperationDate" format="" text="交易日期" title_method="" />
+			<head is_form="1" property="accountNo" method="getAccountNo" format="" text="账户代号" title_method="" />
+			<head is_form="1" property="currencytype" method="getCurrencyType" format="" text="货币代号" title_method="" />
+			<head is_form="1" property="accountMoney" method="getAccountMoney" format="com.sunyard.format.FormatMoneyImpl" text="交易金额" title_method="" />
+			<head is_form="1" property="flowNo" method="getFlowNo" format="" text="柜员流水" title_method="" />
+			<head is_form="1" property="voucherName" method="getVoucherName" format="" text="凭证种类" title_method="" />
+			<head is_form="1" property="tellerNo" method="getTellerNo" format="" text="柜员ID" title_method="" />
+			<head is_form="1" property="tellerName" method="getTellerName" format="" text="柜员名称" title_method="" />
+			<head is_form="1" property="tellerNo2" method="getTellerNo2" format="" text="授权1" title_method="" />
+<!-- 			<head is_form="1" property="tellerNo3" method="getTellerNo3" format="" text="授权2" title_method="" /> -->
+			<head is_form="1" property="correlativeId" method="getCorrelativeId" format="" text="关联编号" title_method="" />
+			<!-- Add by cxy 20130205 -->
+			<head is_form="1" property="slipLevel" method="getSlipLevel" format="" text="差错等级" title_method="" />
+			<head is_form="1" property="amerceMoney" method="getAmerceMoney" format="com.sunyard.format.FormatMoneyImpl" text="处罚金额" title_method="" />
+			<head is_form="1" property="amerceScore" method="getAmerceScore" format="com.sunyard.format.FormatMoneyImpl" text="处罚分数" title_method="" />
+			<!-- End add by cxy 20130205 -->
+		</heads>
+	</form>
+</forms>
+
+
+
+<!-- 
+com.sunyard.format.FormatMoneyImpl   2位小数点
+com.sunyard.format.FormatPercentImpl 百分号显示
+ -->

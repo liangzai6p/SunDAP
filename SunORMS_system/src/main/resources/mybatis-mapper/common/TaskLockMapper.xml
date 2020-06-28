@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunyard.ars.common.dao.TaskLockMapper">
+
+	<select id="selectLock" resultType="com.sunyard.ars.common.pojo.TaskLock" parameterType="String">
+		SELECT * FROM  SM_TASK_LOCK_TB WHERE DATA_ID = #{dataId,jdbcType=VARCHAR}
+	</select>
+
+
+	<select id="selectLockFormId" resultType="java.util.HashMap" parameterType="String">
+		SELECT * FROM  SM_TASK_LOCK_TB WHERE DATA_ID = #{dataId,jdbcType=VARCHAR}
+	</select>
+
+
+	<insert id="taskAddLock" parameterType="com.sunyard.ars.common.pojo.TaskLock" databaseId="oracle">
+		INSERT INTO SM_TASK_LOCK_TB(DATA_ID, LOCK_USER_NO, LOCK_TIME, TASK_TYPE, UN_LOCK_TIME)
+		SELECT #{dataId,jdbcType=VARCHAR},#{lockUserNo,jdbcType=VARCHAR},#{lockTime,jdbcType=VARCHAR},
+		#{taskType,jdbcType=VARCHAR},#{unLockTime,jdbcType=VARCHAR} FROM DUAL
+		WHERE NOT EXISTS (SELECT 1 FROM SM_TASK_LOCK_TB A
+		WHERE DATA_ID =#{dataId,jdbcType=VARCHAR} AND LOCK_USER_NO != #{lockUserNo,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="taskAddLock" parameterType="com.sunyard.ars.common.pojo.TaskLock" databaseId="db2">
+		INSERT INTO SM_TASK_LOCK_TB(DATA_ID, LOCK_USER_NO, LOCK_TIME, TASK_TYPE, UN_LOCK_TIME)
+		SELECT #{dataId,jdbcType=VARCHAR},#{lockUserNo,jdbcType=VARCHAR},#{lockTime,jdbcType=VARCHAR},
+		#{taskType,jdbcType=VARCHAR},#{unLockTime,jdbcType=VARCHAR} FROM sysibm.sysdummy1
+		WHERE NOT EXISTS (SELECT 1 FROM SM_TASK_LOCK_TB A
+		WHERE DATA_ID =#{dataId,jdbcType=VARCHAR} AND LOCK_USER_NO != #{lockUserNo,jdbcType=VARCHAR})
+	</insert>
+
+
+	<delete id="taskDelLock" parameterType="String">
+		DELETE  FROM  SM_TASK_LOCK_TB WHERE DATA_ID = #{dataId,jdbcType=VARCHAR}
+	</delete>
+
+
+	<delete id="taskDelLockToUser" parameterType="String">
+				DELETE  FROM  SM_TASK_LOCK_TB WHERE LOCK_USER_NO = #{userNo,jdbcType=VARCHAR}  AND TASK_TYPE = #{taskType,jdbcType=VARCHAR}
+	</delete>
+
+</mapper>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sunflow-licenses>
+  <license-group format="1.0" product="Sunflow" release="2.1">
+    <license component="SunflowEngineLic" componentType="Trail" maxUsers="0" Email="chao.chen@sunyard.com" expiration="2020/12/31" signature="U3VueWFyZCNTdW5mbG93RW5naW5lTGljIzIwMjAvMTIvMzEjTm90IEJpbmRpbmcjVHJhaWwjMCNTVU5GTE9X#MCwCFFpfyHbRaaW4b3kpehvpz9L7jhVDAhQ4rOw+UweZi+GaBwprLnZvhCnXDQ==" licensee="Sunyard" ip="Not Binding" serial="001" version="SUNFLOW" />
+  </license-group>
+</sunflow-licenses>
+

@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 权限只控制到 util_node 这一级，没有控制到action。通过配置可以实现控制到action的效果 -->
+<nodeDefine text="系统菜单" index="-1_1" purview="ALL">
+	<nodes text="根节点" index="1_0">
+		<node text="争议单据处理" index="1_1" purview="ET_AUDIT_ONE" is_task_list="yes">
+			<is_appoint_netmanager>no</is_appoint_netmanager>
+			<is_show_second_search form_type="0,2,3">yes</is_show_second_search>
+			<is_checker_not_userno_match>no</is_checker_not_userno_match>
+			<util_nodes>
+				<util_node form_type="0" util_node_no="42,43">
+					<action text="申请审核" method="showProcess"></action>
+				</util_node>
+				<util_node form_type="2" util_node_no="42,45">
+					<action text="反馈复审" method="showProcess"></action>
+				</util_node>
+				<util_node form_type="3" util_node_no="43,45">
+					<action text="核查复审" method="showProcess"></action>
+				</util_node>
+			</util_nodes>
+		</node>
+ 		
+ 		<node text="处理单确认" index="1_2" purview="ET_YJD_REPLY" is_task_list="yes">
+			<is_appoint_netarms>no</is_appoint_netarms>
+			<is_show_second_search form_type="0,2,3">yes</is_show_second_search>
+			<util_nodes>
+			  <util_node form_type="0" util_node_no="27,28,29">
+					<action text="整改确认" method="showProcess" />
+				</util_node>
+			   <util_node form_type="2" util_node_no="29,25">
+					<action text="反馈审核" method="showProcess"></action>
+				</util_node>
+				<util_node form_type="2" util_node_no="30">
+					<action text="二次反馈审核" method="showProcess"></action>
+				</util_node>
+				<util_node form_type="3" util_node_no="30,35">
+					<action text="核查审核" method="showProcess" />
+				</util_node>
+				<util_node form_type="3" util_node_no="32">
+					<action text="二次核查审核" method="showProcess" />
+				</util_node>
+
+			</util_nodes>
+		</node>
+ 
+ 		<node text="退回处理单确认" index="1_9" purview="ET_YJD_REPLY" is_task_list="yes">
+			<is_appoint_netarms>no</is_appoint_netarms>
+			<is_show_second_search form_type="0,2,3">yes</is_show_second_search>
+			<util_nodes>
+			   <util_node form_type="0" util_node_no="27,28,29">
+					<action text="整改确认" method="showProcess" />
+				</util_node>
+			   <util_node form_type="2" util_node_no="29,25">
+					<action text="反馈审核" method="showProcess"></action>
+				</util_node>
+				<util_node form_type="2" util_node_no="30">
+					<action text="二次反馈审核" method="showProcess"></action>
+				</util_node>
+				<util_node form_type="3" util_node_no="30,35">
+					<action text="核查审核" method="showProcess" />
+				</util_node>
+				<util_node form_type="3" util_node_no="32">
+					<action text="二次核查审核" method="showProcess" />
+				</util_node>
+			</util_nodes>
+		</node>
+		
+		<!--
+		<node text="修改处理单" index="1_3" purview="ET_BUSIFORM_AMEND" is_task_list="yes">
+			<is_checker_match>yes</is_checker_match>
+			<is_teller_match>no</is_teller_match>
+			<util_nodes>
+				<util_node form_type="0" util_node_no="-1,06">
+					<action text="修改" method="saveOrUpdateBusiformTb" />
+					<action text="删除" method="doDeleteBusiformTbGrant" onclick='grant()' />
+				</util_node>
+				<util_node form_type="2" util_node_no="-1,06">
+					<action text="修改" method="saveOrUpdateBusiformTb" />
+					<action text="删除" method="doDeleteBusiformTbGrant" onclick='doConfirm()' />
+				</util_node>
+				<util_node form_type="3" util_node_no="-1">
+					<action text="修改" method="saveOrUpdateBusiformTb" />
+					<action text="删除" method="doDeleteBusiformTbGrant" onclick='doConfirm()' />
+				</util_node>
+			</util_nodes>
+		</node>-->
+		
+		<node text="作业机构待处理" index="1_4" purview="ET_BR_REWORK" is_task_list="yes" >
+		  <is_appoint_netuser>no</is_appoint_netuser>
+		  <is_show_second_search form_type="0,2,3">yes</is_show_second_search>
+		  <util_nodes>
+		 		<util_node form_type="0" util_node_no="21">
+					<action text="待整改" method="showProcess" />
+				</util_node>
+		 		<util_node form_type="3" util_node_no="24">
+					<action text="待核查" method="showProcess"></action>
+				</util_node>
+				<util_node form_type="2" util_node_no="21">
+					<action text="待反馈" method="showProcess"></action>
+				</util_node>
+				<util_node form_type="2" util_node_no="26">
+					<action text="待二次反馈" method="showProcess"></action>
+				</util_node>
+				 <util_node form_type="3" util_node_no="42">
+					<action text="待二次核查" method="showProcess"></action>
+				</util_node>
+		   </util_nodes>
+		 </node>
+		 
+		 <node text="待查看抄送信息" index="1_5" purview="PUBLIC_LEADER_PRIV" is_task_list="yes">
+			<is_leader_match>yes</is_leader_match>
+			<is_leader_not_sean_match>yes</is_leader_not_sean_match>
+			<need_organ_condition>no</need_organ_condition>
+			<is_show_second_search form_type="0,2,3">no</is_show_second_search>
+			<util_nodes>
+				<util_node>
+					<action text="查看" method="leaderView"></action>
+				</util_node>
+			</util_nodes>
+		</node>
+		<node text="已查看抄送信息" index="1_6" purview="PUBLIC_LEADER_PRIV">
+			<is_leader_match>yes</is_leader_match>
+			<is_leader_has_sean_match>yes</is_leader_has_sean_match>
+			<need_organ_condition>no</need_organ_condition>
+			<is_show_second_search form_type="0,2,3">no</is_show_second_search>
+			<util_nodes>
+				<util_node>
+					<action text="查看" method="leaderView"></action>
+				</util_node>
+			</util_nodes>
+		</node>
+		
+		<!--
+		<node text="回收站" index="1_7" purview="ET_BUSIFORM_AMEND">
+			<is_checker_match>yes</is_checker_match>
+			<is_teller_match>no</is_teller_match>
+			<util_nodes>
+				<util_node>
+					<action text="查看" method="showBusiform" target='_blank'/>
+					<action text="还原" method="revivification"  onclick='doConfirm()'/>
+				</util_node>
+			</util_nodes> 
+		</node>-->
+		
+		<node text="总行退回单据处理" index="1_8" purview="ET_CORR_BACK" is_task_list="yes">
+			<is_appoint_netmanager>no</is_appoint_netmanager>
+			<is_show_second_search form_type="0,2,3">yes</is_show_second_search>
+			<is_checker_not_userno_match>no</is_checker_not_userno_match>
+			<util_nodes>
+				<util_node form_type="0" util_node_no="50">
+					<action text="退回" method="showProcess"></action>
+				</util_node>
+				<util_node form_type="2" util_node_no="50">
+					<action text="退回" method="showProcess"></action>
+				</util_node>
+				<util_node form_type="3" util_node_no="50">
+					<action text="退回" method="showProcess"></action>
+				</util_node>
+			</util_nodes>
+		</node>
+		
+		
+		<node text="主管处理(质检)" index="2_1" purview="ET_AUDIT_ONE" is_task_list="yes" purviewType="1">
+			<is_appoint_netmanager>no</is_appoint_netmanager>
+			<is_show_second_search form_type="0,2,3">yes</is_show_second_search>
+			<is_checker_not_userno_match>no</is_checker_not_userno_match>
+			<util_nodes>
+				<util_node form_type="0" util_node_no="42,43">
+					<action text="申请审核" method="qdetshowProcess"></action>
+				</util_node>
+				<util_node form_type="2" util_node_no="42,45">
+					<action text="反馈复审" method="qdetshowProcess"></action>
+				</util_node>
+				<util_node form_type="3" util_node_no="43,45">
+					<action text="核查复审" method="qdetshowProcess"></action>
+				</util_node>
+			</util_nodes>
+		</node>
+ 		
+ 		<node text="处理单确认(质检)" index="2_2" purview="ET_YJD_REPLY" is_task_list="yes" purviewType="1">
+			<is_appoint_netarms>no</is_appoint_netarms>
+			<is_show_second_search form_type="0,2,3">yes</is_show_second_search>
+			<util_nodes>
+			  <util_node form_type="0" util_node_no="27,28,29">
+					<action text="整改确认" method="qdetshowProcess" />
+				</util_node>
+			   <util_node form_type="2" util_node_no="29,25">
+					<action text="反馈审核" method="qdetshowProcess"></action>
+				</util_node>
+				<util_node form_type="2" util_node_no="30">
+					<action text="二次反馈审核" method="qdetshowProcess"></action>
+				</util_node>
+				<util_node form_type="3" util_node_no="30,35">
+					<action text="核查审核" method="qdetshowProcess" />
+				</util_node>
+				<util_node form_type="3" util_node_no="32">
+					<action text="二次核查审核" method="qdetshowProcess" />
+				</util_node>
+
+			</util_nodes>
+		</node>
+ 
+ 		<node text="修改手工差错单(质检)" index="2_3" purview="ET_BUSIFORM_AMEND" is_task_list="yes" purviewType="1">
+			<is_checker_match>yes</is_checker_match>
+			<is_teller_match>no</is_teller_match>
+			<util_nodes>
+				<util_node form_type="0" util_node_no="-1,06">
+					<action text="修改" method="qdetsaveOrUpdateBusiformTb" />
+					<action text="删除" method="qdetdoDeleteBusiformTb" onclick='grant()' />
+				</util_node>
+				<util_node form_type="2" util_node_no="-1,06">
+					<action text="修改" method="qdetsaveOrUpdateBusiformTb" />
+					<action text="删除" method="qdetdoDeleteBusiformTb" onclick='doConfirm()' />
+				</util_node>
+				<util_node form_type="3" util_node_no="-1">
+					<action text="修改" method="qdetsaveOrUpdateBusiformTb" />
+					<action text="删除" method="qdetdoDeleteBusiformTb" onclick='doConfirm()' />
+				</util_node>
+			</util_nodes>
+		</node>
+ 		
+		<node text="作业机构待处理(质检)" index="2_4" purview="ET_BR_REWORK" is_task_list="yes" purviewType="1">
+		  <is_appoint_netuser>no</is_appoint_netuser>
+		  <is_show_second_search form_type="0,2,3">yes</is_show_second_search>
+		  <util_nodes>
+		 		<util_node form_type="0" util_node_no="21">
+					<action text="待整改" method="qdetshowProcess" />
+				</util_node>
+		 		<util_node form_type="3" util_node_no="24">
+					<action text="待核查" method="qdetshowProcess"></action>
+				</util_node>
+				<util_node form_type="2" util_node_no="21">
+					<action text="待反馈" method="qdetshowProcess"></action>
+				</util_node>
+				<util_node form_type="2" util_node_no="26">
+					<action text="待二次反馈" method="qdetshowProcess"></action>
+				</util_node>
+				 <util_node form_type="3" util_node_no="42">
+					<action text="待二次核查" method="qdetshowProcess"></action>
+				</util_node>
+		   </util_nodes>
+		 </node>
+		 
+		 <node text="待查看抄送信息(质检)" index="2_5" purview="PUBLIC_LEADER_PRIV" is_task_list="yes" purviewType="1">
+			<is_leader_match>yes</is_leader_match>
+			<is_leader_not_sean_match>yes</is_leader_not_sean_match>
+			<need_organ_condition>no</need_organ_condition>
+			<is_show_second_search form_type="0,2,3">no</is_show_second_search>
+			<util_nodes>
+				<util_node>
+					<action text="查看" method="qdetleaderView"></action>
+				</util_node>
+			</util_nodes>
+		</node>
+		<node text="已查看抄送信息(质检)" index="2_6" purview="PUBLIC_LEADER_PRIV" purviewType="1">
+			<is_leader_match>yes</is_leader_match>
+			<is_leader_has_sean_match>yes</is_leader_has_sean_match>
+			<need_organ_condition>no</need_organ_condition>
+			<is_show_second_search form_type="0,2,3">no</is_show_second_search>
+			<util_nodes>
+				<util_node>
+					<action text="查看" method="qdetleaderView"></action>
+				</util_node>
+			</util_nodes>
+		</node>
+		
+		<node text="退回单据处理(质检)" index="2_8" purview="ET_CORR_BACK" is_task_list="yes" purviewType="1">
+			<is_appoint_netmanager>no</is_appoint_netmanager>
+			<is_show_second_search form_type="0,2,3">yes</is_show_second_search>
+			<is_checker_not_userno_match>no</is_checker_not_userno_match>
+			<util_nodes>
+				<util_node form_type="0" util_node_no="50">
+					<action text="退回审核" method="qdetshowProcess"></action>
+				</util_node>
+				<util_node form_type="2" util_node_no="50">
+					<action text="退回反馈" method="qdetshowProcess"></action>
+				</util_node>
+				<util_node form_type="3" util_node_no="50">
+					<action text="退回核查" method="qdetshowProcess"></action>
+				</util_node>
+			</util_nodes>
+		</node>
+	</nodes>
+</nodeDefine>

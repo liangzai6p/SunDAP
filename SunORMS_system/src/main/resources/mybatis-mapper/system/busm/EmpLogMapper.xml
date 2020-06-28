@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 机构信息sql -->
+
+<mapper namespace="com.sunyard.ars.system.dao.busm.EmpLogDao" >
+	 <resultMap id="BaseResultMap" type="com.sunyard.ars.system.bean.busm.EmpLog">
+	 	<id column="LOG_ID" jdbcType="VARCHAR" property="logId" />
+    	<result column="EMP_FROM" jdbcType="VARCHAR" property="empFrom" />
+    	<result column="EMP_TO" jdbcType="VARCHAR" property="empTo" />
+    	<result column="EMP_MOUDLE" jdbcType="VARCHAR" property="empMoudle" />
+    	<result column="EMP_METHOD" jdbcType="VARCHAR" property="empMethod" />
+    	<result column="EMP_DATE" jdbcType="VARCHAR" property="empDate" />
+   	 	<result column="EMP_TIME" jdbcType="VARCHAR" property="empTime" />
+   	 	<result column="EMP_SITE_NO" jdbcType="VARCHAR" property="empSiteNo" />
+  	</resultMap>
+  <sql id="Base_Column_List">
+    LOG_ID, EMP_FROM, EMP_TO, EMP_MOUDLE, EMP_METHOD, EMP_DATE, EMP_TIME, EMP_SITE_NO
+  </sql>
+	<insert id="add" parameterType="com.sunyard.ars.system.bean.busm.EmpLog">
+    insert into SM_EMP_LOG_TB
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="logId != null">
+        LOG_ID,
+      </if>
+      <if test="empFrom != null">
+        EMP_FROM,
+      </if>
+      <if test="empTo != null">
+        EMP_TO,
+      </if>
+      <if test="empMoudle != null">
+        EMP_MOUDLE,
+      </if>
+      <if test="empMethod != null">
+        EMP_METHOD,
+      </if>
+      <if test="empDate != null">
+        EMP_DATE,
+      </if>
+      <if test="empTime != null">
+        EMP_TIME,
+      </if>
+      <if test="empSiteNo != null">
+        EMP_SITE_NO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">   
+      <if test="logId != null">
+        #{logId,jdbcType=VARCHAR},
+      </if>
+      <if test="empFrom != null">
+        #{empFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="empTo != null">
+        #{empTo,jdbcType=VARCHAR},
+      </if>
+      <if test="empMoudle != null">
+        #{empMoudle,jdbcType=VARCHAR},
+      </if>
+      <if test="empMethod != null">
+        #{empMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="empDate != null">
+        #{empDate,jdbcType=VARCHAR},
+      </if>
+      <if test="empTime != null">
+        #{empTime,jdbcType=VARCHAR},
+      </if>
+        <if test="empSiteNo != null">
+         #{empSiteNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  	<select id="query"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SM_EMP_LOG_TB
+    <where>
+      <if test="logId != null and logId != ''">
+        LOG_ID = #{logId,jdbcType=VARCHAR}
+      </if>
+      <if test="empFrom != null and empFrom != ''">
+        AND EMP_FROM = #{empFrom,jdbcType=VARCHAR}
+      </if>
+      <if test="empTo != null and empTo != ''">
+        AND EMP_TO = #{empTo,jdbcType=VARCHAR}
+      </if>
+      <if test="empMoudle != null and empMoudle != ''">
+        AND EMP_MOUDLE = #{empMoudle,jdbcType=CHAR}
+      </if>
+      <if test="empMethod != null and empMethod != ''">
+        AND EMP_METHOD = #{empMethod,jdbcType=VARCHAR}
+      </if>
+      <if test="empSiteNo != null and empSiteNo != ''">
+        AND ( EMP_SITE_NO = #{empSiteNo,jdbcType=VARCHAR}
+        OR EMP_SITE_NO in (select b.organ_no from sm_organ_parent_tb b where b.parent_organ = #{empSiteNo,jdbcType=VARCHAR}) )
+      </if>
+      <if test="empDateS != null and empDateS != ''">
+        AND EMP_DATE &gt;= #{empDateS,jdbcType=CHAR}
+      </if>
+           <if test="empDateE != null and empDateE != ''">
+        AND EMP_DATE &lt;= #{empDateE,jdbcType=CHAR}
+      </if>
+    </where>
+  </select>
+  
+  
+    <select id="getempMethod" resultType="java.lang.String">
+  	select DISTINCT EMP_METHOD from SM_EMP_LOG_TB 
+  	 <if test="empMoudle != null and empMoudle != ''">
+       where EMP_MOUDLE = #{empMoudle,jdbcType=CHAR}
+      </if>
+  </select>
+  <select id="getempMoudle" resultType="java.lang.String">
+  	select DISTINCT EMP_MOUDLE from SM_EMP_LOG_TB 
+  </select>
+  
+ 
+  
+  
+</mapper>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+	<mapper namespace="com.sunyard.ars.system.dao.sc.BlackListMapper" >
+	  <!-- 查询 -->
+	  <select id="select" resultType="java.util.HashMap" parameterType="java.util.HashMap"  >
+		select A.*, C.NAME AS ENTRYSET_NAME,(SELECT MAX(DEF.CH_NAME) FROM MC_FIELD_TB DEF WHERE DEF.NAME = CARD_TYPE) CARD_NAME,
+		 (SELECT MAX(DEF.CH_NAME) FROM MC_FIELD_TB DEF WHERE DEF.NAME = CARD_TYPE_1) CARD_NAME_1 from ${tableName} A join Mc_Model_Tb C on A.ENTRYSET_ID = C.ID
+		<where>
+		  <if test="Bean.name != null and Bean.name !=''" >
+				AND A.name like CONCAT(CONCAT('%',#{Bean.name,jdbcType=VARCHAR}),'%')
+		  </if>
+		  <if test="Bean.entrysetId != null and Bean.entrysetId !=''" >
+				AND A.entryset_id = #{Bean.entrysetId,jdbcType=INTEGER}
+		  </if>
+		  <if test="Bean.cardNo != null and Bean.cardNo !=''" >
+				AND A.card_no = #{Bean.cardNo,jdbcType=VARCHAR}
+		  </if>
+		  <if test="Bean.iswhiteorgray != null and Bean.iswhiteorgray !=''" >
+				AND A.ISWHITEORGRAY = #{Bean.iswhiteorgray,jdbcType=VARCHAR}
+		  </if>
+		  <if test="expDateS != null and expDateS !=''" >
+				AND A.EXP_DATE &gt;= #{expDateS,jdbcType=VARCHAR}
+		  </if>
+		  <if test="expDateE != null and expDateE !=''" >
+				AND A.EXP_DATE &lt;= #{expDateE,jdbcType=VARCHAR}
+		  </if>
+		  <if test="Bean.id != null and Bean.id !=''" >
+				AND A.id = #{Bean.id,jdbcType=INTEGER}
+		  </if>
+		  <if test="Bean.belongorg != null and Bean.belongorg !=''" >
+				AND A.BELONGORG = #{Bean.belongorg,jdbcType=VARCHAR}
+		  </if>
+		    <if test="hasPrivOrganFlag != 0">
+		  	AND A.BELONGORG IN(SELECT ORGAN_NO FROM SM_USER_ORGAN_TB WHERE USER_NO =#{userNo,jdbcType=VARCHAR}) 
+			</if>
+		    <if test="hasPrivOrganFlag == 0">
+			AND EXISTS (select 1
+			from sm_organ_tb sot, sm_organ_parent_tb sopt
+			where
+			exists (select 1
+			from sm_users_tb sut
+			where sut.user_no =#{userNo,jdbcType=VARCHAR}
+			and sot.organ_no = sut.organ_no)
+			and sot.organ_no = sopt.parent_organ
+			and sopt.organ_no=A.BELONGORG
+			)
+			</if>
+		</where>
+		ORDER BY A.ID DESC
+	  </select>
+	  
+	  <!-- 添加 -->
+	  <insert id="save" parameterType="java.util.HashMap" >
+		insert into ARMS_CSB_WHITEGRAY_NAME
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="Bean.id != null" >
+				id,
+		  </if>
+		  <if test="Bean.name != null" >
+				name,
+		  </if>
+		  <if test="Bean.cardNo != null" >
+				card_no,
+		  </if>
+		  <if test="Bean.position != null" >
+				position,
+		  </if>
+		  <if test="Bean.telephone  != null" >
+				telephone,
+		  </if>
+		  <if test="Bean.belongorg != null" >
+				belongorg,
+		  </if>
+		  <if test="Bean.remark != null" >
+				remark,
+		  </if>
+		  <if test="Bean.iswhiteorgray != null" >
+				iswhiteorgray,
+		  </if>
+		  <if test="Bean.cardType != null" >
+				card_type,
+		  </if>
+		  <if test="Bean.entrysetId != null" >
+				entryset_id,
+		  </if>
+		  <if test="Bean.custType != null" >
+				cust_type,
+		  </if>
+		   <if test="Bean.expDate != null" >
+				exp_date,
+		  </if>
+		   <if test="Bean.cardType1 != null" >
+				card_type_1,
+		  </if>
+		  <if test="Bean.cardNo1 != null" >
+				card_no_1,
+		  </if>
+		  <if test="Bean.name1 != null" >
+				name_1,
+		  </if>
+		  <if test="Bean.tranOrg != null" >
+				TRAN_ORG,
+		  </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			  <if test="Bean.id != null" >
+				#{Bean.id},
+			 </if>
+			 <if test="Bean.name != null" >
+				#{Bean.name},
+			 </if>
+			  <if test="Bean.cardNo != null" >
+				#{Bean.cardNo},
+			 </if>
+			  <if test="Bean.position != null" >
+				#{Bean.position},
+			 </if>
+			 <if test="Bean.telephone  != null" >
+				#{Bean.telephone},
+			 </if>
+			 <if test="Bean.belongorg != null" >
+				#{Bean.belongorg},
+			 </if>
+			 <if test="Bean.remark != null" >
+				#{Bean.remark},
+			 </if>
+			  <if test="Bean.iswhiteorgray != null" >
+				#{Bean.iswhiteorgray},
+			 </if>
+			  <if test="Bean.cardType != null" >
+				 #{Bean.cardType},
+			 </if>
+			 <if test="Bean.entrysetId != null" >
+				 #{Bean.entrysetId},
+			 </if>
+			 <if test="Bean.custType != null" >
+				#{Bean.custType},
+			 </if> 
+			 <if test="Bean.expDate != null" >
+				#{Bean.expDate},
+			</if>
+			  <if test="Bean.cardType1 != null" >
+				#{Bean.cardType1},
+			  </if>
+			  
+			<if test="Bean.cardNo1 != null" >
+				#{Bean.cardNo1},
+			</if>
+			<if test="Bean.name1 != null" >
+				#{Bean.name1},
+			</if>
+			<if test="Bean.tranOrg != null" >
+				#{Bean.tranOrg},
+		    </if>
+		</trim>	
+	  </insert>
+	  
+	  <update id="update" parameterType="java.util.HashMap" >
+			update ARMS_CSB_WHITEGRAY_NAME  t 
+				 <set >
+					 <if test="Bean.name != null" >
+						t.name = #{Bean.name,jdbcType=VARCHAR}, 
+					 </if>
+					  <if test="Bean.cardNo != null" >
+						t.card_no = #{Bean.cardNo,jdbcType=VARCHAR}, 
+					 </if>
+					  <if test="Bean.position != null" >
+						t.position = #{Bean.position,jdbcType=VARCHAR},
+					 </if>
+					 <if test="Bean.telephone  != null" >
+						t.telephone =#{Bean.telephone,jdbcType=CHAR},
+					 </if>
+					 <if test="Bean.belongorg != null" >
+						t.belongorg= #{Bean.belongorg,jdbcType=VARCHAR},
+					 </if>
+					 <if test="Bean.remark != null" >
+						t.remark=#{Bean.remark,jdbcType=VARCHAR},
+					 </if>
+					  <if test="Bean.iswhiteorgray != null" >
+						t.iswhiteorgray=#{Bean.iswhiteorgray,jdbcType=VARCHAR},
+					 </if>
+					  <if test="Bean.cardType != null" >
+						t.card_type=#{Bean.cardType,jdbcType=VARCHAR}, 
+					 </if>
+					 <if test="Bean.entrysetId != null" >
+						t.entryset_id=#{Bean.entrysetId,jdbcType=INTEGER},
+					</if>
+					<if test="Bean.custType != null" >
+						t.cust_type=#{Bean.custType,jdbcType=VARCHAR},
+					</if>
+					 <if test="Bean.expDate != null" >
+						t.exp_date=#{Bean.expDate,jdbcType=VARCHAR},
+					</if>
+					 <if test="Bean.cardType1 != null" >
+						t.card_type_1=#{Bean.cardType1,jdbcType=VARCHAR},
+					</if>
+					<if test="Bean.cardNo1 != null" >
+						t.card_no_1=#{Bean.cardNo1,jdbcType=INTEGER},
+					</if>
+					<if test="Bean.name1 != null" >
+						t.name_1=#{Bean.name1,jdbcType=VARCHAR},
+					</if>
+				</set>	
+				where  t.id = #{Bean.id,jdbcType=INTEGER} 
+	  </update>
+	  
+	   <delete id="delete" parameterType="java.util.HashMap" >
+		  delete from ARMS_CSB_WHITEGRAY_NAME 
+		  <where>
+		  	<if test="Bean.belongorg != null and Bean.belongorg !=''" >
+				AND BELONGORG = #{Bean.belongorg,jdbcType=VARCHAR}
+			 </if>
+		  	<if test="Bean.iswhiteorgray != null and Bean.iswhiteorgray !=''" >
+		  		AND ISWHITEORGRAY = #{Bean.iswhiteorgray,jdbcType=VARCHAR}
+		  	</if>
+		  	 <if test="Bean.id != null and Bean.id !=''" >
+				AND id = #{Bean.id,jdbcType=INTEGER}
+			 </if>
+		  </where>
+	   </delete>
+	   
+	   <select id="getMaxId" resultType="java.lang.Integer">
+			select max(id) maxNum from ARMS_CSB_WHITEGRAY_NAME 
+	   </select>
+	   
+	    <select id="selectAll" resultType="java.util.HashMap">
+			select * from ARMS_CSB_WHITEGRAY_NAME 
+	   </select>
+	   
+	   <select id="getWhiteFieldList" resultType="java.util.HashMap" parameterType="java.util.HashMap"  >
+			select f.name,f.Ch_Name
+			  from mc_model_tb m, mc_exhibit_field_tb ef, mc_field_tb f
+			 where m.id = ef.model_id
+			   and ef.table_field_id = f.id
+			   and ef.FILTER_TYPE='2'
+			   and m.id = #{modelId,jdbcType=INTEGER} 
+	  </select>
+	  
+	  
+	  <!--白名单导入前先判断数据是否重复  -->
+	  	<select id="selectExist" resultType="java.util.HashMap" parameterType="com.sunyard.ars.system.bean.sc.BlackListBean"  >
+			select * from ARMS_CSB_WHITEGRAY_NAME
+			<where>
+				 <if test="cardNo != null and  cardNo!=''" >
+			      		CARD_NO=#{cardNo}
+			     </if>
+			     
+			      <if test="cardNo1 != null and cardNo1 !=''" >
+			  	  		AND	CARD_NO_1=#{cardNo1}
+			     </if>
+			     
+			     <if test="cardType != null and  cardType!=''" >
+			  	  		AND	CARD_TYPE=#{cardType}
+			     </if>
+			     
+			    <if test="cardType1 != null and cardType1 !=''" >
+			  	  		AND	CARD_TYPE_1=#{cardType1}
+			    </if>
+			    
+			     <if test="iswhiteorgray != null and iswhiteorgray !=''" >
+			  	  		AND	ISWHITEORGRAY=#{iswhiteorgray}
+			    </if>
+			    
+			     <if test="entrysetId != null and entrysetId !=''" >
+			  	  		AND	ENTRYSET_ID=#{entrysetId}
+			    </if>     
+			</where>	
+	  </select>
+	</mapper>

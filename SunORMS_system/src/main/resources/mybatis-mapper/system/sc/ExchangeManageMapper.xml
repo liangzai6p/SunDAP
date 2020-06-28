@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunyard.ars.system.dao.sc.ExchangeManageMapper" >
+  <!-- 查询 -->
+  <select id="select" resultType="java.util.HashMap" parameterType="java.util.HashMap"  >
+  		select * from ARMS_CSB_RISK_ACCT_LIST  
+  		where  1 = 1
+  		<if test="Bean.acctNo != ''and Bean.acctNo !=null "> and acct_no like CONCAT(#{Bean.acctNo},'%')</if>
+		<if test="Bean.branchNo != ''and Bean.branchNo !=null "> and branch_no =#{Bean.branchNo} </if>
+  		order by ID
+  </select>
+  <!-- 添加 -->
+  <insert id="save" parameterType="java.util.HashMap" >
+   	insert into ARMS_CSB_RISK_ACCT_LIST
+	<trim prefix="(" suffix=")" suffixOverrides="," >
+	 <if test="Bean.id != null" >
+			id,
+      </if>
+	  <if test="Bean.branchNo != null" >
+			branch_no,
+      </if>
+	  <if test="Bean.acctNo != null" >
+			acct_no,
+      </if>
+	  <if test="Bean.acctName != null" >
+			acct_name,
+      </if>
+	  <if test="Bean.custNo  != null" >
+			cust_no,
+      </if>
+	  <if test="Bean.primAoNo != null" >
+			prim_ao_no,
+      </if>
+	  <if test="Bean.tellerNo != null" >
+			teller_no,
+      </if>
+	  <if test="Bean.custType != null" >
+			cust_type,
+      </if>
+	  <if test="Bean.cardType != null" >
+			card_type,
+      </if>
+	  <if test="Bean.position != null" >
+			position,
+      </if>
+	  <if test="Bean.telephone != null" >
+			telephone,
+      </if>
+       <if test="Bean.remark != null" >
+			remark,
+      </if>
+       <if test="Bean.iswhiteorgray != null" >
+			iswhiteorgray,
+      </if>
+	  <if test="Bean.entryId != null" >
+			entry_id,
+      </if>
+	  <if test="Bean.expDate != null" >
+			exp_date,
+      </if>
+	  <if test="Bean.lastModiTime != null" >
+			last_modi_time,
+      </if>
+	  <if test="Bean.addTime != null" >
+			add_time,
+      </if>
+	  <if test="Bean.addUserId != null" >
+			add_user_id,
+      </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="Bean.id != null" >
+			#{Bean.id},
+		 </if>
+		 <if test="Bean.branchNo != null" >
+			#{Bean.branchNo},
+		 </if>
+		  <if test="Bean.acctNo != null" >
+			#{Bean.acctNo},
+		 </if>
+		  <if test="Bean.acctName != null" >
+			#{Bean.acctName},
+		 </if>
+		 <if test="Bean.custNo  != null" >
+			#{Bean.custNo},
+		 </if>
+		 <if test="Bean.primAoNo != null" >
+			#{Bean.primAoNo},
+		 </if>
+		 <if test="Bean.tellerNo != null" >
+			#{Bean.tellerNo},
+		 </if>
+		  <if test="Bean.custType != null" >
+			#{Bean.custType},
+		 </if>
+		  <if test="Bean.cardType != null" >
+			 #{Bean.cardType},
+		 </if>
+		 <if test="Bean.position != null" >
+			 #{Bean.position},
+		 </if>
+		 <if test="Bean.telephone != null" >
+			#{Bean.telephone},
+		 </if> 
+		 <if test="Bean.remark != null" >
+			#{Bean.remark},
+		</if>
+		  <if test="Bean.iswhiteorgray != null" >
+			#{Bean.iswhiteorgray},
+		  </if>
+		  
+		<if test="Bean.entryId != null" >
+			#{Bean.entryId},
+		</if>
+		<if test="Bean.expDate != null" >
+			#{Bean.expDate},
+		</if>
+		<if test="Bean.lastModiTime != null" >
+			#{Bean.lastModiTime},
+		</if>
+		<if test="Bean.addTime != null" >
+			#{Bean.addTime},
+		</if>
+		<if test="Bean.addUserId != null" >
+			#{Bean.addUserId},
+		</if>
+	</trim>	
+  </insert>
+  
+  <update id="update" parameterType="java.util.HashMap" >
+  		update ARMS_CSB_RISK_ACCT_LIST  t 
+			 <set >
+				<if test="Bean.id != null" >
+        			t.id = #{Bean.id,jdbcType=VARCHAR}, 
+     			 </if>
+				 <if test="Bean.branchNo != null" >
+        			t.branch_no = #{Bean.branchNo,jdbcType=VARCHAR}, 
+     			 </if>
+				  <if test="Bean.acctNo != null" >
+        			t.acct_no = #{Bean.acctNo,jdbcType=VARCHAR}, 
+     			 </if>
+				  <if test="Bean.acctName != null" >
+        			t.acct_name = #{Bean.acctName,jdbcType=VARCHAR},
+     			 </if>
+				 <if test="Bean.custNo  != null" >
+        			t.cust_no =#{Bean.custNo,jdbcType=CHAR},
+     			 </if>
+				 <if test="Bean.primAoNo != null" >
+        			t.prim_ao_no= #{Bean.primAoNo,jdbcType=VARCHAR},
+     			 </if>
+				 <if test="Bean.tellerNo != null" >
+        			t.teller_no=#{Bean.tellerNo,jdbcType=VARCHAR},
+     			 </if>
+				  <if test="Bean.custType != null" >
+        			t.cust_no=#{Bean.custType,jdbcType=VARCHAR},
+     			 </if>
+				  <if test="Bean.cardType != null" >
+        			t.card_type=#{Bean.cardType,jdbcType=VARCHAR}, 
+     			 </if>
+				 <if test="Bean.position != null" >
+        			t.position=#{Bean.position,jdbcType=VARCHAR},
+     			</if>
+				<if test="Bean.telephone != null" >
+        			t.telephone=#{Bean.telephone,jdbcType=VARCHAR},
+     			</if>
+				 <if test="Bean.remark != null" >
+        			t.remark=#{Bean.remark,jdbcType=VARCHAR},
+     			</if>
+				 <if test="Bean.iswhiteorgray != null" >
+        			t.iswhiteorgray=#{Bean.iswhiteorgray,jdbcType=VARCHAR},
+     			</if>
+				<if test="Bean.entryId != null" >
+        			t.project_no=#{Bean.entryId,jdbcType=INTEGERs},
+     			</if>
+				<if test="Bean.expDate != null" >
+        			t.exp_date=#{Bean.expDate,jdbcType=VARCHAR},
+     			</if>
+				<if test="Bean.lastModiTime != null" >
+        			t.last_modi_time=#{Bean.lastModiTime,jdbcType=VARCHAR},
+     			</if>
+				<if test="Bean.addTime != null" >
+					t.add_time=#{Bean.addTime,jdbcType=VARCHAR},
+				</if>
+				<if test="Bean.addUserId != null" >
+					t.add_user_id=#{Bean.addUserId,jdbcType=VARCHAR},
+				</if>
+     		</set>	
+			where  t.id = #{Bean.id,jdbcType=INTEGER} 
+  </update>
+  
+   <delete id="delete" parameterType="java.util.HashMap" >
+   	  delete from ARMS_CSB_RISK_ACCT_LIST where id = #{Bean.id}
+   </delete>
+   
+   <select id="getMaxId" resultType="java.lang.Integer">
+   		select max(id) maxNum from ARMS_CSB_RISK_ACCT_LIST 
+   </select>
+</mapper>

@@ -1,0 +1,41 @@
+server:
+  port: 7071
+  servlet:
+    #    context-path: /SunARS
+    context-path: /
+    session:
+      timeout: 300 # session超时时间为300秒
+
+spring:
+  application:
+    # 指定注册到eureka server上的服务名称
+    name: SunORMS_system
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.1.1.43:8848
+      config:
+        server-addr: 172.1.1.43:8848
+        file-extension: yaml
+#  datasource:
+#    url: jdbc:oracle:thin:@WIN-4FUNHHESK90:1521:orcl
+#    driverClassName: oracle.jdbc.OracleDriver
+#    username: sunars520rk
+#    password: sunars520rk
+
+#eureka:
+#  client:
+#    service-url:
+#      # 指定eureka server通信地址，注意/eureka/小尾巴不能少
+#      defaultZone: http://localhost:8761/eureka/
+#  instance:
+#    # 是否注册IP到eureka server，如不指定或设为false，那就会注册主机名到eureka server
+#    prefer-ip-address: true
+
+
+#设置feign客户端超时时间（OpenFeign默认支持ribbon）
+ribbon:
+  #指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的实际
+  ReadTimeout: 50000
+  #指的是建立连接后从服务器读取到可用资源所用的时间
+  ConnectTimeout: 100000

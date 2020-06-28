@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 机构信息sql -->
+
+<mapper namespace="com.sunyard.ars.system.dao.busm.EmpDao" >
+	 <resultMap id="BaseResultMap" type="com.sunyard.ars.system.bean.busm.Emp">
+	 	<id column="EMP_ID" jdbcType="VARCHAR" property="empId" />
+    	<result column="USER_NO" jdbcType="VARCHAR" property="userNo" />
+    	<result column="ORGAN_NO" jdbcType="VARCHAR" property="organNo" />
+    	<result column="EMP_PWD" jdbcType="VARCHAR" property="empPwd" />
+    	<result column="USER_ROLL" jdbcType="VARCHAR" property="userRoll" />
+    	<result column="EMP_LEV" jdbcType="VARCHAR" property="empLev" />
+   	 	<result column="EMP_STATUS" jdbcType="VARCHAR" property="empStatus" />
+    	<result column="USER_STATUS" jdbcType="VARCHAR" property="userStatus" />
+    	<result column="TARGET_USER_NO" jdbcType="VARCHAR" property="targetUserNo" />
+   	 	<result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+    	<result column="END_TIME" jdbcType="VARCHAR" property="endTime" />	
+    	<result column="DATA_FLAG" jdbcType="VARCHAR" property="dataFlag" />	
+  	</resultMap>
+  <sql id="Base_Column_List">
+    EMP_ID, USER_NO, ORGAN_NO, EMP_PWD, USER_ROLL, EMP_LEV, EMP_STATUS, USER_STATUS, 
+    TARGET_USER_NO, START_TIME, END_TIME,DATA_FLAG
+  </sql>
+	
+	<select id="passwordEmp"  resultType="java.util.HashMap">
+     select * from SM_USER_ROLE_TB u where u.ORGAN_NO = #{organNo,jdbcType=VARCHAR} and u.user_no = #{userNo,jdbcType=VARCHAR} and  u.Is_OPEN = '1' AND u.role_no in ( select r.role_no  from sm_role_tb r where r.role_mode = '1' AND r.IS_OPEN = '1' )
+ 	</select>
+
+
+	<insert id="insertSelective" parameterType="com.sunyard.ars.system.bean.busm.Emp">
+    insert into SM_EMP_TB
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="empId != null">
+        EMP_ID,
+      </if>
+      <if test="userNo != null">
+        USER_NO,
+      </if>
+      <if test="organNo != null">
+        ORGAN_NO,
+      </if>
+      <if test="empPwd != null">
+        EMP_PWD,
+      </if>
+      <if test="userRoll != null">
+        USER_ROLL,
+      </if>
+      <if test="empLev != null">
+        EMP_LEV,
+      </if>
+      <if test="empStatus != null">
+        EMP_STATUS,
+      </if>
+      <if test="userStatus != null">
+        USER_STATUS,
+      </if>
+      <if test="targetUserNo != null">
+        TARGET_USER_NO,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="endTime != null">
+        END_TIME,
+      </if>
+       <if test="dataFlag != null">
+        DATA_FLAG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">   
+      <if test="empId != null">
+        #{empId,jdbcType=VARCHAR},
+      </if>
+      <if test="userNo != null">
+        #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="organNo != null">
+        #{organNo,jdbcType=VARCHAR},
+      </if>
+      <if test="empPwd != null">
+        #{empPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userRoll != null">
+        #{userRoll,jdbcType=VARCHAR},
+      </if>
+      <if test="empLev != null">
+        #{empLev,jdbcType=VARCHAR},
+      </if>
+      <if test="empStatus != null">
+        #{empStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null">
+        #{userStatus,jdbcType=CHAR},
+      </if>
+      <if test="targetUserNo != null">
+        #{targetUserNo,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=CHAR},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+        <if test="dataFlag != null">
+        #{dataFlag,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateSelective" parameterType="com.sunyard.ars.system.bean.busm.Emp">
+    update SM_EMP_TB
+    <set>
+      <if test="organNo != null">
+       	ORGAN_NO = #{organNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userRoll != null">
+        USER_ROLL = #{userRoll,jdbcType=VARCHAR},
+      </if>
+      <if test="empLev != null">
+      	EMP_LEV =  #{empLev,jdbcType=VARCHAR},
+      </if>
+       <if test="empStatus != null">
+        EMP_STATUS = #{empStatus,jdbcType=VARCHAR},
+      </if>
+       <if test="userStatus != null">
+        USER_STATUS = #{userStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="targetUserNo != null">
+        TARGET_USER_NO = #{targetUserNo,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=CHAR},
+      </if>
+      <if test="endTime != null">
+       END_TIME =  #{endTime,jdbcType=VARCHAR},
+      </if>
+       <if test="dataFlag != null">
+       DATA_FLAG =  #{dataFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+   		 where USER_NO = #{userNo,jdbcType=VARCHAR} 
+  </update>
+
+</mapper>

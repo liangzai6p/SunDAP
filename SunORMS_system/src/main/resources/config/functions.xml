@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 系统功能列表 快捷键应用是会用到，其中ID值设定后不得再做改动，其对应数据库中sm_hotkey_tb表的function_id字段 -->
+<!-- type 0:公有 20:人工处理 30:业务审核  50 人工查账-->
+<!-- 模块名称 ManualProcess：人工处理  ManualAudit：业务审核 SM_GLOBAL_SET_TB 的 SECTION_NAME 名称以此为准-->
+<root>
+	<functions modelName="ma">
+		<function id="1" desc="任务列表" purview=""/>
+		<function id="2" desc="任务批次提交" purview="" />
+		<function id="3" desc="任务批次修改" purview="" />
+		<function id="4" desc="任务批次作废" purview=""/>
+		<function id="5" desc="任务批次跳过" purview=""/>
+		<function id="7" desc="标记下发补扫" purview="" />
+		<function id="8" desc="撤销重扫标记" purview="" />
+		<!-- <function id="9" desc="标记差错" purview=""/> -->
+		<function id="11"  desc="标记删除" purview=""/>
+		<function id="12"  desc="撤销删除标记" purview=""/>
+		<function id="13"  desc="强过" purview=""/>
+		<function id="15"  desc="设为主件" purview=""/>
+		<function id="16" desc="设为附件" purview=""/>
+		<function id="17" desc="手动指定主件" purview=""/>
+		<function id="18" desc="流水查询" purview=""/>
+		<function id="19" desc="释放流水" purview=""/>
+		<function id="20" desc="快捷键设置" purview=""/>
+		<function id="21" desc="上一张图像" purview="" />
+		<function id="22" desc="下一张图像" purview=""/>
+		<function id="23" desc="正反面切换" purview=""/>
+	    <function id="24" desc="一键设主件" purview=""/>
+		<function id="25" desc="一键设附件" purview=""/>
+		<!-- <function id="26" desc="图像放大" purview=""/>
+		<function id="27" desc="图像缩小" purview=""/> -->
+		<!-- <function id="28" desc="补录/批次信息切换" purview=""/> -->
+		<!-- <function id="29" desc="区域放大" purview=""/> -->
+		<!-- <function id="30" desc="自适应" purview=""/> -->
+		<function id="31" desc="复制影像" purview=""/>
+		<function id="32" desc="释放全部流水" purview=""/>
+		<!-- <function id="33" desc="下发流水差错" purview=""/> -->
+		<function id="34" desc="套勾流水查询" purview=""/>
+		<function id="35" desc="查看补扫任务" purview=""/>
+		
+	</functions>
+	<functions modelName="oa">
+		<function id="1"   desc="选择轧账"/>
+		<function id="2"   desc="日终轧账"/>
+		<function id="3"   desc="解除日终轧账"/>
+		<function id="4"   desc="查询强制轧账原因"/>
+		<function id="5"   desc="一键轧账"/>
+		<function id="6"   desc="一键强轧"/>
+		<function id="7"   desc="查询图像"/>
+		<function id="8"   desc="清空查询域"/>
+		<function id="9"  desc="上一张"/>
+		<function id="10"  desc="下一张"/>
+		<function id="11"  desc="强过"/>
+ 		<function id="12"  desc="标记删除"/> 
+		<function id="13"  desc="撤销删除标记"/>
+		<function id="14"  desc="修改版面名称"/>
+		<function id="15"  desc="查询流水"/>
+		<function id="16"  desc="勾对流水"/>
+		<function id="17"  desc="释放流水"/>
+		<function id="18"  desc="套勾流水"/>
+		<function id="19"  desc="设为主件"/>
+		<function id="20"  desc="设为附件"/>
+		<function id="21"  desc="手动指定主件"/>
+		<function id="22"  desc="快捷键设置"/>
+		<!-- <function id="23"  desc="上一条流水"/>
+		<function id="24"  desc="下一条流水"/>
+		<function id="25"  desc="查看背面"/> -->
+	<!-- 	<function id="26"  desc="放大"/>
+		<function id="27"  desc="缩小"/>
+		<function id="28"  desc="自适应"/> -->
+		<function id="29"  desc="图像流水切换"/>
+	</functions>
+</root>

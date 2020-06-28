@@ -1,0 +1,39 @@
+spring:
+  profiles:
+    active: dev # 环境逻辑组 dev/test/prod
+
+
+mybatis:
+  mapper-locations: classpath:mybatis-mapper/**/*.xml,classpath:mybatis-mapper/**/**/*.xml,
+    classpath:com/sunyard/aos/**/mapper/*.xml,classpath:com/sunyard/cop/IF/mybatis/mapping/*.xml
+
+
+#数据源类型 type:jndi或c3p0, name:type为jndi时必填
+dataSource:
+  type: c3p0
+  name: adms
+
+#数据源配置
+main:
+  driverClassName: oracle.jdbc.driver.OracleDriver
+  url: jdbc:oracle:thin:@172.1.1.106:1521:orcl
+  username: sunars_520
+  password: sunars_520
+
+#c3p0配置
+c3p0:
+  pool:
+    size:
+      max: 20
+      min: 5
+      ini: 3
+      increment: 2
+
+#最大文件上传大小10M
+maxUploadSize: 10485760
+
+#WebSocket配置
+maxTextMessageBufferSize: 8192
+maxBinaryMessageBufferSize: 8192
+maxSessionIdleTimeout: 900000000
+asyncSendTimeout: 5000
