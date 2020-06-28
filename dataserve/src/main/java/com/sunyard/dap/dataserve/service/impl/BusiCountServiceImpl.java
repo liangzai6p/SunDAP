@@ -1,7 +1,7 @@
 package com.sunyard.dap.dataserve.service.impl;
 
 import com.sunyard.dap.common.model.ReturnT;
-import com.sunyard.dap.dataserve.entity.BusiCount;
+import com.sunyard.dap.dataserve.entity.BusiCountDO;
 import com.sunyard.dap.dataserve.mapper.BusiCountMapper;
 import com.sunyard.dap.dataserve.service.BusiCountService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -21,12 +21,12 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount> implements BusiCountService {
+public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCountDO> implements BusiCountService {
 
     @Override
-    public ReturnT<List> info(Map<String,Object> params) {
+    public ReturnT<List> list(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.info(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listByTime(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -35,9 +35,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> branchView(Map<String,Object> params) {
+    public ReturnT<List> listBranch(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.branchView(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listBranch(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -45,9 +45,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> siteView(Map<String,Object> params) {
+    public ReturnT<List> listSite(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.siteView(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listSite(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -55,9 +55,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> zoneView(Map<String,Object> params) {
+    public ReturnT<List> listZone(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.zoneView(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listZone(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -65,9 +65,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> channelView(Map<String,Object> params) {
+    public ReturnT<List> listChannel(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.channelView(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listChannel(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -75,9 +75,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> infoMonthlyView(Map<String,Object> params) {
+    public ReturnT<List> listMonthly(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.infoMonthlyView(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listMonthly(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -85,9 +85,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> branchMonthlyView(Map<String,Object> params) {
+    public ReturnT<List> listBranchMonthly(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.branchMonthlyView(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listBranchMonthly(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -95,9 +95,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> zoneMonthlyView(Map<String,Object> params) {
+    public ReturnT<List> listZoneMonthly(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.zoneMonthlyView(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listZoneMonthly(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -105,9 +105,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> siteMonthlyView(Map<String,Object> params) {
+    public ReturnT<List> listSiteMonthly(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.siteMonthlyView(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listSiteMonthly(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -115,9 +115,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> channelMonthlyView(Map<String,Object> params) {
+    public ReturnT<List> listChannelMonthly(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.channelMonthlyView(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listChannelMonthly(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;

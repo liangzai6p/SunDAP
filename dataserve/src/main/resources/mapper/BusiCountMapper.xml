@@ -3,7 +3,7 @@
 <mapper namespace="com.sunyard.dap.dataserve.mapper.BusiCountMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.sunyard.dap.dataserve.entity.BusiCount">
+    <resultMap id="BaseResultMap" type="com.sunyard.dap.dataserve.entity.BusiCountDO">
         <result column="BLOC_NO" property="blocNo" />
         <result column="BLOC_NAME" property="blocName" />
         <result column="ZONE_NO" property="zoneNo" />
@@ -25,7 +25,7 @@
         BLOC_NO, BLOC_NAME, ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, CHANNEL_NO, CHANNEL_NAME, BUSI_COUNT, AMOUNT, CUS_COUNT, TO_CHAR(RECORD_TIME,'yyyymmdd') RECORD_TIME
     </sql>
 
-    <select id="info" resultType="java.util.HashMap">
+    <select id="listByTime" resultType="java.util.HashMap">
         select
         <include refid="Base_Column_List"/>
         from DM_BUSI_COUNT_TB
@@ -36,7 +36,7 @@
         </trim>
     </select>
 
-    <select id="branchView" resultType="java.util.HashMap">
+    <select id="listBranch" resultType="java.util.HashMap">
         select * from DM_BUSI_BRANCH_COUNT_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.BRANCH_NO != null">
@@ -48,7 +48,7 @@
         </trim>
     </select>
 
-    <select id="siteView" resultType="java.util.HashMap">
+    <select id="listSite" resultType="java.util.HashMap">
         select * from DM_BUSI_SITE_COUNT_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.SITE_NO != null">
@@ -60,7 +60,7 @@
         </trim>
     </select>
 
-    <select id="zoneView" resultType="java.util.HashMap">
+    <select id="listZone" resultType="java.util.HashMap">
         select * from DM_BUSI_ZONE_COUNT_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.ZONE_NO != null">
@@ -72,7 +72,7 @@
         </trim>
     </select>
 
-    <select id="channelView" resultType="java.util.HashMap">
+    <select id="listChannel" resultType="java.util.HashMap">
         select * from DM_BUSI_CHANNEL_COUNT_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.CHANNEL_NO != null">
@@ -84,7 +84,7 @@
         </trim>
     </select>
 
-    <select id="infoMonthlyView" resultType="java.util.HashMap">
+    <select id="listMonthly" resultType="java.util.HashMap">
         select * from DM_BUSI_COUNT_MONTHLY_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.START_TIME != null and params.END_TIME != null">
@@ -93,7 +93,7 @@
         </trim>
     </select>
 
-    <select id="branchMonthlyView" parameterType="map" resultType="java.util.HashMap">
+    <select id="listBranchMonthly" parameterType="map" resultType="java.util.HashMap">
         select * from DM_BUSI_BRANCH_MONTHLY_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.BRANCH_NO != null">
@@ -105,7 +105,7 @@
         </trim>
     </select>
 
-    <select id="siteMonthlyView" resultType="java.util.HashMap">
+    <select id="listSiteMonthly" resultType="java.util.HashMap">
         select * from DM_BUSI_SITE_MONTHLY_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.SITE_NO != null">
@@ -116,7 +116,7 @@
             </if>
         </trim>
     </select>
-    <select id="zoneMonthlyView" resultType="java.util.HashMap">
+    <select id="listZoneMonthly" resultType="java.util.HashMap">
         select * from DM_BUSI_ZONE_MONTHLY_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.ZONE_NO != null">
@@ -127,7 +127,7 @@
             </if>
         </trim>
     </select>
-    <select id="channelMonthlyView" resultType="java.util.HashMap">
+    <select id="listChannelMonthly" resultType="java.util.HashMap">
         select * from DM_BUSI_CHANNEL_MONTHLY_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.CHANNEL_NO != null">

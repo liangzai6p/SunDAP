@@ -18,7 +18,7 @@ import lombok.Data;
  */
 @TableName("DM_BUSI_COUNT_TB")
 @Data
-public class BusiCount extends Model<BusiCount> {
+public class BusiCountDO extends Model<BusiCountDO> {
 
     private static final long serialVersionUID=1L;
 

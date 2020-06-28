@@ -21,7 +21,7 @@ public interface BusiCountClient {
      * 离线运营日度业务量总数据
      * @Author yey.he
      * @Date 3:26 PM 2020/6/17
-     * @Param []
+     * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/busiCount/info")
@@ -31,7 +31,7 @@ public interface BusiCountClient {
      * 分渠道离线日度运营业务量
      * @Author yey.he
      * @Date 3:27 PM 2020/6/17
-     * @Param []
+     * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/busiCount/channel")
@@ -41,7 +41,7 @@ public interface BusiCountClient {
      * 分行离线日度运营业务量
      * @Author yey.he
      * @Date 3:27 PM 2020/6/17
-     * @Param []
+     * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/busiCount/branch")
@@ -51,7 +51,7 @@ public interface BusiCountClient {
      * 网点离线日度运营业务量
      * @Author yey.he
      * @Date 3:28 PM 2020/6/17
-     * @Param []
+     * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/busiCount/site")
@@ -61,7 +61,7 @@ public interface BusiCountClient {
      * 区域离线日度运营业务量
      * @Author yey.he
      * @Date 3:28 PM 2020/6/17
-     * @Param []
+     * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/busiCount/zone")
@@ -71,7 +71,7 @@ public interface BusiCountClient {
      * 月度离线运营业务量
      * @Author yey.he
      * @Date 11:26 AM 2020/6/18
-     * @Param []
+     * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/busiCount/infoMonthly")
@@ -81,7 +81,7 @@ public interface BusiCountClient {
      * 分行月度离线运营业务量
      * @Author yey.he
      * @Date 11:27 AM 2020/6/18
-     * @Param []
+     * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/busiCount/branchMonthly")
@@ -91,7 +91,7 @@ public interface BusiCountClient {
      * 区域月度离线运营业务量
      * @Author yey.he
      * @Date 11:28 AM 2020/6/18
-     * @Param []
+     * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/busiCount/zoneMonthly")
@@ -100,7 +100,7 @@ public interface BusiCountClient {
      * 网点月度离线运营业务量
      * @Author yey.he
      * @Date 11:28 AM 2020/6/18
-     * @Param []
+     * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/busiCount/siteMonthly")
@@ -110,7 +110,7 @@ public interface BusiCountClient {
      * 渠道月度离线运营业务量
      * @Author yey.he
      * @Date 11:28 AM 2020/6/18
-     * @Param []
+     * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/busiCount/channelMonthly")
