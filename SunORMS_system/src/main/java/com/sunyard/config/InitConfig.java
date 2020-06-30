@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
 import com.sunyard.ars.common.comm.ARSInit;
-import com.sunyard.ars.common.comm.ARSOcrWork;
-import com.sunyard.ars.common.comm.FlowTaskInit;
 import com.sunyard.ars.system.init.SystemInitialize;
 import com.sunyard.cop.IF.common.Init;
 
@@ -44,26 +42,7 @@ public class InitConfig {
 		return new SystemInitialize();
 	}
 	
-	/**
-	 * 识别后自动勾对任务
-	 * @return
-	 */
-	@Bean(initMethod = "ocrBackWork", destroyMethod="destroyTimer")
-	@Lazy(false)
-	public ARSOcrWork arsOcrWork() {
-		return new ARSOcrWork();
-	}
-	
-	/**
-	 * 加载需要启动工作流的批次
-	 * @return
-	 */
-	@Bean(initMethod = "flowInit")
-	@Lazy(false)
-	public FlowTaskInit flowTaskInit() {
-		return new FlowTaskInit();
-	}
-	
+
 	
 
 }

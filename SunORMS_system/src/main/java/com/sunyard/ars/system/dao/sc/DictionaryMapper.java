@@ -1,11 +1,11 @@
 package com.sunyard.ars.system.dao.sc;
 
 
-import java.util.List;
-import java.util.Map;
-
 import com.sunyard.ars.common.pojo.Dictionary;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 public interface DictionaryMapper {
     /**

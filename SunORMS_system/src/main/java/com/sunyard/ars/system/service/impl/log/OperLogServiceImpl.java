@@ -17,19 +17,14 @@ import com.sunyard.aos.common.util.ExcelUtil;
 import com.sunyard.aos.common.util.HttpUtil;
 import com.sunyard.ars.common.comm.ARSConstants;
 import com.sunyard.ars.common.comm.BaseService;
-import com.sunyard.ars.common.dao.FlowMapper;
-import com.sunyard.ars.common.dao.TmpBatchMapper;
 import com.sunyard.ars.common.pojo.Dictionary;
 import com.sunyard.ars.system.bean.log.OperLog;
-import com.sunyard.ars.system.dao.busm.OrganInfoDao;
-import com.sunyard.ars.system.dao.busm.TellerMapper;
 import com.sunyard.ars.system.dao.log.OperLogMapper;
 import com.sunyard.ars.system.dao.sc.DictionaryMapper;
 import com.sunyard.ars.system.service.log.IOperLogService;
 import com.sunyard.cop.IF.bean.RequestBean;
 import com.sunyard.cop.IF.bean.ResponseBean;
 import com.sunyard.cop.IF.common.http.RequestUtil;
-import com.sunyard.cop.IF.mybatis.pojo.User;
 
 @Service("logService")
 @Transactional
@@ -39,14 +34,6 @@ public class OperLogServiceImpl extends BaseService  implements IOperLogService{
 	private OperLogMapper operLogMapper;
 	@Resource
 	private DictionaryMapper dictionaryMapper;
-	@Resource
-	private OrganInfoDao organInfoDao;
-	@Resource
-	private TellerMapper tellerMapper;
-	@Resource
-	private FlowMapper flowMapper;
-	@Resource
-	private TmpBatchMapper tmpBatchMapper;
 	@Override
 	public ResponseBean execute(RequestBean requestBean) throws Exception {
 		// TODO Auto-generated method stub

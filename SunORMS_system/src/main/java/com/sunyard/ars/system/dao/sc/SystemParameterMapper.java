@@ -1,10 +1,9 @@
 package com.sunyard.ars.system.dao.sc;
 
 import com.sunyard.cop.IF.mybatis.pojo.SysParameter;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
 
 public interface SystemParameterMapper {
     /**

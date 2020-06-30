@@ -1,21 +1,20 @@
 package com.sunyard.ars.system.controller.sc;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.sunyard.ars.common.pojo.Dictionary;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.sunyard.ars.common.comm.ARSConstants;
+import com.sunyard.ars.common.pojo.Dictionary;
 import com.sunyard.ars.system.service.sc.IDictionaryService;
 import com.sunyard.cop.IF.bean.RequestBean;
 import com.sunyard.cop.IF.bean.ResponseBean;
 import com.sunyard.cop.IF.controller.BaseController;
 import com.sunyard.cop.IF.spring.aop.ArchivesLog;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class DictionaryController extends BaseController {

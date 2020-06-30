@@ -6,11 +6,11 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import com.sunyard.ars.system.bean.et.BusiNodeBean;
-import com.sunyard.ars.system.bean.et.ModelFieldResulet;
-import com.sunyard.ars.system.bean.et.ProcessChartBean;
-import com.sunyard.ars.system.bean.et.ProcessLineBean;
-import com.sunyard.ars.system.bean.et.ProcessNodeBean;
+//import com.sunyard.ars.system.bean.et.BusiNodeBean;
+//import com.sunyard.ars.system.bean.et.ModelFieldResulet;
+//import com.sunyard.ars.system.bean.et.ProcessChartBean;
+//import com.sunyard.ars.system.bean.et.ProcessLineBean;
+//import com.sunyard.ars.system.bean.et.ProcessNodeBean;
 
 public class SystemConstants {
 	
@@ -32,18 +32,18 @@ public class SystemConstants {
 	/** ******** 模块名 字符串常量*************** */
 	public static String MODEL_NAME = "差错管理";
 	/**差错结束节点*/
-	public static Map<String,ProcessNodeBean> END_ET_NODES = new HashMap<String, ProcessNodeBean>(); 
+//	public static Map<String,ProcessNodeBean> END_ET_NODES = new HashMap<String, ProcessNodeBean>();
 
 	/**差错所有节点*/
-	public static Map<String,ProcessNodeBean> ALL_ET_NODES = new HashMap<String, ProcessNodeBean>(); 
+//	public static Map<String,ProcessNodeBean> ALL_ET_NODES = new HashMap<String, ProcessNodeBean>();
 	
 	/**差错所有流程线*/
-	public static Map<String,ProcessChartBean> ALL_ET_CHARTS = new HashMap<String, ProcessChartBean>(); 
+//	public static Map<String,ProcessChartBean> ALL_ET_CHARTS = new HashMap<String, ProcessChartBean>();
 	/***流程线与流程节线集合*/
-	public static Map<String, TreeMap<String, List<ProcessLineBean>>> CHART_AND_LINE= new HashMap<String, TreeMap<String, List<ProcessLineBean>>>();
+//	public static Map<String, TreeMap<String, List<ProcessLineBean>>> CHART_AND_LINE= new HashMap<String, TreeMap<String, List<ProcessLineBean>>>();
 	
 	/** 业务节点配置表 * */
-	public static TreeMap<String, BusiNodeBean> HT_BUSI_NODES = new TreeMap<String, BusiNodeBean>();
+//	public static TreeMap<String, BusiNodeBean> HT_BUSI_NODES = new TreeMap<String, BusiNodeBean>();
 
 	/** 单元节点配置表 <formType+"|"+nodeNo, utilNodeBean> * */
 	public static Hashtable HT_UTIL_NODES = new Hashtable(); // <formType+"|"+nodeNo,utilNodeBean>
@@ -134,7 +134,7 @@ public class SystemConstants {
 	/** *消息：修改有效期程操作成功*** */
 	public static final String MSG_CHANGE_ACTIVEDATE_SUCC = "修改有效期操作成功！！";
 	
-	public static List<ModelFieldResulet> MODEL_MUST_FIELD = new ArrayList<>();
+//	public static List<ModelFieldResulet> MODEL_MUST_FIELD = new ArrayList<>();
 
 	/** 在网点整改时，点击查看，修改orverdue_flag_1的值为9。表示已查看。 */
 	public static final String OVERDUE_FLAG_1 = "9"; // 在程序中，严禁使用魔法数

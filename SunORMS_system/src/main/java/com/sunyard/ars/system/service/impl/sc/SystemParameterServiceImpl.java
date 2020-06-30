@@ -1,26 +1,24 @@
 package com.sunyard.ars.system.service.impl.sc;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sunyard.aos.common.util.BaseUtil;
 import com.sunyard.ars.common.comm.ARSConstants;
 import com.sunyard.ars.common.comm.BaseService;
-import com.sunyard.cop.IF.mybatis.pojo.SysParameter;
 import com.sunyard.ars.system.dao.sc.SystemParameterMapper;
 import com.sunyard.ars.system.init.SystemInitialize;
 import com.sunyard.ars.system.service.sc.ISystemParameterService;
 import com.sunyard.cop.IF.bean.RequestBean;
 import com.sunyard.cop.IF.bean.ResponseBean;
+import com.sunyard.cop.IF.mybatis.pojo.SysParameter;
 import com.sunyard.cop.IF.mybatis.pojo.User;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Service("systemParameterService")
@@ -28,7 +26,7 @@ import com.sunyard.cop.IF.mybatis.pojo.User;
 public class SystemParameterServiceImpl extends BaseService implements ISystemParameterService {
 	
 	@Resource
-	private SystemParameterMapper systemParameterMapper; 
+	private SystemParameterMapper systemParameterMapper;
 	
 	@Resource
 	private SystemInitialize systemInit;
@@ -50,13 +48,13 @@ public class SystemParameterServiceImpl extends BaseService implements ISystemPa
 		if (ARSConstants.OPERATE_QUERY.equals(oper_type)) {
 			// 查询
 			query(requestBean, responseBean);
-		} else if (ARSConstants.OPERATE_ADD.equals(oper_type)) { 
+		} else if (ARSConstants.OPERATE_ADD.equals(oper_type)) {
 			// 新增
 			add(requestBean, responseBean);
-		} else if (ARSConstants.OPERATE_MODIFY.equals(oper_type)) { 
+		} else if (ARSConstants.OPERATE_MODIFY.equals(oper_type)) {
 			// 修改
 			update(requestBean, responseBean);
-		} else if(ARSConstants.OPERATE_DELETE.equals(oper_type)) { 
+		} else if(ARSConstants.OPERATE_DELETE.equals(oper_type)) {
 			// 删除
 			delete(requestBean, responseBean);
 		} else if (ARSConstants.OPERATE_OTHER.equals(oper_type)) {

@@ -1,24 +1,22 @@
 package com.sunyard.ars.system.service.impl.sc;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import com.sunyard.ars.common.pojo.Dictionary;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sunyard.ars.common.comm.ARSConstants;
 import com.sunyard.ars.common.comm.BaseService;
+import com.sunyard.ars.common.pojo.Dictionary;
 import com.sunyard.ars.system.dao.sc.DictionaryMapper;
 import com.sunyard.ars.system.service.sc.IDictionaryService;
 import com.sunyard.cop.IF.bean.RequestBean;
 import com.sunyard.cop.IF.bean.ResponseBean;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service("diceionayrService")
 @Transactional
@@ -44,13 +42,13 @@ public class DictionaryServiceImpl extends BaseService implements IDictionarySer
 		if (ARSConstants.OPERATE_QUERY.equals(oper_type)) {
 			// 查询
 			query(requestBean, responseBean);
-		} else if (ARSConstants.OPERATE_ADD.equals(oper_type)) { 
+		} else if (ARSConstants.OPERATE_ADD.equals(oper_type)) {
 			// 新增
 			add(requestBean, responseBean);
-		} else if (ARSConstants.OPERATE_MODIFY.equals(oper_type)) { 
+		} else if (ARSConstants.OPERATE_MODIFY.equals(oper_type)) {
 			// 修改
 			update(requestBean, responseBean);
-		} else if(ARSConstants.OPERATE_DELETE.equals(oper_type)) { 
+		} else if(ARSConstants.OPERATE_DELETE.equals(oper_type)) {
 			// 删除
 			delete(requestBean, responseBean);
 		} else if (ARSConstants.OPERATE_OTHER.equals(oper_type)) {

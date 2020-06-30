@@ -242,35 +242,35 @@
             <version>${project.version}</version>
         </dependency>
 
-		<!-- 添加lib/目录下jar包 start -->
-		<dependency>
-			<groupId>com.sinoimage</groupId>
-			<artifactId>sinoimage-client</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/sinoimage-client.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.sunflow</groupId>
-			<artifactId>sunfow</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/sunflow.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.sunflow</groupId>
-			<artifactId>sunfowAPI</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/sunflowAPI.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.sunflow</groupId>
-			<artifactId>sunfowweb</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/sunflowweb.jar</systemPath>
-		</dependency>
+		<!--&lt;!&ndash; 添加lib/目录下jar包 start &ndash;&gt;-->
+		<!--<dependency>-->
+			<!--<groupId>com.sinoimage</groupId>-->
+			<!--<artifactId>sinoimage-client</artifactId>-->
+			<!--<version>1.0</version>-->
+			<!--<scope>system</scope>-->
+			<!--<systemPath>${project.basedir}/lib/sinoimage-client.jar</systemPath>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>com.sunflow</groupId>-->
+			<!--<artifactId>sunfow</artifactId>-->
+			<!--<version>1.0</version>-->
+			<!--<scope>system</scope>-->
+			<!--<systemPath>${project.basedir}/lib/sunflow.jar</systemPath>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>com.sunflow</groupId>-->
+			<!--<artifactId>sunfowAPI</artifactId>-->
+			<!--<version>1.0</version>-->
+			<!--<scope>system</scope>-->
+			<!--<systemPath>${project.basedir}/lib/sunflowAPI.jar</systemPath>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>com.sunflow</groupId>-->
+			<!--<artifactId>sunfowweb</artifactId>-->
+			<!--<version>1.0</version>-->
+			<!--<scope>system</scope>-->
+			<!--<systemPath>${project.basedir}/lib/sunflowweb.jar</systemPath>-->
+		<!--</dependency>-->
 		<!-- 添加lib/目录下jar包 end -->
 	</dependencies>
 
