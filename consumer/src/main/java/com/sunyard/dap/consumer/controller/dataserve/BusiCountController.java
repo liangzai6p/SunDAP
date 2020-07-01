@@ -76,4 +76,20 @@ public class BusiCountController {
     public ReturnT<List> getChannelMonthly(@RequestBody Map<String,Object> params){
         return client.getChannelMonthly(params);
     }
+
+    @PostMapping("/totalMinRT")
+    public ReturnT<List> getTotalMinRT(@RequestBody Map<String,Object> params){
+        return client.getTotalMinRT(params);
+    }
+
+
+    @PostMapping("/totalHourRT")
+    public ReturnT<List> getTotalHourRT(@RequestBody Map<String,Object> params){
+        return client.getTotalHourRT(params);
+    }
+
+    @PostMapping("/totalDayRT")
+    public ReturnT<List> getTotalDayRT(@RequestBody Map<String,Object> params){
+        return client.getTotalDayRT(params);
+    }
 }

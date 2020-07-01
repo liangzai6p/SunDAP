@@ -124,4 +124,34 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
         }
     }
 
+    @Override
+    public ReturnT<List> listTotalMinRT(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listTotalMinRT(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
+
+    @Override
+    public ReturnT<List> listTotalHourRT(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listTotalHourRT(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
+
+    @Override
+    public ReturnT<List> listTotalDayRT(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listTotalDayRT(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
+
 }

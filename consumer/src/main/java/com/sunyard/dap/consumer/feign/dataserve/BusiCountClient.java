@@ -115,4 +115,34 @@ public interface BusiCountClient {
      **/
     @PostMapping("/busiCount/channelMonthly")
     ReturnT<List> getChannelMonthly(Map<String,Object> params);
+
+    /**
+     * 实时分钟总运营业务量
+     * @Author yey.he
+     * @Date 10:33 AM 2020/6/30
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/busiCount/totalMinRT")
+    ReturnT<List> getTotalMinRT(Map<String,Object> params);
+
+    /**
+     * 实时小时总运营业务量
+     * @Author yey.he
+     * @Date 10:33 AM 2020/6/30
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/busiCount/totalHourRT")
+    ReturnT<List> getTotalHourRT(Map<String,Object> params);
+
+    /**
+     * 实时日度总运营业务量
+     * @Author yey.he
+     * @Date 10:33 AM 2020/6/30
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/busiCount/totalDayRT")
+    ReturnT<List> getTotalDayRT(Map<String,Object> params);
 }

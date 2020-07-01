@@ -2,6 +2,7 @@ package com.sunyard;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.db.DbUtil;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -117,5 +118,34 @@ public class systemTest {
 
     }
 
+
+    @Test
+    public void setDetail(){
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet resultSet = null;
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@172.1.1.36:1521:orcl", "sunaos", "sunaos");
+            String sql = "SELECT TASK_ID,ZONE_NO,ZONE_NAME,BRANCH_NO,BRANCH_NAME,ORGAN_NO,ORGAN_NAME,SYS_NUM,SYS_NAME,ROLE_NO,ROLE_NAME,OPER_NO,OPER_NAME,trunc(dbms_random.value(0,2))，trunc(dbms_random.value(0,10000)),'',trunc(dbms_random.value(0,20000)),OPER_TIME,TRANS_STATE FROM MN_BUSI_DETAIL_V ORDER BY oper_time";
+            ps = conn.prepareStatement(sql);
+            resultSet = ps.executeQuery();
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@172.1.1.11:1521:orcl", "sundap", "123456");
+            sql = "insert into DM_BUSI_DETAIL_TB values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            while (resultSet.next()){
+                ps = conn.prepareStatement(sql);
+                for (int i = 1;i <= 19 ; i++){
+                    ps.setObject(i,resultSet.getObject(i));
+                }
+                ps.execute();
+                DbUtil.close(ps);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            DbUtil.close(conn,ps,resultSet);
+        }
+
+    }
 
 }
