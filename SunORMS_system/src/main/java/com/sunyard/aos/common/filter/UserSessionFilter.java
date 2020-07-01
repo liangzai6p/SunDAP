@@ -42,7 +42,7 @@ public class UserSessionFilter extends OncePerRequestFilter {
 		// 不拦截的url。 外系统建议统一使用otherSystem.do，使用交易码区分功能
 		String[] notFilter = new String[] { "/ormsLoginController.do", "/B-JUI", "/css","/images", "/aosMain.do",
 							"/SunFlowWebService","/webSocket.do","/userRoleSyn.do","/mrModulePath.do","otherSystem.do",
-							"/scanForUrl.do","/arsOcr.do","/sendstatus","/arsPdf.do","/fileDownload.do","/sundap"};
+							"/scanForUrl.do","/arsOcr.do","/sendstatus","/arsPdf.do","/fileDownload.do","/sundap","/loginController.do","menuTreeController.do"};
 		// 请求的url /SunARS/scanBatch.do
 		String url = request.getRequestURI();
 		if (!BaseUtil.isBlank(url)) {
@@ -61,9 +61,9 @@ public class UserSessionFilter extends OncePerRequestFilter {
 					if(checkResult.getRetBoolean()) {
 						String clientIp = (String) checkResult.getClaims().get("clientIp");
 						//请求客户端ip校验，增加安全性
-						if( !BaseUtil.isBlank(clientIp) && clientIp.equals(request.getRemoteAddr())) {
+//						if( !BaseUtil.isBlank(clientIp) && clientIp.equals(request.getRemoteAddr())) {
 							doFilter = !updateToken(checkResult.getClaims(), response);
-						}
+//						}
 					}
 				}
 			}
