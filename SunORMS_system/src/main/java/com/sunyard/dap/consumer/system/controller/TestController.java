@@ -1,13 +1,12 @@
-package com.sunyard.dap.consumer.controller.system;
+package com.sunyard.dap.consumer.system.controller;
 
 import com.sunyard.dap.common.entity.Test;
 import com.sunyard.dap.common.model.ReturnT;
-import com.sunyard.dap.consumer.feign.system.TestClient;
+import com.sunyard.dap.consumer.system.client.TestClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @program: SunDAP

@@ -37,10 +37,4 @@ public interface BusiCountService extends IService<BusiCountDO>{
 
     ReturnT<List> listChannelMonthly(Map<String,Object> params);
 
-    ReturnT<List> listTotalMinRT(Map<String,Object> params);
-
-    ReturnT<List> listTotalHourRT(Map<String,Object> params);
-
-    ReturnT<List> listTotalDayRT(Map<String,Object> params);
-
 }

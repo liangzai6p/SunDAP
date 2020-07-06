@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.dap.dataserve.mapper.BusiRtMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sunyard.dap.dataserve.entity.BusiRtDO">
+        <result column="BLOC_NO" property="blocNo" />
+        <result column="BLOC_NAME" property="blocName" />
+        <result column="ZONE_NO" property="zoneNo" />
+        <result column="ZONE_NAME" property="zoneName" />
+        <result column="BRANCH_NO" property="branchNo" />
+        <result column="BRANCH_NAME" property="branchName" />
+        <result column="SITE_NO" property="siteNo" />
+        <result column="SITE_NAME" property="siteName" />
+        <result column="CHANNEL_NO" property="channelNo" />
+        <result column="CHANNEL_NAME" property="channelName" />
+        <result column="BUSI_COUNT" property="busiCount" />
+        <result column="AMOUNT" property="amount" />
+        <result column="CUS_COUNT" property="cusCount" />
+        <result column="RECORD_TIME" property="recordTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        BLOC_NO, BLOC_NAME, ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, CHANNEL_NO, CHANNEL_NAME, BUSI_COUNT, AMOUNT, CUS_COUNT, RECORD_TIME
+    </sql>
+    <select id="listHRT" resultType="java.util.HashMap">
+        select sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,to_char(RECORD_TIME,'hh24') RECORD_TIME
+        from DM_BUSI_RT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                to_date(to_char(RECORD_TIME,'hh24'),'hh24')
+                between to_date(#{params.START_TIME},'hh24')
+                and to_date(#{params.END_TIME},'hh24')
+            </if>
+        </trim>
+        group by to_char(RECORD_TIME,'hh24')
+        order by RECORD_TIME
+    </select>
+    <select id="listBranchHRT" resultType="java.util.HashMap">
+        select * from DM_BUSI_BRANCH_HRT_V
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                to_date(RECORD_TIME,'hh24')
+                between to_date(#{params.START_TIME},'hh24')
+                and to_date(#{params.END_TIME},'hh24')
+            </if>
+        </trim>
+    </select>
+    <select id="listZoneHRT" resultType="java.util.HashMap">
+        select * from DM_BUSI_ZONE_HRT_V
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                to_date(RECORD_TIME,'hh24')
+                between to_date(#{params.START_TIME},'hh24')
+                and to_date(#{params.END_TIME},'hh24')
+            </if>
+        </trim>
+    </select>
+    <select id="listSiteHRT" resultType="java.util.HashMap">
+        select * from DM_BUSI_SITE_HRT_V
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                to_date(RECORD_TIME,'hh24')
+                between to_date(#{params.START_TIME},'hh24')
+                and to_date(#{params.END_TIME},'hh24')
+            </if>
+        </trim>
+    </select>
+    <select id="listChannelHRT" resultType="java.util.HashMap">
+        select * from DM_BUSI_CHANNEL_HRT_V
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                to_date(RECORD_TIME,'hh24')
+                between to_date(#{params.START_TIME},'hh24')
+                and to_date(#{params.END_TIME},'hh24')
+            </if>
+        </trim>
+    </select>
+    <select id="listDRT" resultType="java.util.HashMap">
+        select sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT
+        from DM_BUSI_RT_TB
+    </select>
+    <select id="listBranchDRT" resultType="java.util.HashMap">
+        select * from DM_BUSI_BRANCH_DRT_V
+    </select>
+    <select id="listZoneDRT" resultType="java.util.HashMap">
+        select * from DM_BUSI_ZONE_DRT_V
+    </select>
+    <select id="listSiteDRT" resultType="java.util.HashMap">
+        select *
+        from DM_BUSI_SITE_DRT_V
+    </select>
+    <select id="listChannelDRT" resultType="java.util.HashMap">
+        select *
+        from DM_BUSI_CHANNEL_DRT_V
+    </select>
+
+
+</mapper>

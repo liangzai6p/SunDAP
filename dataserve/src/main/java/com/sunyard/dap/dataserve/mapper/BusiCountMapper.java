@@ -48,10 +48,5 @@ public interface BusiCountMapper extends BaseMapper<BusiCountDO>{
 
     List<HashMap<String,Object>> listChannelMonthly(@Param("params") Map<String,Object> params);
 
-    List<HashMap<String,Object>> listTotalMinRT(@Param("params") Map<String,Object> params);
-
-    List<HashMap<String,Object>> listTotalHourRT(@Param("params") Map<String,Object> params);
-
-    List<HashMap<String,Object>> listTotalDayRT(@Param("params") Map<String,Object> params);
 
 }

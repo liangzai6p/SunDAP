@@ -148,40 +148,5 @@ public class BusiCountController {
         return service.listChannelMonthly(params);
     }
 
-    /**
-     * 实时分钟总运营业务量
-     * @Author yey.he 
-     * @Date 10:05 AM 2020/6/30
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
-     **/
-    @PostMapping("/totalMinRT")
-    public ReturnT<List> getTotalMinRT(@RequestBody Map<String,Object> params){
-        return service.listTotalMinRT(params);
-    }
-
-    /**
-     * 实时小时总运营业务量
-     * @Author yey.he 
-     * @Date 10:06 AM 2020/6/30
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
-     **/
-    @PostMapping("/totalHourRT")
-    public ReturnT<List> getTotalHourRT(@RequestBody Map<String,Object> params){
-        return service.listTotalHourRT(params);
-    }
-
-    /**
-     * 实时日度总运营业务量
-     * @Author yey.he 
-     * @Date 10:55 AM 2020/6/30
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
-     **/
-    @PostMapping("/totalDayRT")
-    public ReturnT<List> getTotalDayRT(@RequestBody Map<String,Object> params){
-        return service.listTotalDayRT(params);
-    }
 }
 

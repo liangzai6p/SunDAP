@@ -138,32 +138,6 @@
             </if>
         </trim>
     </select>
-    <select id="listTotalMinRT" resultType="java.util.HashMap">
-        select *
-        from DM_BUSI_T_MIN_V
-        <trim prefix="where" prefixOverrides="and">
-            <if test="params.START_TIME != null and params.END_TIME != null">
-                to_date(record_time,'yyyymmddhh24mi') between to_date(#{params.START_TIME},'yyyymmddhh24mi') and to_date(#{params.END_TIME},'yyyymmddhh24mi')
-            </if>
-        </trim>
-    </select>
-    <select id="listTotalHourRT" resultType="java.util.HashMap">
-        select *
-        from DM_BUSI_T_HOUR_V
-        <trim prefix="where" prefixOverrides="and">
-            <if test="params.START_TIME != null and params.END_TIME != null">
-                to_date(record_time,'yyyymmddhh24') between to_date(#{params.START_TIME},'yyyymmddhh24') and to_date(#{params.END_TIME},'yyyymmddhh24')
-            </if>
-        </trim>
-    </select>
-    <select id="listTotalDayRT" resultType="java.util.HashMap">
-        select * from DM_BUSI_T_DAY_V
-        <trim prefix="where" prefixOverrides="and">
-            <if test="params.START_TIME != null and params.END_TIME != null">
-                to_date(record_time,'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
-            </if>
-        </trim>
-    </select>
 
 
 </mapper>

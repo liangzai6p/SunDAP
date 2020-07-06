@@ -1,7 +1,7 @@
-package com.sunyard.dap.consumer.controller.dataserve;
+package com.sunyard.dap.consumer.dataserve.controller;
 
 import com.sunyard.dap.common.model.ReturnT;
-import com.sunyard.dap.consumer.feign.dataserve.BusiCountClient;
+import com.sunyard.dap.consumer.dataserve.client.DataServeClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +23,7 @@ import java.util.Map;
 @RequestMapping("/sundap/busiCount")
 public class BusiCountController {
     @Autowired
-    private BusiCountClient client;
+    private DataServeClient client;
 
     @PostMapping("/info")
     public ReturnT<List> getInfo(@RequestBody Map<String,Object> params){return client.getInfo(params);}
@@ -77,19 +77,4 @@ public class BusiCountController {
         return client.getChannelMonthly(params);
     }
 
-    @PostMapping("/totalMinRT")
-    public ReturnT<List> getTotalMinRT(@RequestBody Map<String,Object> params){
-        return client.getTotalMinRT(params);
-    }
-
-
-    @PostMapping("/totalHourRT")
-    public ReturnT<List> getTotalHourRT(@RequestBody Map<String,Object> params){
-        return client.getTotalHourRT(params);
-    }
-
-    @PostMapping("/totalDayRT")
-    public ReturnT<List> getTotalDayRT(@RequestBody Map<String,Object> params){
-        return client.getTotalDayRT(params);
-    }
 }

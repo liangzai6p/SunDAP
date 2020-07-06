@@ -1,4 +1,4 @@
-package com.sunyard.dap.consumer.feign.system;
+package com.sunyard.dap.consumer.system.client;
 
 import com.sunyard.dap.common.entity.Test;
 import com.sunyard.dap.common.model.ReturnT;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(value = "sundap-system")
 public interface TestClient {
     @GetMapping(value = "/test/get/{id}")
-    public ReturnT<Test> getById(@PathVariable("id")int id);
+    public ReturnT<Test> getById(@PathVariable("id") int id);
 
     @GetMapping(value="/test/info")
     public ReturnT<String> getInfo();

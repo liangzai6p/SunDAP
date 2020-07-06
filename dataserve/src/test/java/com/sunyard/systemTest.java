@@ -1,5 +1,6 @@
 package com.sunyard;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.db.DbUtil;
@@ -7,6 +8,9 @@ import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,16 +28,26 @@ public class systemTest {
         for (long year = 20170000;year <= 20200000;year+=10000) {
             for (long month = 100; month <= 1200; month += 100) {
                 for (long day = 1; day <= 27; day++) {
-                    generateData(String.valueOf(year + month + day));
+                    generateData(String.valueOf(year + month + day),"yyyymmdd");
                     System.out.println("生成成功："+String.valueOf(year + month + day));
                 }
             }
         }
     }
 
+    @Test
+    public void generateDatabyTime() throws Exception{
+        LocalDateTime time = LocalDateTime.of(2020,1,1,7,0,0);
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        while (time.getHour()<=18){
+            time = time.plusSeconds(5);
+            generateData(df.format(time),"yyyymmddhh24miss");
+        }
+    }
 
 
-    public static void generateData(String date) throws Exception{
+
+    public static void generateData(String date,String format) throws Exception{
         Connection connGet = null,connSet = null;
         PreparedStatement ps = null;
         ResultSet rs = getRs(connGet,ps);
@@ -64,7 +78,7 @@ public class systemTest {
             subList.add(date);
         }
 
-        insert(connSet,ps,list);
+        insert(connSet,ps,list,format);
 
         IoUtil.close(connGet);
         IoUtil.close(connSet);
@@ -96,11 +110,11 @@ public class systemTest {
 
     }
 
-    public static void insert(Connection conn,PreparedStatement ps,List<List<String>> list) throws Exception{
+    public static void insert(Connection conn,PreparedStatement ps,List<List<String>> list,String format) throws Exception{
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             conn = DriverManager.getConnection("jdbc:oracle:thin:@172.1.1.11:1521:orcl","sundap","123456");
-            String sql = "insert into DM_BUSI_DAILY_TB values (?,?,?,?,?,?,?,?,?,?,?,?,?,TO_DATE(?, 'yyyymmdd'))";
+            String sql = "insert into DM_BUSI_RT_TB values (?,?,?,?,?,?,?,?,?,?,?,?,?,TO_DATE(?, '"+format+"'))";
 
             for (List<String> s : list){
                 ps = conn.prepareStatement(sql);
@@ -127,7 +141,7 @@ public class systemTest {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             conn = DriverManager.getConnection("jdbc:oracle:thin:@172.1.1.36:1521:orcl", "sunaos", "sunaos");
-            String sql = "SELECT TASK_ID,ZONE_NO,ZONE_NAME,BRANCH_NO,BRANCH_NAME,ORGAN_NO,ORGAN_NAME,SYS_NUM,SYS_NAME,ROLE_NO,ROLE_NAME,OPER_NO,OPER_NAME,trunc(dbms_random.value(0,2))，trunc(dbms_random.value(0,10000)),'',trunc(dbms_random.value(0,20000)),OPER_TIME,TRANS_STATE FROM MN_BUSI_DETAIL_V ORDER BY oper_time";
+            String sql = "SELECT TASK_ID,ZONE_NO,ZONE_NAME,BRANCH_NO,BRANCH_NAME,ORGAN_NO,ORGAN_NAME,SYS_NUM,SYS_NAME,ROLE_NO,ROLE_NAME,OPER_NO,OPER_NAME,trunc(dbms_random.value(0,2)),trunc(dbms_random.value(0,10000)),'',trunc(dbms_random.value(0,20000)),OPER_TIME,TRANS_STATE FROM MN_BUSI_DETAIL_V ORDER BY oper_time";
             ps = conn.prepareStatement(sql);
             resultSet = ps.executeQuery();
             conn = DriverManager.getConnection("jdbc:oracle:thin:@172.1.1.11:1521:orcl", "sundap", "123456");
