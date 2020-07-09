@@ -38,62 +38,184 @@
         order by RECORD_TIME
     </select>
     <select id="listBranchHRT" resultType="java.util.HashMap">
-        select * from DM_BUSI_BRANCH_HRT_V
+        select BRANCH_NO,BRANCH_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,to_char(RECORD_TIME,'hh24') RECORD_TIME
+        from DM_BUSI_RT_TB
         <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                to_date(RECORD_TIME,'hh24')
+                to_date(to_char(RECORD_TIME,'hh24'),'hh24')
                 between to_date(#{params.START_TIME},'hh24')
                 and to_date(#{params.END_TIME},'hh24')
             </if>
         </trim>
+        group by to_char(RECORD_TIME,'hh24'),BRANCH_NO,BRANCH_NAME
+        order by RECORD_TIME
     </select>
     <select id="listZoneHRT" resultType="java.util.HashMap">
-        select * from DM_BUSI_ZONE_HRT_V
+        select ZONE_NO,ZONE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,to_char(RECORD_TIME,'hh24') RECORD_TIME
+        from DM_BUSI_RT_TB
         <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                to_date(RECORD_TIME,'hh24')
+                to_date(to_char(RECORD_TIME,'hh24'),'hh24')
                 between to_date(#{params.START_TIME},'hh24')
                 and to_date(#{params.END_TIME},'hh24')
             </if>
         </trim>
+        group by to_char(RECORD_TIME,'hh24'),ZONE_NO,ZONE_NAME
+        order by RECORD_TIME
     </select>
     <select id="listSiteHRT" resultType="java.util.HashMap">
-        select * from DM_BUSI_SITE_HRT_V
+        select SITE_NO,SITE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,to_char(RECORD_TIME,'hh24') RECORD_TIME
+        from DM_BUSI_RT_TB
         <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                to_date(RECORD_TIME,'hh24')
+                to_date(to_char(RECORD_TIME,'hh24'),'hh24')
                 between to_date(#{params.START_TIME},'hh24')
                 and to_date(#{params.END_TIME},'hh24')
             </if>
         </trim>
+        group by to_char(RECORD_TIME,'hh24'),SITE_NO,SITE_NAME
+        order by RECORD_TIME
     </select>
     <select id="listChannelHRT" resultType="java.util.HashMap">
-        select * from DM_BUSI_CHANNEL_HRT_V
+        select CHANNEL_NO,CHANNEL_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,to_char(RECORD_TIME,'hh24') RECORD_TIME
+        from DM_BUSI_RT_TB
         <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                to_date(RECORD_TIME,'hh24')
+                to_date(to_char(RECORD_TIME,'hh24'),'hh24')
                 between to_date(#{params.START_TIME},'hh24')
                 and to_date(#{params.END_TIME},'hh24')
             </if>
         </trim>
+        group by to_char(RECORD_TIME,'hh24'),CHANNEL_NO,CHANNEL_NAME
+        order by RECORD_TIME
     </select>
     <select id="listDRT" resultType="java.util.HashMap">
         select sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT
         from DM_BUSI_RT_TB
     </select>
     <select id="listBranchDRT" resultType="java.util.HashMap">
-        select * from DM_BUSI_BRANCH_DRT_V
+        select BRANCH_NO,BRANCH_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT
+        from DM_BUSI_RT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+        </trim>
+        group by BRANCH_NO,BRANCH_NAME
     </select>
     <select id="listZoneDRT" resultType="java.util.HashMap">
-        select * from DM_BUSI_ZONE_DRT_V
+        select ZONE_NO,ZONE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT
+        from DM_BUSI_RT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+        </trim>
+        group by ZONE_NO,ZONE_NAME
     </select>
     <select id="listSiteDRT" resultType="java.util.HashMap">
-        select *
-        from DM_BUSI_SITE_DRT_V
+        select SITE_NO,SITE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT
+        from DM_BUSI_RT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+        </trim>
+        group by SITE_NO,SITE_NAME
     </select>
     <select id="listChannelDRT" resultType="java.util.HashMap">
-        select *
-        from DM_BUSI_CHANNEL_DRT_V
+        select CHANNEL_NO,CHANNEL_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT
+        from DM_BUSI_RT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+        </trim>
+        group by CHANNEL_NO,CHANNEL_NAME
     </select>
 
 
