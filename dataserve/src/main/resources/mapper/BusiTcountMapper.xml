@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.dap.dataserve.mapper.BusiTcountMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sunyard.dap.dataserve.entity.BusiTcountDO">
+        <result column="ZONE_NO" property="zoneNo" />
+        <result column="ZONE_NAME" property="zoneName" />
+        <result column="BRANCH_NO" property="branchNo" />
+        <result column="BRANCH_NAME" property="branchName" />
+        <result column="SITE_NO" property="siteNo" />
+        <result column="SITE_NAME" property="siteName" />
+        <result column="CHANNEL_NO" property="channelNo" />
+        <result column="CHANNEL_NAME" property="channelName" />
+        <result column="BUSI_NO" property="busiNo" />
+        <result column="BUSI_NAME" property="busiName" />
+        <result column="BUSI_COUNT" property="busiCount" />
+        <result column="CUS_COUNT" property="cusCount"/>
+        <result column="RECORD_TIME" property="recordTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+         ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, CHANNEL_NO, CHANNEL_NAME, BUSI_NO, BUSI_NAME, BUSI_COUNT,CUS_COUNT,RECORD_TIME
+    </sql>
+    <select id="listType" resultType="java.util.HashMap">
+        select * from (
+        select BUSI_NO,BUSI_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(CUS_COUNT) CUS_COUNT
+        from DM_BUSI_TCOUNT_TB
+            <trim prefix="where" prefixOverrides="and">
+                <if test="params.BRANCH_NO != null">
+                    BRANCH_NO = #{params.BRANCH_NO}
+                </if>
+                <if test="params.SITE_NO != null">
+                    and SITE_NO = #{params.SITE_NO}
+                </if>
+                <if test="params.ZONE_NO != null">
+                    and ZONE_NO = #{params.ZONE_NO}
+                </if>
+                <if test="params.CHANNEL_NO != null">
+                    and CHANNEL_NO = #{params.CHANNEL_NO}
+                </if>
+                <if test="params.START_TIME != null and params.END_TIME != null">
+                    and to_date(to_char(record_time,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                </if>
+            </trim>
+            group by BUSI_NO,BUSI_NAME
+            order by BUSI_COUNT desc
+        )
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.TOP != null">
+                rownum &lt;= #{params.TOP}
+            </if>
+        </trim>
+    </select>
+    <select id="listBranch" resultType="java.util.HashMap">
+        select BRANCH_NO,BRANCH_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(CUS_COUNT) CUS_COUNT
+        from DM_BUSI_TCOUNT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+            <if test="params.BUSI_NO != null">
+                and BUSI_NO = #{params.BUSI_NO}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and to_date(to_char(record_time,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+        </trim>
+        group by BRANCH_NO, BRANCH_NAME
+    </select>
+
+    <select id="listZone" resultType="java.util.HashMap">
+        select ZONE_NO,ZONE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(CUS_COUNT) CUS_COUNT
+        from DM_BUSI_TCOUNT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+            <if test="params.BUSI_NO != null">
+                and BUSI_NO = #{params.BUSI_NO}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and to_date(to_char(record_time,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+        </trim>
+        group by ZONE_NO, ZONE_NAME
+    </select>
+
+    <select id="listSite" resultType="java.util.HashMap">
+        select SITE_NO,SITE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(CUS_COUNT) CUS_COUNT
+        from DM_BUSI_TCOUNT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+            <if test="params.BUSI_NO != null">
+                and BUSI_NO = #{params.BUSI_NO}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and to_date(to_char(record_time,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+        </trim>
+        group by SITE_NO, SITE_NAME
+    </select>
+
+
+    <select id="listChannel" resultType="java.util.HashMap">
+        select CHANNEL_NO,CHANNEL_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(CUS_COUNT) CUS_COUNT
+        from DM_BUSI_TCOUNT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+            <if test="params.BUSI_NO != null">
+                and BUSI_NO = #{params.BUSI_NO}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and to_date(to_char(record_time,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+        </trim>
+        group by CHANNEL_NO, CHANNEL_NAME
+    </select>
+
+    <select id="listTypeMonthly" resultType="java.util.HashMap">
+        select sum(BUSI_COUNT) BUSI_COUNT,sum(CUS_COUNT) CUS_COUNT,to_char(RECORD_TIME,'yyyymm') RECORD_TIME
+        from DM_BUSI_TCOUNT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+            <if test="params.BUSI_NO != null">
+                and BUSI_NO = #{params.BUSI_NO}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and to_date(to_char(RECORD_TIME,'yyyymm'),'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+            </if>
+        </trim>
+        group by to_char(RECORD_TIME,'yyyymm')
+        order by RECORD_TIME
+    </select>
+
+</mapper>

@@ -27,51 +27,51 @@ public class BusiRTController {
 
     @PostMapping("/totalH")
     public ReturnT<List> listHRT(@RequestBody Map<String,Object> params){
-        return client.listHRT(params);
+        return client.getBusiHRT(params);
     }
     
     @PostMapping("/branchH")
     public ReturnT<List> listBranchHRT(@RequestBody Map<String,Object> params){
-        return client.listBranchHRT(params);
+        return client.getBusiBranchHRT(params);
     }
 
     @PostMapping("/zoneH")
     public ReturnT<List> listZoneHRT(@RequestBody Map<String,Object> params){
-        return client.listZoneHRT(params);
+        return client.getBusiZoneHRT(params);
     }
 
     @PostMapping("/siteH")
     public ReturnT<List> listSiteHRT(@RequestBody Map<String,Object> params){
-        return client.listSiteHRT(params);
+        return client.getBusiSiteHRT(params);
     }
 
     @PostMapping("/channelH")
     public ReturnT<List> listChannelHRT(@RequestBody Map<String,Object> params){
-        return client.listChannelHRT(params);
+        return client.getBusiChannelHRT(params);
     }
 
     @PostMapping("/totalD")
     public ReturnT<List> listDRT(@RequestBody Map<String,Object> params){
-        return client.listDRT(params);
+        return client.getBusiDRT(params);
     }
 
     @PostMapping("/branchD")
     public ReturnT<List> listBranchDRT(@RequestBody Map<String,Object> params){
-        return client.listBranchDRT(params);
+        return client.getBusiBranchDRT(params);
     }
 
     @PostMapping("/zoneD")
     public ReturnT<List> listZoneDRT(@RequestBody Map<String,Object> params){
-        return client.listZoneDRT(params);
+        return client.getBusiZoneDRT(params);
     }
 
     @PostMapping("/siteD")
     public ReturnT<List> listSiteDRT(@RequestBody Map<String,Object> params){
-        return client.listSiteDRT(params);
+        return client.getBusiSiteDRT(params);
     }
 
     @PostMapping("/channelD")
     public ReturnT<List> listChannelDRT(@RequestBody Map<String,Object> params){
-        return client.listChannelDRT(params);
+        return client.getBusiChannelDRT(params);
     }
 }

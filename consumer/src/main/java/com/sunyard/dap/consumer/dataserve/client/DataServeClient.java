@@ -17,132 +17,115 @@ import java.util.Map;
 @Component
 @FeignClient("sundap-dataserve")
 public interface DataServeClient {
+
     /**
-     * 离线运营日度业务量总数据
-     * @Author yey.he
-     * @Date 3:26 PM 2020/6/17
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     * 离线运营业务量
      **/
     @PostMapping("/busiCount/info")
-    ReturnT<List> getInfo(Map<String,Object> params);
+    ReturnT<List> getBusiCountInfo(Map<String,Object> params);
 
-    /**
-     * 分渠道离线日度运营业务量
-     * @Author yey.he
-     * @Date 3:27 PM 2020/6/17
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
-     **/
     @PostMapping("/busiCount/channel")
-    ReturnT<List> getChannelInfo(Map<String,Object> params);
+    ReturnT<List> getBusiCountChannelInfo(Map<String,Object> params);
 
-    /**
-     * 分行离线日度运营业务量
-     * @Author yey.he
-     * @Date 3:27 PM 2020/6/17
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
-     **/
     @PostMapping("/busiCount/branch")
-    ReturnT<List> getBranchInfo(Map<String,Object> params);
+    ReturnT<List> getBusiCountBranchInfo(Map<String,Object> params);
 
-    /**
-     * 网点离线日度运营业务量
-     * @Author yey.he
-     * @Date 3:28 PM 2020/6/17
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
-     **/
     @PostMapping("/busiCount/site")
-    ReturnT<List> getSiteInfo(Map<String,Object> params);
+    ReturnT<List> getBusiCountSiteInfo(Map<String,Object> params);
 
-    /**
-     * 区域离线日度运营业务量
-     * @Author yey.he
-     * @Date 3:28 PM 2020/6/17
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
-     **/
     @PostMapping("/busiCount/zone")
-    ReturnT<List> getZoneInfo(Map<String,Object> params);
+    ReturnT<List> getBusiCountZoneInfo(Map<String,Object> params);
 
-    /**
-     * 月度离线运营业务量
-     * @Author yey.he
-     * @Date 11:26 AM 2020/6/18
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
-     **/
     @PostMapping("/busiCount/infoMonthly")
-    ReturnT<List> getInfoMonthly(Map<String,Object> params);
+    ReturnT<List> getBusiCountInfoMonthly(Map<String,Object> params);
 
-    /**
-     * 分行月度离线运营业务量
-     * @Author yey.he
-     * @Date 11:27 AM 2020/6/18
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
-     **/
     @PostMapping("/busiCount/branchMonthly")
-    ReturnT<List> getBranchMonthly(Map<String,Object> params);
+    ReturnT<List> getBusiCountBranchMonthly(Map<String,Object> params);
 
-    /**
-     * 区域月度离线运营业务量
-     * @Author yey.he
-     * @Date 11:28 AM 2020/6/18
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
-     **/
     @PostMapping("/busiCount/zoneMonthly")
-    ReturnT<List> getZoneMonthly(Map<String,Object> params);
-    /**
-     * 网点月度离线运营业务量
-     * @Author yey.he
-     * @Date 11:28 AM 2020/6/18
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
-     **/
+    ReturnT<List> getBusiCountZoneMonthly(Map<String,Object> params);
+
     @PostMapping("/busiCount/siteMonthly")
-    ReturnT<List> getSiteMonthly(Map<String,Object> params);
+    ReturnT<List> getBusiCountSiteMonthly(Map<String,Object> params);
+
+    @PostMapping("/busiCount/channelMonthly")
+    ReturnT<List> getBusiCountChannelMonthly(Map<String,Object> params);
 
     /**
-     * 渠道月度离线运营业务量
-     * @Author yey.he
-     * @Date 11:28 AM 2020/6/18
-     * @Param [params]
-     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     * 实时运营业务量
      **/
-    @PostMapping("/busiCount/channelMonthly")
-    ReturnT<List> getChannelMonthly(Map<String,Object> params);
 
     @PostMapping("/busiRT/totalH")
-    ReturnT<List> listHRT(Map<String,Object> params);
+    ReturnT<List> getBusiHRT(Map<String,Object> params);
 
     @PostMapping("/busiRT/branchH")
-    ReturnT<List> listBranchHRT(Map<String,Object> params);
+    ReturnT<List> getBusiBranchHRT(Map<String,Object> params);
 
     @PostMapping("/busiRT/zoneH")
-    ReturnT<List> listZoneHRT(Map<String,Object> params);
+    ReturnT<List> getBusiZoneHRT(Map<String,Object> params);
 
     @PostMapping("/busiRT/siteH")
-    ReturnT<List> listSiteHRT(Map<String,Object> params);
+    ReturnT<List> getBusiSiteHRT(Map<String,Object> params);
 
     @PostMapping("/busiRT/channelH")
-    ReturnT<List> listChannelHRT(Map<String,Object> params);
+    ReturnT<List> getBusiChannelHRT(Map<String,Object> params);
 
     @PostMapping("/busiRT/totalD")
-    ReturnT<List> listDRT(Map<String,Object> params);
+    ReturnT<List> getBusiDRT(Map<String,Object> params);
 
     @PostMapping("/busiRT/branchD")
-    ReturnT<List> listBranchDRT(Map<String,Object> params);
+    ReturnT<List> getBusiBranchDRT(Map<String,Object> params);
 
     @PostMapping("/busiRT/zoneD")
-    ReturnT<List> listZoneDRT(Map<String,Object> params);
+    ReturnT<List> getBusiZoneDRT(Map<String,Object> params);
 
     @PostMapping("/busiRT/siteD")
-    ReturnT<List> listSiteDRT(Map<String,Object> params);
+    ReturnT<List> getBusiSiteDRT(Map<String,Object> params);
 
     @PostMapping("/busiRT/channelD")
-    ReturnT<List> listChannelDRT(Map<String,Object> params);
+    ReturnT<List> getBusiChannelDRT(Map<String,Object> params);
+
+    /**
+     * 历史业务种类业务量
+     **/
+    @PostMapping("/busiTcount/list")
+    ReturnT<List> getBusiTcountListType(Map<String,Object> params);
+
+    @PostMapping("/busiTcount/channel")
+    ReturnT<List> getBusiTcountChannelInfo(Map<String,Object> params);
+
+    @PostMapping("/busiTcount/branch")
+    ReturnT<List> getBusiTcountBranchInfo(Map<String,Object> params);
+
+    @PostMapping("/busiTcount/site")
+    ReturnT<List> getBusiTcountSiteInfo(Map<String,Object> params);
+
+    @PostMapping("/busiTcount/zone")
+    ReturnT<List> getBusiTcountZoneInfo(Map<String,Object> params);
+
+    @PostMapping("/busiTcount/typeMonthly")
+    ReturnT<List> getBusiTcountInfoMonthly(Map<String,Object> params);
+
+    /**
+     * 实时业务种类业务量
+     **/
+    @PostMapping("/busiTrt/list")
+    ReturnT<List> getBusiTrtListType(Map<String,Object> params);
+
+    @PostMapping("/busiTrt/channel")
+    ReturnT<List> getBusiTrtChannelInfo(Map<String,Object> params);
+
+    @PostMapping("/busiTrt/branch")
+    ReturnT<List> getBusiTrtBranchInfo(Map<String,Object> params);
+
+    @PostMapping("/busiTrt/site")
+    ReturnT<List> getBusiTrtSiteInfo(Map<String,Object> params);
+
+    @PostMapping("/busiTrt/zone")
+    ReturnT<List> getBusiTrtZoneInfo(Map<String,Object> params);
+
+    @PostMapping("/busiTrt/typeHourly")
+    ReturnT<List> getBusiTrtInfoHourly(Map<String,Object> params);
+
+
 }

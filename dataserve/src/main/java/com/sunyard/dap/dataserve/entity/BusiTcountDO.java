@@ -1,6 +1,5 @@
 package com.sunyard.dap.dataserve.entity;
 
-import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.util.Date;
@@ -15,11 +14,11 @@ import java.io.Serializable;
  * </p>
  *
  * @author yey.he
- * @since 2020-07-03
+ * @since 2020-07-14
  */
-@TableName("DM_BUSI_RT_TB")
 @Data
-public class BusiRtDO extends Model<BusiRtDO> {
+@TableName("DM_BUSI_TCOUNT_TB")
+public class BusiTcountDO extends Model<BusiTcountDO> {
 
     private static final long serialVersionUID=1L;
 
@@ -73,28 +72,41 @@ public class BusiRtDO extends Model<BusiRtDO> {
     private String channelName;
 
     /**
+     * 业务编号
+     */
+    @TableField("BUSI_NO")
+    private String busiNo;
+
+    /**
+     * 业务名称
+     */
+    @TableField("BUSI_NAME")
+    private String busiName;
+
+    /**
      * 业务量
      */
     @TableField("BUSI_COUNT")
     private String busiCount;
 
     /**
-     * 金额
-     */
-    @TableField("AMOUNT")
-    private BigDecimal amount;
-
-    /**
      * 客户量
-     */
+     **/
     @TableField("CUS_COUNT")
     private String cusCount;
 
+
     /**
-     * 日期
+     * 更新时间
      */
     @TableField("RECORD_TIME")
     private Date recordTime;
+
+
+    @Override
+    protected Serializable pkVal() {
+        return null;
+    }
 
 
 }

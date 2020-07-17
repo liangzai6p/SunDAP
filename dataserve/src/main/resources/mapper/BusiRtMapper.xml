@@ -4,8 +4,6 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.sunyard.dap.dataserve.entity.BusiRtDO">
-        <result column="BLOC_NO" property="blocNo" />
-        <result column="BLOC_NAME" property="blocName" />
         <result column="ZONE_NO" property="zoneNo" />
         <result column="ZONE_NAME" property="zoneName" />
         <result column="BRANCH_NO" property="branchNo" />
@@ -22,24 +20,24 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        BLOC_NO, BLOC_NAME, ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, CHANNEL_NO, CHANNEL_NAME, BUSI_COUNT, AMOUNT, CUS_COUNT, RECORD_TIME
+        ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, CHANNEL_NO, CHANNEL_NAME, BUSI_COUNT, AMOUNT, CUS_COUNT, RECORD_TIME
     </sql>
     <select id="listHRT" resultType="java.util.HashMap">
-        select sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,to_char(RECORD_TIME,'hh24') RECORD_TIME
-        from DM_BUSI_RT_TB
+        select count(*) BUSI_COUNT,sum(TRANS_AMOUNT) AMOUNT,count(distinct CUS_NO) CUS_COUNT,to_char(CREATE_TIME,'hh24') RECORD_TIME
+        from DM_BUSI_DETAIL_TB
         <trim prefix="where" prefixOverrides="and">
             <if test="params.START_TIME != null and params.END_TIME != null">
-                to_date(to_char(RECORD_TIME,'hh24'),'hh24')
+                to_date(to_char(CREATE_TIME,'hh24'),'hh24')
                 between to_date(#{params.START_TIME},'hh24')
                 and to_date(#{params.END_TIME},'hh24')
             </if>
         </trim>
-        group by to_char(RECORD_TIME,'hh24')
+        group by to_char(CREATE_TIME,'hh24')
         order by RECORD_TIME
     </select>
     <select id="listBranchHRT" resultType="java.util.HashMap">
-        select BRANCH_NO,BRANCH_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,to_char(RECORD_TIME,'hh24') RECORD_TIME
-        from DM_BUSI_RT_TB
+        select BRANCH_NO,BRANCH_NAME,count(*) BUSI_COUNT,sum(TRANS_AMOUNT) AMOUNT,count(distinct CUS_NO) CUS_COUNT,to_char(CREATE_TIME,'hh24') RECORD_TIME
+        from DM_BUSI_DETAIL_TB
         <trim prefix="where" prefixOverrides="and">
             <if test="params.BRANCH_NO != null">
                 BRANCH_NO = #{params.BRANCH_NO}
@@ -54,17 +52,17 @@
                 and CHANNEL_NO = #{params.CHANNEL_NO}
             </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                to_date(to_char(RECORD_TIME,'hh24'),'hh24')
+                to_date(to_char(CREATE_TIME,'hh24'),'hh24')
                 between to_date(#{params.START_TIME},'hh24')
                 and to_date(#{params.END_TIME},'hh24')
             </if>
         </trim>
-        group by to_char(RECORD_TIME,'hh24'),BRANCH_NO,BRANCH_NAME
+        group by to_char(CREATE_TIME,'hh24'),BRANCH_NO,BRANCH_NAME
         order by RECORD_TIME
     </select>
     <select id="listZoneHRT" resultType="java.util.HashMap">
-        select ZONE_NO,ZONE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,to_char(RECORD_TIME,'hh24') RECORD_TIME
-        from DM_BUSI_RT_TB
+        select ZONE_NO,ZONE_NAME,count(*) BUSI_COUNT,sum(TRANS_AMOUNT) AMOUNT,count(distinct CUS_NO) CUS_COUNT,to_char(CREATE_TIME,'hh24') RECORD_TIME
+        from DM_BUSI_DETAIL_TB
         <trim prefix="where" prefixOverrides="and">
             <if test="params.BRANCH_NO != null">
                 BRANCH_NO = #{params.BRANCH_NO}
@@ -79,17 +77,17 @@
                 and CHANNEL_NO = #{params.CHANNEL_NO}
             </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                to_date(to_char(RECORD_TIME,'hh24'),'hh24')
+                to_date(to_char(CREATE_TIME,'hh24'),'hh24')
                 between to_date(#{params.START_TIME},'hh24')
                 and to_date(#{params.END_TIME},'hh24')
             </if>
         </trim>
-        group by to_char(RECORD_TIME,'hh24'),ZONE_NO,ZONE_NAME
+        group by to_char(CREATE_TIME,'hh24'),ZONE_NO,ZONE_NAME
         order by RECORD_TIME
     </select>
     <select id="listSiteHRT" resultType="java.util.HashMap">
-        select SITE_NO,SITE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,to_char(RECORD_TIME,'hh24') RECORD_TIME
-        from DM_BUSI_RT_TB
+        select SITE_NO,SITE_NAME,count(*) BUSI_COUNT,sum(TRANS_AMOUNT) AMOUNT,count(distinct CUS_NO) CUS_COUNT,to_char(CREATE_TIME,'hh24') RECORD_TIME
+        from DM_BUSI_DETAIL_TB
         <trim prefix="where" prefixOverrides="and">
             <if test="params.BRANCH_NO != null">
                 BRANCH_NO = #{params.BRANCH_NO}
@@ -104,17 +102,17 @@
                 and CHANNEL_NO = #{params.CHANNEL_NO}
             </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                to_date(to_char(RECORD_TIME,'hh24'),'hh24')
+                to_date(to_char(CREATE_TIME,'hh24'),'hh24')
                 between to_date(#{params.START_TIME},'hh24')
                 and to_date(#{params.END_TIME},'hh24')
             </if>
         </trim>
-        group by to_char(RECORD_TIME,'hh24'),SITE_NO,SITE_NAME
+        group by to_char(CREATE_TIME,'hh24'),SITE_NO,SITE_NAME
         order by RECORD_TIME
     </select>
     <select id="listChannelHRT" resultType="java.util.HashMap">
-        select CHANNEL_NO,CHANNEL_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,to_char(RECORD_TIME,'hh24') RECORD_TIME
-        from DM_BUSI_RT_TB
+        select CHANNEL_NO,CHANNEL_NAME,count(*) BUSI_COUNT,sum(TRANS_AMOUNT) AMOUNT,count(distinct CUS_NO) CUS_COUNT,to_char(CREATE_TIME,'hh24') RECORD_TIME
+        from DM_BUSI_DETAIL_TB
         <trim prefix="where" prefixOverrides="and">
             <if test="params.BRANCH_NO != null">
                 BRANCH_NO = #{params.BRANCH_NO}
@@ -129,12 +127,12 @@
                 and CHANNEL_NO = #{params.CHANNEL_NO}
             </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                to_date(to_char(RECORD_TIME,'hh24'),'hh24')
+                to_date(to_char(CREATE_TIME,'hh24'),'hh24')
                 between to_date(#{params.START_TIME},'hh24')
                 and to_date(#{params.END_TIME},'hh24')
             </if>
         </trim>
-        group by to_char(RECORD_TIME,'hh24'),CHANNEL_NO,CHANNEL_NAME
+        group by to_char(CREATE_TIME,'hh24'),CHANNEL_NO,CHANNEL_NAME
         order by RECORD_TIME
     </select>
     <select id="listDRT" resultType="java.util.HashMap">
