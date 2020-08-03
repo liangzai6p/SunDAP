@@ -38,4 +38,7 @@ public interface BusiRtService extends IService<BusiRtDO> {
 
     ReturnT<List> listChannelDRT(Map<String,Object> params);
 
+    ReturnT<List> listByState(Map<String,Object> params);
+
+
 }

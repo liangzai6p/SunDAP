@@ -148,5 +148,52 @@ public class BusiCountController {
         return service.listChannelMonthly(params);
     }
 
+    /**
+     * 分行业务总量统计
+     * @Author yey.he
+     * @Date 3:58 PM 2020/7/27
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/branchCount")
+    public ReturnT<List> getBranchCount(@RequestBody Map<String,Object> params){
+        return service.countBranch(params);
+    }
+
+    /**
+     * 区域业务总量统计
+     * @Author yey.he
+     * @Date 3:59 PM 2020/7/27
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/zoneCount")
+    public ReturnT<List> getZoneCount(@RequestBody Map<String,Object> params){
+        return service.countZone(params);
+    }
+
+    /**
+     * 网点业务总量统计
+     * @Author yey.he
+     * @Date 3:59 PM 2020/7/27
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/siteCount")
+    public ReturnT<List> getSiteCount(@RequestBody Map<String,Object> params){
+        return service.countSite(params);
+    }
+
+    /**
+     * 渠道业务总量统计
+     * @Author yey.he
+     * @Date 3:59 PM 2020/7/27
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/channelCount")
+    public ReturnT<List> getChannelCount(@RequestBody Map<String,Object> params){
+        return service.countChannel(params);
+    }
 }
 

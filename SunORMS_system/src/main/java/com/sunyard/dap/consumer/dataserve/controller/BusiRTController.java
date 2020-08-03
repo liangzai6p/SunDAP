@@ -74,4 +74,9 @@ public class BusiRTController {
     public ReturnT<List> listChannelDRT(@RequestBody Map<String,Object> params){
         return client.getBusiChannelDRT(params);
     }
+
+    @PostMapping("/listByState")
+    public ReturnT<List> listByState(@RequestBody Map<String,Object> params){
+        return client.getBusiListByState(params);
+    }
 }

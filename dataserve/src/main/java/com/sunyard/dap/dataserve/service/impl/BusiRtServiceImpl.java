@@ -122,4 +122,14 @@ public class BusiRtServiceImpl extends ServiceImpl<BusiRtMapper, BusiRtDO> imple
             return ReturnT.listFAIL;
         }
     }
+
+    @Override
+    public ReturnT<List> listByState(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listByState(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
 }

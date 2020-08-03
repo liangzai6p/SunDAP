@@ -37,4 +37,11 @@ public interface BusiCountService extends IService<BusiCountDO>{
 
     ReturnT<List> listChannelMonthly(Map<String,Object> params);
 
+    ReturnT<List> countBranch(Map<String,Object> params);
+
+    ReturnT<List> countZone(Map<String,Object> params);
+
+    ReturnT<List> countSite(Map<String,Object> params);
+
+    ReturnT<List> countChannel(Map<String,Object> params);
 }

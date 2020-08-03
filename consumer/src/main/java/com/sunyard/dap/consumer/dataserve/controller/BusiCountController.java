@@ -77,4 +77,24 @@ public class BusiCountController {
         return client.getBusiCountChannelMonthly(params);
     }
 
+    @PostMapping("/branchCount")
+    public ReturnT<List> getBranchCount(@RequestBody Map<String,Object> params){
+        return client.getBusiCountBranchCount(params);
+    }
+
+    @PostMapping("/zoneCount")
+    public ReturnT<List> getZoneCount(@RequestBody Map<String,Object> params){
+        return client.getBusiCountZoneCount(params);
+    }
+
+    @PostMapping("/siteCount")
+    public ReturnT<List> getSiteCount(@RequestBody Map<String,Object> params){
+        return client.getBusiCountSiteCount(params);
+    }
+
+    @PostMapping("/channelCount")
+    public ReturnT<List> getChannelCount(@RequestBody Map<String,Object> params){
+        return client.getBusiCountChannelCount(params);
+    }
+
 }

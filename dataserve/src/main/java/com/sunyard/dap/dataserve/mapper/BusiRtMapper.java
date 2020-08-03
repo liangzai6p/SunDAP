@@ -37,4 +37,7 @@ public interface BusiRtMapper extends BaseMapper<BusiRtDO> {
 
     List<HashMap<String,Object>> listChannelDRT(@Param("params") Map<String,Object> params);
 
+    List<HashMap<String,Object>> listByState(@Param("params") Map<String,Object> params);
+
+
 }

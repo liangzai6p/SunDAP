@@ -51,6 +51,19 @@ public interface DataServeClient {
     @PostMapping("/busiCount/channelMonthly")
     ReturnT<List> getBusiCountChannelMonthly(Map<String, Object> params);
 
+    @PostMapping("/busiCount/branchCount")
+    ReturnT<List> getBusiCountBranchCount(Map<String, Object> params);
+
+    @PostMapping("/busiCount/zoneCount")
+    ReturnT<List> getBusiCountZoneCount(Map<String, Object> params);
+
+    @PostMapping("/busiCount/siteCount")
+    ReturnT<List> getBusiCountSiteCount(Map<String, Object> params);
+
+    @PostMapping("/busiCount/channelCount")
+    ReturnT<List> getBusiCountChannelCount(Map<String, Object> params);
+
+
     /**
      * 实时运营业务量
      **/
@@ -84,6 +97,10 @@ public interface DataServeClient {
 
     @PostMapping("/busiRT/channelD")
     ReturnT<List> getBusiChannelDRT(Map<String, Object> params);
+
+    @PostMapping("/busiRT/listByState")
+    ReturnT<List> getBusiListByState(Map<String, Object> params);
+
 
     /**
      * 历史业务种类业务量

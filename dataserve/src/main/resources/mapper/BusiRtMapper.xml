@@ -216,5 +216,36 @@
         group by CHANNEL_NO,CHANNEL_NAME
     </select>
 
+    <select id="listByState" resultType="java.util.HashMap">
+        select TASK_ID,BUSI_NAME,STAFF_NAME,TRANS_STATE
+        from DM_BUSI_DETAIL_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+            <if test="params.STATE != null">
+                and TRANS_STATE = #{params.STATE}
+            </if>
+            <choose>
+                <when test="params.LIMIT != null">
+                    and rownum &lt;= #{params.LIMIT}
+                </when>
+                <otherwise>
+                    and rownum &lt;= 10
+                </otherwise>
+            </choose>
+        </trim>
+
+    </select>
+
 
 </mapper>
