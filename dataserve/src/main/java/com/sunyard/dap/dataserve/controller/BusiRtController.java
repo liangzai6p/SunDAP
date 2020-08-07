@@ -151,7 +151,7 @@ public class BusiRtController {
     }
 
     /**
-     * 实时任务明细状态查询
+     * 实时交易明细状态查询
      * @Author yey.he
      * @Date 11:34 AM 2020/7/20
      * @Param [params]
@@ -160,6 +160,18 @@ public class BusiRtController {
     @PostMapping("/listByState")
     public ReturnT<List> listByState(@RequestBody Map<String,Object> params){
         return service.listByState(params);
+    }
+
+    /**
+     * 实时交易状态统计
+     * @Author yey.he
+     * @Date 5:01 PM 2020/8/6
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/countState")
+    public ReturnT<List> countState(@RequestBody Map<String,Object> params){
+        return service.countState(params);
     }
 
 }

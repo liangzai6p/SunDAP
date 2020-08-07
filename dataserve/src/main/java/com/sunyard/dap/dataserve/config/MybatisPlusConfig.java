@@ -19,6 +19,7 @@ public class MybatisPlusConfig {
     @Bean
     public PaginationInterceptor paginationInterceptor(){
         // 开启 count 的 join 优化,只针对 left join !!!
+        // 启用分页插件
         return new PaginationInterceptor().setCountSqlParser(new JsqlParserCountOptimize(true));
     }
 
@@ -29,5 +30,7 @@ public class MybatisPlusConfig {
         scannerConfigurer.setBasePackage("com.sunyard.dap.dataserve.mapper");
         return scannerConfigurer;
     }
+
+
 
 }

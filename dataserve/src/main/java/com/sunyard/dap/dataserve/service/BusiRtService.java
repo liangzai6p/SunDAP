@@ -40,5 +40,7 @@ public interface BusiRtService extends IService<BusiRtDO> {
 
     ReturnT<List> listByState(Map<String,Object> params);
 
+    ReturnT<List> countState(Map<String,Object> params);
+
 
 }

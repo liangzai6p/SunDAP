@@ -246,6 +246,27 @@
         </trim>
 
     </select>
+    <select id="countState" resultType="java.util.HashMap">
+        SELECT TRANS_STATE,COUNT(*) FROM DM_BUSI_DETAIL_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+            <if test="params.BUSI_NO !=null">
+                and BUSI_NO = #{params.BUSI_NO}
+            </if>
+        </trim>
+        GROUP BY TRANS_STATE
+    </select>
 
 
 </mapper>

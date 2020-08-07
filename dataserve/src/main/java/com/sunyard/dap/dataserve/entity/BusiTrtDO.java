@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -14,6 +16,7 @@ import java.io.Serializable;
  * @author yey.he
  * @since 2020-07-17
  */
+@Data
 @TableName("DM_BUSI_TRT_TB")
 public class BusiTrtDO extends Model<BusiTrtDO> {
 
@@ -97,110 +100,6 @@ public class BusiTrtDO extends Model<BusiTrtDO> {
     @TableField("RECORD_TIME")
     private Date recordTime;
 
-
-    public String getZoneNo() {
-        return zoneNo;
-    }
-
-    public void setZoneNo(String zoneNo) {
-        this.zoneNo = zoneNo;
-    }
-
-    public String getZoneName() {
-        return zoneName;
-    }
-
-    public void setZoneName(String zoneName) {
-        this.zoneName = zoneName;
-    }
-
-    public String getBranchNo() {
-        return branchNo;
-    }
-
-    public void setBranchNo(String branchNo) {
-        this.branchNo = branchNo;
-    }
-
-    public String getBranchName() {
-        return branchName;
-    }
-
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
-    }
-
-    public String getSiteNo() {
-        return siteNo;
-    }
-
-    public void setSiteNo(String siteNo) {
-        this.siteNo = siteNo;
-    }
-
-    public String getSiteName() {
-        return siteName;
-    }
-
-    public void setSiteName(String siteName) {
-        this.siteName = siteName;
-    }
-
-    public String getChannelNo() {
-        return channelNo;
-    }
-
-    public void setChannelNo(String channelNo) {
-        this.channelNo = channelNo;
-    }
-
-    public String getChannelName() {
-        return channelName;
-    }
-
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
-    }
-
-    public String getBusiNo() {
-        return busiNo;
-    }
-
-    public void setBusiNo(String busiNo) {
-        this.busiNo = busiNo;
-    }
-
-    public String getBusiName() {
-        return busiName;
-    }
-
-    public void setBusiName(String busiName) {
-        this.busiName = busiName;
-    }
-
-    public String getBusiCount() {
-        return busiCount;
-    }
-
-    public void setBusiCount(String busiCount) {
-        this.busiCount = busiCount;
-    }
-
-    public String getCusCount() {
-        return cusCount;
-    }
-
-    public void setCusCount(String cusCount) {
-        this.cusCount = cusCount;
-    }
-
-    public Date getRecordTime() {
-        return recordTime;
-    }
-
-    public void setRecordTime(Date recordTime) {
-        this.recordTime = recordTime;
-    }
 
     @Override
     protected Serializable pkVal() {

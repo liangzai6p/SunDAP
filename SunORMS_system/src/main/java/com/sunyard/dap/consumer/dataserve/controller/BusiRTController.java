@@ -79,4 +79,9 @@ public class BusiRTController {
     public ReturnT<List> listByState(@RequestBody Map<String,Object> params){
         return client.getBusiListByState(params);
     }
+
+    @PostMapping("/countState")
+    public ReturnT<List> countState(@RequestBody Map<String,Object> params){
+        return client.getBusiRtCountState(params);
+    }
 }

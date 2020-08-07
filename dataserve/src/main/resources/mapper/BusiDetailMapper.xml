@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.dap.dataserve.mapper.BusiDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sunyard.dap.dataserve.entity.BusiDetailDO">
+        <result column="TASK_ID" property="taskId" />
+        <result column="ZONE_NO" property="zoneNo" />
+        <result column="ZONE_NAME" property="zoneName" />
+        <result column="BRANCH_NO" property="branchNo" />
+        <result column="BRANCH_NAME" property="branchName" />
+        <result column="SITE_NO" property="siteNo" />
+        <result column="SITE_NAME" property="siteName" />
+        <result column="CHANNEL_NO" property="channelNo" />
+        <result column="CHANNEL_NAME" property="channelName" />
+        <result column="ROLE_NO" property="roleNo" />
+        <result column="ROLE_NAME" property="roleName" />
+        <result column="STAFF_NO" property="staffNo" />
+        <result column="STAFF_NAME" property="staffName" />
+        <result column="CUS_TYPE" property="cusType" />
+        <result column="CUS_NO" property="cusNo" />
+        <result column="CUS_NAME" property="cusName" />
+        <result column="BUSI_NO" property="busiNo" />
+        <result column="BUSI_NAME" property="busiName" />
+        <result column="TRANS_AMOUNT" property="transAmount" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="COMPLETE_TIME" property="completeTime" />
+        <result column="TRANS_STATE" property="transState" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        TASK_ID, ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, CHANNEL_NO, CHANNEL_NAME, ROLE_NO, ROLE_NAME, STAFF_NO, STAFF_NAME, CUS_TYPE, CUS_NO, CUS_NAME, BUSI_NO, BUSI_NAME, TRANS_AMOUNT, CREATE_TIME, COMPLETE_TIME, TRANS_STATE
+    </sql>
+
+    <sql id="Base_Select_List">
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+            <if test="params.ROLE_NO != null">
+                and ROLE_NO = #{params.ROLE_NO}
+            </if>
+            <if test="params.CUS_TYPE != null">
+                and CUS_TYPE = #{params.CUS_TYPE}
+            </if>
+            <if test="params.CUS_NO != null">
+                and CUS_NO = #{params.CUS_NO}
+            </if>
+            <if test="params.BUSI_NO != null">
+                and BUSI_NO = #{params.BUSI_NO}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and to_date(to_char(CREATE_TIME,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+            <if test="params.TRANS_STATE  != null">
+                and TRANS_STATE = #{params.TRANS_STATE}
+            </if>
+        </trim>
+    </sql>
+
+
+    <select id="listRtDetail" resultType="java.util.HashMap">
+        select *
+        from DM_BUSI_DETAIL_TB
+        <include refid="Base_Select_List"></include>
+        order by CREATE_TIME desc
+    </select>
+
+    <select id="listHistoryDetail" resultType="java.util.HashMap">
+        select *
+        from DM_BUSI_DETAIL_HISTORY_TB
+        <include refid="Base_Select_List"></include>
+        order by CREATE_TIME desc
+    </select>
+
+</mapper>

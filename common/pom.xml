@@ -46,6 +46,9 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>SunDap-Common</finalName>
+    </build>
 
 
 </project>

@@ -1,11 +1,14 @@
 package com.sunyard.dap.consumer.dataserve.client;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sunyard.dap.common.model.ReturnT;
 import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,6 +105,8 @@ public interface DataServeClient {
     @PostMapping("/busiRT/listByState")
     ReturnT<List> getBusiListByState(Map<String,Object> params);
 
+    @PostMapping("/busiRT/countState")
+    ReturnT<List> getBusiRtCountState(Map<String, Object> params);
 
     /**
      * 历史业务种类业务量
@@ -145,5 +150,12 @@ public interface DataServeClient {
     @PostMapping("/busiTrt/typeHourly")
     ReturnT<List> getBusiTrtInfoHourly(Map<String,Object> params);
 
+    /**
+     * 交易明细
+     **/
+    @PostMapping("/busiDetail/listRt")
+    ReturnT<Page<HashMap<String, Object>>> getBusiDetailListRt(Map<String,Object> params);
 
+    @PostMapping("/busiDetail/listHistory")
+    ReturnT<Page<HashMap<String, Object>>> getBusiDetailListHistory(Map<String,Object> params);
 }
