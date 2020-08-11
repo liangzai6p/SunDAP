@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 辽宁大屏实例 数据库操作 -->
+
+<mapper namespace="com.sunyard.dap.dataserve.mapper.LiaoNingBusiCountMapper" >
+		<!-- 获取机构业务量 -->
+		<select id="select" parameterType="string" resultType="java.util.HashMap">
+			SELECT 
+				b.shname orgName ,
+				 a.busiNum busiNum
+			FROM (select begin_orgno , count(*) busiNum from BP_TRANSLIST_TB where trans_date=#{date} group by begin_orgno) a 
+			LEFT JOIN SM_ORGAN_TB_LIAONING b ON b.organ_no = a.begin_orgno
+			ORDER BY a.busiNum
+		</select>
+		
+		<!-- 获取地图中地区（机构）业务量 -->
+		<select id="selectOrganBusi" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+			SELECT 
+		        replace(c.BRNRGNCOD,' ','') "BRNRGNCOD",
+		        count(*) "busiCount"
+		      FROM BP_TRANSLIST_TB a
+		      JOIN (select BRNRGNCOD , organ_no from SM_ORGAN_TB_LIAONING
+				        where BRNRGNCOD in 
+				        <if test="params.organNo != null">
+			  					(${params.organNo})
+			  			</if>
+		        	) b on a.begin_orgno = b.organ_no 
+		       		 left join (select BRNRGNCOD from SM_ORGAN_TB_LIAONING where BRNRGNCOD in
+		       		 		<if test="params.organNo != null">
+			  						(${params.organNo})
+			  				</if>
+	  							group by BRNRGNCOD) c
+		            		 on c.BRNRGNCOD = b.BRNRGNCOD
+		     <where>
+		        a.trans_date = #{params.date}
+			</where>
+				GROUP BY c.BRNRGNCOD
+				ORDER BY c.BRNRGNCOD
+		</select>
+		
+		<!-- 获取当日每小时业务量 -->
+		<select id="getHourBusiCount" parameterType="string" resultType="java.util.HashMap">
+			SELECT 
+				substr(start_time,9,2) "hour",
+				count(*) "busiCount"
+			FROM bp_translist_tb
+			<where>
+				trans_date = #{date} 
+				AND substr(start_time,9,2) in ('09','10','11','12','13','14','15','16','17','18')
+			</where>
+			GROUP BY substr(start_time,9,2) 
+			ORDER BY substr(start_time,9,2)
+		</select>
+		
+		<!-- 获取当日每小时业务量 -->
+		<select id="getTransStateCount" parameterType="string" resultType="java.util.HashMap">
+			SELECT 
+				b.task_state "state",
+				count(*) "busiCount"
+			FROM bp_translist_tb a 
+			LEFT JOIN bp_taskstate_tb b 
+				on a.task_id = b.task_id 
+			<where>
+				a.trans_date = #{date}
+			</where>
+				GROUP BY b.task_state
+		</select>
+		
+		<!-- 获取当日总业务量 -->
+		<select id="getDayBusiCount" parameterType="string" resultType="java.util.HashMap">
+			SELECT 
+				count(*) "busiCount"
+			FROM bp_translist_tb 
+			<where> 
+				trans_date = #{date}
+			</where>
+		</select>
+		
+		<!-- 获取当日每小时平均处理时长 -->
+		<select id="getHourAvgTime" parameterType="string" resultType="java.util.HashMap">
+			SELECT 
+				substr(start_time ,9 , 3) "time" ,
+				round(sum(trans_time)/count(*),2) "avg" 
+			FROM bp_translist_tb 
+			<where>
+				trans_date = #{params.date}
+				AND substr(start_time ,9 , 3) BETWEEN #{params.startTime} and #{params.endTime}
+			</where> 	
+			 GROUP BY substr(start_time ,9 , 3)
+			 ORDER BY substr(start_time ,9 , 3)
+		</select>
+		
+		
+		<!-- 获取柜员处理业务数 -->
+		<select id="getTellerBusiCount" parameterType="string" resultType="java.util.HashMap">
+			SELECT *from (
+				SELECT 
+					b.task_state as c,
+					a.user_no "userNo",
+					count(*) as b
+				FROM bp_oper_detail_tb a 
+				LEFT JOIN bp_taskstate_tb b 
+					ON a.task_id = b.task_id    where  flow_node = 'CLA'
+					AND substr(a.task_id,1,8) =#{date}  GROUP BY a.user_no , b.task_state
+				ORDER BY a.user_no , b.task_state) pivot(sum(B) for c in (5 as STATE_5,6 as STATE_6))
+		</select>
+		
+</mapper>
