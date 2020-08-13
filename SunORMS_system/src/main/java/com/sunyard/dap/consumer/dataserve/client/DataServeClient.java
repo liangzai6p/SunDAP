@@ -157,52 +157,37 @@ public interface DataServeClient {
     @PostMapping("/busiDetail/listHistory")
     ReturnT<Page<HashMap<String, Object>>> getBusiDetailListHistory(Map<String, Object> params);
 
-    /*辽宁大屏后台*/
     /**
-     * 获取辽宁大屏机构业务量数据
-     */
+     * 辽宁大屏后台
+     **/
     @PostMapping("/liaoning/selectBusiNum")
     ReturnT<Map> selectBusiNum(Map<String,Object> params);
 
-    /**
-     * 获取辽宁大屏地图中地区（机构）日业务量
-     * @param params
-     * @return
-     */
     @PostMapping("/liaoning/selectOrganBusi")
     ReturnT<List> selectOrganBusi(Map<String,Object> params);
 
-    /**
-     * 获取当日每小时业务量
-     * @param params
-     * @return
-     */
     @PostMapping("/liaoning/getHourBusiCount")
     ReturnT<Map> getHourBusiCount(Map<String,Object> params);
 
-    /**
-     * 获取分状态业务量
-     * @param params
-     * @return
-     */
     @PostMapping("/liaoning/getTransStateCount")
     ReturnT<Map> getTransStateCount(Map<String,Object> params);
 
-    /**
-     * 获取当日每小时业务量
-     * @param params
-     * @return
-     */
     @PostMapping("/liaoning/getHourAvgTime")
     ReturnT<Map> getHourAvgTime(Map<String,Object> params);
 
-    /**
-     * 获取柜员处理业务数
-     * @param params
-     * @return
-     */
     @PostMapping("/liaoning/getTellerBusiCount")
     ReturnT<List> getTellerBusiCount(Map<String,Object> params);
 
+    /**
+     * 自助设备
+     **/
+    @PostMapping("/mac/listDetail")
+    ReturnT<Page<HashMap<String, Object>>> getMacListDetail(Map<String, Object> params);
+
+    @PostMapping("/mac/listFaultByTime")
+    ReturnT<List> getMacListFaultByTime(Map<String, Object> params);
+
+    @PostMapping("/mac/listStatus")
+    ReturnT<List> getMacListStatus(Map<String, Object> params);
 
 }

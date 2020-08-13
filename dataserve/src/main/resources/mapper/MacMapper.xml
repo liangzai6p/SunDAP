@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.dap.dataserve.mapper.MacMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sunyard.dap.dataserve.entity.MacDO">
+        <result column="MAC_NO" property="macNo" />
+        <result column="MAC_MODEL" property="macModel" />
+        <result column="ZONE_NO" property="zoneNo" />
+        <result column="ZONE_NAME" property="zoneName" />
+        <result column="BRANCH_NO" property="branchNo" />
+        <result column="BRANCH_NAME" property="branchName" />
+        <result column="SITE_NO" property="siteNo" />
+        <result column="SITE_NAME" property="siteName" />
+        <result column="REPAIR_TIMES" property="repairTimes" />
+        <result column="LAST_REPAIR_TIME" property="lastRepairTime" />
+        <result column="STATUS" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        MAC_NO, MAC_MODEL, ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, REPAIR_TIMES, LAST_REPAIR_TIME, STATUS
+    </sql>
+    <select id="listStatus" resultType="java.util.HashMap">
+        select count(*) COUNT,STATUS from DM_MAC_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.MAC_MODEL != null">
+                and MAC_MODEL = #{params.MAC_MODEL}
+            </if>
+        </trim>
+        group by status
+    </select>
+
+    <select id="listFaultByTime" resultType="java.util.HashMap">
+        select count(*) FAULT_COUNT, count(DISTINCT(t1.MAC_NO)) FAULT_MAC_COUNT
+        from DM_MAC_REPAIR_TB t1 join DM_MAC_TB t2
+        on t1.MAC_NO = t2.MAC_NO
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                t2.BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and t2.SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and t2.ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.MAC_MODEL != null">
+                and t2.MAC_MODEL = #{params.MAC_MODEL}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and to_date(to_char(t1.fault_time,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+        </trim>
+    </select>
+    <select id="listDetail" resultType="java.util.HashMap">
+        select t1.* , t2.mac_model,t2.zone_no,t2.zone_name,t2.branch_no,t2.branch_name,t2.site_no,t2.site_name
+        from DM_MAC_REPAIR_TB t1 join DM_MAC_TB t2
+        on t1.MAC_NO = t2.MAC_NO
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                t2.BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and t2.SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and t2.ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.MAC_MODEL != null">
+                and t2.MAC_MODEL = #{params.MAC_MODEL}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and to_date(to_char(t1.fault_time,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+        </trim>
+    </select>
+
+</mapper>
