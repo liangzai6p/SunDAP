@@ -190,4 +190,19 @@ public interface DataServeClient {
     @PostMapping("/mac/listStatus")
     ReturnT<List> getMacListStatus(Map<String, Object> params);
 
+    /**
+     * 柜员信息
+     **/
+    @PostMapping("/teller/listTeller")
+    ReturnT<Page<HashMap<String, Object>>> getTellerListTeller(Map<String, Object> params);
+
+    @PostMapping("/teller/listTellerAssess")
+    ReturnT<Page<HashMap<String, Object>>> getTellerListTellerAssess(Map<String, Object> params);
+
+    @PostMapping("/teller/listTellerGrade")
+    ReturnT<Page<HashMap<String, Object>>> getTellerListTellerGrade(Map<String, Object> params);
+
+    @PostMapping("/teller/listStatus")
+    ReturnT<List> getTellerListStatus(Map<String, Object> params);
+
 }

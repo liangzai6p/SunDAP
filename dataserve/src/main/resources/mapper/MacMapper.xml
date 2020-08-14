@@ -84,5 +84,17 @@
             </if>
         </trim>
     </select>
+    <select id="listBranchFaultRate" resultType="java.util.HashMap">
+        select round(nvl(t2.fault_count,0)/t1.mac_count*100,3) FAULT_RATE,t1.BRANCH_NO,t1.BRANCH_NAME from (
+                (select COUNT(MAC_NO) mac_count,BRANCH_NO,BRANCH_NAME
+                 from DM_MAC_TB
+                 group by BRANCH_NO,BRANCH_NAME) t1 left join
+                        (select COUNT(MAC_NO) fault_count,BRANCH_NO,BRANCH_NAME
+                         from DM_MAC_TB
+                         where STATUS = '2'
+                         group by BRANCH_NO,BRANCH_NAME) t2
+                        on t1.branch_no = t2.branch_no)
+        order by FAULT_RATE desc
+    </select>
 
 </mapper>

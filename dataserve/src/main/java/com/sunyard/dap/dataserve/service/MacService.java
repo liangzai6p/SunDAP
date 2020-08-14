@@ -24,4 +24,6 @@ public interface MacService extends IService<MacDO> {
 
     ReturnT<Page<HashMap<String, Object>>> listDetail(Map<String,Object> params);
 
+    ReturnT<List> listBranchFaultRate(Map<String,Object> params);
+
 }

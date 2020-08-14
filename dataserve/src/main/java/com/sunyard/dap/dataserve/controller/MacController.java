@@ -70,6 +70,18 @@ public class MacController {
         return service.listStatus(params);
     }
 
+    /**
+     * 分行设备故障率
+     * @Author yey.he 
+     * @Date 3:34 PM 2020/8/14
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listBranchFaultRate")
+    public ReturnT<List> listBranchFaultRate(@RequestBody Map<String,Object> params){
+        return service.listBranchFaultRate(params);
+    }
+
 
 
 }

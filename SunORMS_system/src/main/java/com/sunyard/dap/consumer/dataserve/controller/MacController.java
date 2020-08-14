@@ -38,4 +38,9 @@ public class MacController {
     @PostMapping("/listStatus")
     public ReturnT<List> getListStatus(@RequestBody Map<String,Object> params){return client.getMacListStatus(params);}
 
+    @PostMapping("/listBranchFaultRate")
+    public ReturnT<List> getListBranchFaultRate(@RequestBody Map<String,Object> params){
+        return client.getMacListBranchFaultRate(params);
+    }
+
 }

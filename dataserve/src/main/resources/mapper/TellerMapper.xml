@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.dap.dataserve.mapper.TellerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sunyard.dap.dataserve.entity.DmTellerTb">
+        <result column="TELLER_NO" property="tellerNo" />
+        <result column="TELLER_NAME" property="tellerName" />
+        <result column="ROLE_NO" property="roleNo" />
+        <result column="ROLE_NAME" property="roleName" />
+        <result column="SITE_NO" property="siteNo" />
+        <result column="SITE_NAME" property="siteName" />
+        <result column="STAR_LEVEL" property="starLevel" />
+        <result column="EDU_BACKGROUND" property="eduBackground" />
+        <result column="SENIORITY" property="seniority" />
+        <result column="TRAIN_EXP" property="trainExp" />
+        <result column="OFFICE_RESUME" property="officeResume" />
+        <result column="JOB_CERT" property="jobCert" />
+        <result column="STATUS" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        TELLER_NO, TELLER_NAME, ROLE_NO, ROLE_NAME, SITE_NO, SITE_NAME, STAR_LEVEL, EDU_BACKGROUND, SENIORITY, TRAIN_EXP, OFFICE_RESUME, JOB_CERT, STATUS
+    </sql>
+    <select id="listTeller" resultType="java.util.HashMap">
+        select * from DM_TELLER_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.TELLER_NO != null">
+                TELLER_NO = #{params.TELLER_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.STATUS != null">
+                and STATUS = #{params.STATUS}
+            </if>
+        </trim>
+    </select>
+    <select id="listTellerAssess" resultType="java.util.HashMap">
+        select * from DM_TELLER_ASSESS_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.TELLER_NO != null">
+                TELLER_NO = #{params.TELLER_NO}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and to_date(ASSESS_MONTH,'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+        </trim>
+    </select>
+    <select id="listTellerGrade" resultType="java.util.HashMap">
+        select * from DM_TELLER_GRADE_V
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.TELLER_NO != null">
+                TELLER_NO = #{params.TELLER_NO}
+            </if>
+        </trim>
+    </select>
+
+    <select id="listStatus" resultType="java.util.HashMap">
+        select count(*) COUNT,STATUS from DM_TELLER_TB t join SM_BANKS_TB b on t.SITE_NO = b.SITE_NO
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.SITE_NO != null">
+                b.SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.BRANCH_NO != null">
+                and b.BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+        </trim>
+        group by t.status
+    </select>
+
+    <select id="listBranchOffline" resultType="java.util.HashMap">
+        select COUNT(*) COUNT,BRANCH_NO,BRANCH_NAME
+        from DM_TELLER_TB t join SM_BANKS_TB b on t.SITE_NO = b.SITE_NO
+        where STATUS = 0
+        group by BRANCH_NO,BRANCH_NAME
+        order by COUNT desc
+    </select>
+
+</mapper>

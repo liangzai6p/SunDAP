@@ -24,6 +24,8 @@ public interface MacMapper extends BaseMapper<MacDO> {
 
     Page<HashMap<String, Object>> listDetail(Page<?> page, @Param("params") Map<String, Object> params);
 
+    List<HashMap<String,Object>> listBranchFaultRate(@Param("params") Map<String,Object> params);
+
 
 
 

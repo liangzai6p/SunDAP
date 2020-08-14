@@ -24,7 +24,7 @@ public class CommonUtil {
                 log.error("页码转换出错,设定currentPage=1,recordSize=10",e.getMessage());
             }
         }else {
-            log.info("未找到页码参数,设定currentPage=1,recordSize=10");
+            log.info("Autoset currentPage=1,recordSize=10");
         }
 
         if (!flag){

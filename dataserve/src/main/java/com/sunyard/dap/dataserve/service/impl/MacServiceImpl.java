@@ -56,4 +56,13 @@ public class MacServiceImpl extends ServiceImpl<MacMapper, MacDO> implements Mac
             return new ReturnT<>(ReturnT.FAIL_CODE,"查询失败",null);
         }
     }
+
+    @Override
+    public ReturnT<List> listBranchFaultRate(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listBranchFaultRate(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }    }
 }
