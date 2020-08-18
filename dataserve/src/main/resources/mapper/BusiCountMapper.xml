@@ -191,7 +191,7 @@
     </select>
 
     <select id="listBranchMonthly" parameterType="map" resultType="java.util.HashMap">
-        select  BRANCH_NO,BRANCH_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,month
+        select  BRANCH_NO,BRANCH_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,MONTH
         from DM_BUSI_COUNT_MONTHLY_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.BRANCH_NO != null">
@@ -207,15 +207,15 @@
                 and CHANNEL_NO = #{params.CHANNEL_NO}
             </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                and to_date(month,'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+                and to_date(MONTH,'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
             </if>
         </trim>
-        group by month,BRANCH_NO,BRANCH_NAME
-        order by month
+        group by MONTH,BRANCH_NO,BRANCH_NAME
+        order by MONTH
     </select>
-
+b
     <select id="listSiteMonthly" resultType="java.util.HashMap">
-        select  SITE_NO,SITE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,month
+        select  SITE_NO,SITE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,MONTH
         from DM_BUSI_COUNT_MONTHLY_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.BRANCH_NO != null">
@@ -231,14 +231,14 @@
                 and CHANNEL_NO = #{params.CHANNEL_NO}
             </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                and to_date(month,'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+                and to_date(MONTH,'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
             </if>
         </trim>
-        group by month,SITE_NO,SITE_NAME
-        order by month
+        group by MONTH,SITE_NO,SITE_NAME
+        order by MONTH
     </select>
     <select id="listZoneMonthly" resultType="java.util.HashMap">
-        select  ZONE_NO,ZONE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,month
+        select  ZONE_NO,ZONE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,MONTH
         from DM_BUSI_COUNT_MONTHLY_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.BRANCH_NO != null">
@@ -254,14 +254,14 @@
                 and CHANNEL_NO = #{params.CHANNEL_NO}
             </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                and to_date(month,'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+                and to_date(MONTH,'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
             </if>
         </trim>
-        group by month,ZONE_NO,ZONE_NAME
-        order by month
+        group by MONTH,ZONE_NO,ZONE_NAME
+        order by MONTH
     </select>
     <select id="listChannelMonthly" resultType="java.util.HashMap">
-        select  CHANNEL_NO,CHANNEL_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,month
+        select  CHANNEL_NO,CHANNEL_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,MONTH
         from DM_BUSI_COUNT_MONTHLY_V
         <trim prefix="where" prefixOverrides="and">
             <if test="params.BRANCH_NO != null">
@@ -277,11 +277,11 @@
                 and CHANNEL_NO = #{params.CHANNEL_NO}
             </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                and to_date(month,'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+                and to_date(MONTH,'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
             </if>
         </trim>
-        group by month,CHANNEL_NO,CHANNEL_NAME
-        order by month
+        group by MONTH,CHANNEL_NO,CHANNEL_NAME
+        order by MONTH
     </select>
     <select id="countBranch" resultType="java.util.HashMap">
         select BRANCH_NO,BRANCH_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT
