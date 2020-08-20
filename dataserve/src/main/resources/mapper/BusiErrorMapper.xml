@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.dap.dataserve.mapper.BusiErrorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sunyard.dap.dataserve.entity.BusiErrorDetailDo">
+        <result column="TASK_ID" property="taskId" />
+        <result column="ZONE_NO" property="zoneNo" />
+        <result column="ZONE_NAME" property="zoneName" />
+        <result column="BRANCH_NO" property="branchNo" />
+        <result column="BRANCH_NAME" property="branchName" />
+        <result column="SITE_NO" property="siteNo" />
+        <result column="SITE_NAME" property="siteName" />
+        <result column="CHANNEL_NO" property="channelNo" />
+        <result column="CHANNEL_NAME" property="channelName" />
+        <result column="ROLE_NO" property="roleNo" />
+        <result column="ROLE_NAME" property="roleName" />
+        <result column="STAFF_NO" property="staffNo" />
+        <result column="STAFF_NAME" property="staffName" />
+        <result column="CUS_TYPE" property="cusType" />
+        <result column="CUS_NO" property="cusNo" />
+        <result column="CUS_NAME" property="cusName" />
+        <result column="BUSI_NO" property="busiNo" />
+        <result column="BUSI_NAME" property="busiName" />
+        <result column="STYPE_NO" property="stypeNo" />
+        <result column="STYPE_NAME" property="stypeName" />
+        <result column="MAC_NO" property="macNo" />
+        <result column="CURRENCY" property="currency" />
+        <result column="TRANS_AMOUNT" property="transAmount" />
+        <result column="CREATE_TIME" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        TASK_ID, ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, CHANNEL_NO, CHANNEL_NAME, ROLE_NO, ROLE_NAME, STAFF_NO, STAFF_NAME, CUS_TYPE, CUS_NO, CUS_NAME, BUSI_NO, BUSI_NAME, STYPE_NO, STYPE_NAME, MAC_NO, CURRENCY, TRANS_AMOUNT, CREATE_TIME
+    </sql>
+    <select id="listBranchErrorCount" resultType="java.util.HashMap">
+        select BRANCH_NO,BRANCH_NAME,count(*) COUNT
+        from DM_BUSI_DETAIL_ERROR_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                to_date(to_char(CREATE_TIME,'yyyymmdd'),'yyyymmdd')
+                between to_date(#{params.START_TIME},'yyyymmdd')
+                and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+        </trim>
+        group by BRANCH_NO, BRANCH_NAME
+        order by count desc
+    </select>
+
+</mapper>

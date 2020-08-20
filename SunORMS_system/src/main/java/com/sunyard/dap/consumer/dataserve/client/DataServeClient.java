@@ -268,5 +268,11 @@ public interface DataServeClient {
     @PostMapping("/teller/listBranchOffline")
     ReturnT<List> getTellerListBranchOffline(Map<String, Object> params);
 
+    /**
+     * 业务差错
+     **/
+    @PostMapping("/busiError/listBranchErrorCount")
+    ReturnT<List> getBusiErrorListBranchErrorCount(Map<String, Object> params);
+
 
 }
