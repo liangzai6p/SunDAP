@@ -22,6 +22,10 @@
         <result column="CUS_NAME" property="cusName" />
         <result column="BUSI_NO" property="busiNo" />
         <result column="BUSI_NAME" property="busiName" />
+        <result column="STYPE_NO" property="stypeNo" />
+        <result column="STYPE_NAME" property="stypeName" />
+        <result column="MAC_NO" property="macNo" />
+        <result column="CURRENCY" property="currency" />
         <result column="TRANS_AMOUNT" property="transAmount" />
         <result column="CREATE_TIME" property="createTime" />
         <result column="COMPLETE_TIME" property="completeTime" />

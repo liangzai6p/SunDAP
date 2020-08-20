@@ -32,8 +32,5 @@ spring:
       web-stat-filter:
         enabled: true
 
-
-
-
 sundap:
   param: test

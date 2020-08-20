@@ -1,6 +1,8 @@
 package com.sunyard.dap.dataserve.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sunyard.dap.common.model.ReturnT;
+import com.sunyard.dap.common.util.CommonUtil;
 import com.sunyard.dap.dataserve.entity.BusiRtDO;
 import com.sunyard.dap.dataserve.mapper.BusiRtMapper;
 import com.sunyard.dap.dataserve.service.BusiRtService;
@@ -8,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -124,12 +127,14 @@ public class BusiRtServiceImpl extends ServiceImpl<BusiRtMapper, BusiRtDO> imple
     }
 
     @Override
-    public ReturnT<List> listByState(Map<String, Object> params) {
+    public ReturnT<Page<HashMap<String, Object>>> listByState(Map<String, Object> params) {
+        Page<HashMap> page = new Page<>();
+        CommonUtil.setPageByParams(page,params);
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listByState(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listByState(page,params));
         }catch (Exception e){
             log.error(e.getMessage());
-            return ReturnT.listFAIL;
+            return new ReturnT<>(ReturnT.FAIL_CODE,"查询失败",null);
         }
     }
 

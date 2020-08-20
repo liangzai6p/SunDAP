@@ -132,6 +132,30 @@ public class BusiDetailDO extends Model<BusiDetailDO> {
     private String busiName;
 
     /**
+     * 业务小类编号
+     */
+    @TableField("STYPE_NO")
+    private String stypeNo;
+
+    /**
+     * 业务小类名称
+     */
+    @TableField("STYPE_NAME")
+    private String stypeName;
+
+    /**
+     * 自助设备编号
+     */
+    @TableField("MAC_NO")
+    private String macNo;
+
+    /**
+     * 币种
+     */
+    @TableField("CURRENCY")
+    private String currency;
+
+    /**
      * 交易金额
      */
     @TableField("TRANS_AMOUNT")
@@ -162,31 +186,5 @@ public class BusiDetailDO extends Model<BusiDetailDO> {
         return null;
     }
 
-    @Override
-    public String toString() {
-        return "DmBusiDetailTb{" +
-        "taskId=" + taskId +
-        ", zoneNo=" + zoneNo +
-        ", zoneName=" + zoneName +
-        ", branchNo=" + branchNo +
-        ", branchName=" + branchName +
-        ", siteNo=" + siteNo +
-        ", siteName=" + siteName +
-        ", channelNo=" + channelNo +
-        ", channelName=" + channelName +
-        ", roleNo=" + roleNo +
-        ", roleName=" + roleName +
-        ", staffNo=" + staffNo +
-        ", staffName=" + staffName +
-        ", cusType=" + cusType +
-        ", cusNo=" + cusNo +
-        ", cusName=" + cusName +
-        ", busiNo=" + busiNo +
-        ", busiName=" + busiName +
-        ", transAmount=" + transAmount +
-        ", createTime=" + createTime +
-        ", completeTime=" + completeTime +
-        ", transState=" + transState +
-        "}";
-    }
+
 }

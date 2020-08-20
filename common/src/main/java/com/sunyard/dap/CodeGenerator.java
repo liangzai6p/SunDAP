@@ -35,7 +35,7 @@ public class CodeGenerator {
 
 
     public static void main(String[] args) throws Exception {
-        generate("dataserve",new String[]{"DM_TELLER_TB"});
+        generate("dataserve",new String[]{"DM_BUSI_DETAIL_TB"});
 
     }
 

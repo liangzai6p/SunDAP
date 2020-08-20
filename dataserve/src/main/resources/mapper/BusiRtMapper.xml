@@ -262,14 +262,6 @@
             <if test="params.STATE != null">
                 and TRANS_STATE = #{params.STATE}
             </if>
-            <choose>
-                <when test="params.LIMIT != null">
-                    and rownum &lt;= #{params.LIMIT}
-                </when>
-                <otherwise>
-                    and rownum &lt;= 10
-                </otherwise>
-            </choose>
         </trim>
 
     </select>
@@ -287,6 +279,7 @@
             </if>
             <if test="params.CHANNEL_NO != null">
                 and CHANNEL_NO = #{params.CHANNEL_NO}
+
             </if>
             <if test="params.BUSI_NO !=null">
                 and BUSI_NO = #{params.BUSI_NO}

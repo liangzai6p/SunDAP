@@ -101,7 +101,7 @@ public interface DataServeClient {
     ReturnT<List> getBusiChannelDRT(Map<String, Object> params);
 
     @PostMapping("/busiRT/listByState")
-    ReturnT<List> getBusiListByState(Map<String, Object> params);
+    ReturnT<Page<HashMap<String, Object>>> getBusiListByState(Map<String, Object> params);
 
     @PostMapping("/busiRT/countState")
     ReturnT<List> getBusiRtCountState(Map<String, Object> params);
@@ -190,6 +190,65 @@ public interface DataServeClient {
     @PostMapping("/mac/listStatus")
     ReturnT<List> getMacListStatus(Map<String, Object> params);
 
+    @PostMapping("/mac/listBranchFaultRate")
+    ReturnT<List> getMacListBranchFaultRate(Map<String, Object> params);
+
+
+    /**
+     * 设备地区分布相关
+     **/
+
+    @PostMapping("/mac/listBranchOnlineMac")
+    ReturnT<List> getMacListBranchOnlineMac(Map<String, Object> params);
+
+    @PostMapping("/mac/listBranchMacErrorRate")
+    ReturnT<List> getMacListBranchMacErrorRate(Map<String, Object> params);
+
+    @PostMapping("/mac/listBranchMacReplaceRate")
+    ReturnT<List> getMacListBranchMacReplaceRate(Map<String, Object> params);
+
+    @PostMapping("/mac/listMacReplaceRateMonthly")
+    ReturnT<List> getMacListMacReplaceRateMonthly(Map<String, Object> params);
+
+    /**
+     * 设备画像相关
+     **/
+
+    @PostMapping("/mac/macProtrayal")
+    ReturnT<List> getMacProtrayal(Map<String, Object> params);
+
+    @PostMapping("/mac/listMacTypeCount")
+    ReturnT<List> getMacListMacTypeCount(Map<String, Object> params);
+
+    @PostMapping("/mac/listMacTypeAssess")
+    ReturnT<List> getMacListMacTypeAssess(Map<String, Object> params);
+
+    @PostMapping("/mac/listMacTypeFaultRate")
+    ReturnT<List> getMacListMacTypeFaultRate(Map<String, Object> params);
+
+    @PostMapping("/mac/listMacBrandFaultRate")
+    ReturnT<List> getMacListMacBrandFaultRate(Map<String, Object> params);
+    @PostMapping("/mac/listMacReplaceOtcRateMonthly")
+    ReturnT<List> getMacListMacReplaceOtcRateMonthly(Map<String, Object> params);
+
+    @PostMapping("/mac/listMacTypeBusiMonthly")
+    ReturnT<List> getMacListMacTypeBusiMonthly(Map<String, Object> params);
+
+    @PostMapping("/mac/listMacTypeSuccessAndFaultRate")
+    ReturnT<List> getMacListMacTypeSuccessAndFaultRate(Map<String, Object> params);
+
+    @PostMapping("/mac/listMacMaintainMonthly")
+    ReturnT<List> getMacListMacMaintainMonthly(Map<String, Object> params);
+
+    @PostMapping("/mac/listMacTypeBusiCount")
+    ReturnT<List> getMacListMacTypeBusiCount(Map<String, Object> params);
+
+    @PostMapping("/mac/listMacBusiCount")
+    ReturnT<Page<HashMap<String, Object>>> getMacListMacBusiCount(Map<String, Object> params);
+
+
+
+
     /**
      * 柜员信息
      **/
@@ -204,5 +263,9 @@ public interface DataServeClient {
 
     @PostMapping("/teller/listStatus")
     ReturnT<List> getTellerListStatus(Map<String, Object> params);
+
+    @PostMapping("/teller/listBranchOffline")
+    ReturnT<List> getTellerListBranchOffline(Map<String, Object> params);
+
 
 }

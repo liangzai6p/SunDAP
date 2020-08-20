@@ -96,5 +96,287 @@
                         on t1.branch_no = t2.branch_no)
         order by FAULT_RATE desc
     </select>
+    <select id="listBranchOnlineMac" resultType="java.util.HashMap">
+        select BRANCH_NO,BRANCH_NAME,count(*) COUNT,count(decode(STATUS,'1',1,null)) ONLINE_COUNT
+        from DM_MAC_TB group by BRANCH_NO, BRANCH_NAME
+        order by ONLINE_COUNT desc
+    </select>
+    <select id="listBranchMacErrorRate" resultType="java.util.HashMap">
+        select a.BRANCH_NO,a.BRANCH_NAME,nvl(b.repair_times,0) FAULT_TIMES from
+         (select BRANCH_NO,BRANCH_NAME from SM_BANKS_TB group by BRANCH_NO, BRANCH_NAME) a left join
+              (select BRANCH_NO,BRANCH_NAME,sum(REPAIR_TIMES) repair_times
+                from  DM_MAC_REPAIR_TB r join  DM_MAC_TB m
+                on m.MAC_NO = r.MAC_NO
+                <trim prefix="where" prefixOverrides="and">
+                  <if test="params.START_TIME != null and params.END_TIME != null">
+                    r.FAULT_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                  </if>
+                </trim>
+                group by BRANCH_NO,BRANCH_NAME) b
+                on a.branch_no = b.branch_no
+        order by FAULT_TIMES DESC
+    </select>
+    <select id="listBranchMacReplaceRate" resultType="java.util.HashMap">
+        select BRANCH_NO,BRANCH_NAME,round(c1/c2*100,2) REPLACE_RATE
+        from (
+             select  BRANCH_NO,BRANCH_NAME,count(decode(CHANNEL_NO,'CH005',1,NULL)) c1,count(decode(CHANNEL_NO,'CH000',1,null)) c2
+             from DM_BUSI_COUNT_TB
+            <trim prefix="where" prefixOverrides="and">
+                <if test="params.START_TIME != null and params.END_TIME != null">
+                    RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                </if>
+            </trim>
+            group by BRANCH_NO,BRANCH_NAME
+             )
+        order by replace_rate desc
+    </select>
+    <select id="listMacReplaceRateMonthly" resultType="java.util.HashMap">
+        select MONTH,round(c1/c2*100,2) REPLACE_RATE
+        from (
+            select  to_char(RECORD_TIME,'yyyymm') month,count(decode(CHANNEL_NO,'CH005',1,NULL)) c1,count(decode(CHANNEL_NO,'CH000',1,null)) c2
+            from DM_BUSI_COUNT_TB
+            <trim prefix="where" prefixOverrides="and">
+                <if test="params.START_TIME != null and params.END_TIME != null">
+                    to_date(to_char(RECORD_TIME,'yyyymm'),'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+                </if>
+            </trim>
+            group by to_char(RECORD_TIME,'yyyymm')
+          )
+        order by  MONTH
+    </select>
+    <select id="macProtrayal" resultType="java.util.HashMap">
+        select COUNT,ONLINE_COUNT,trunc(ONLINE_COUNT/COUNT*100) ONLINE_RATE,TRUNC(100-FAULT_COUNT/COUNT*100) USABLE_COUNT
+        FROM (
+            select count(*) COUNT,count(decode(STATUS,'1',1,null)) ONLINE_COUNT,count(decode(STATUS,'2',1,null)) FAULT_COUNT
+            from DM_MAC_TB
+            <trim prefix="where" prefixOverrides="and">
+                <if test="params.BRANCH_NO != null">
+                    BRANCH_NO = #{params.BRANCH_NO}
+                </if>
+                <if test="params.SITE_NO != null">
+                    and SITE_NO = #{params.SITE_NO}
+                </if>
+                <if test="params.ZONE_NO != null">
+                    and ZONE_NO = #{params.ZONE_NO}
+                </if>
+            </trim>
+          )
+    </select>
+    <select id="listMacTypeCount" resultType="java.util.HashMap">
+        select MAC_TYPE,count(*) COUNT from DM_MAC_BRAND_V
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+        </trim>
+        group by MAC_TYPE
+    </select>
+    <select id="listMacTypeAssess" resultType="java.util.HashMap">
+        select * from DM_MACTYPE_ASSESS_V
+    </select>
+    <select id="listMacTypeFaultRate" resultType="java.util.HashMap">
+        select MAC_TYPE,SUM(REPAIR_TIMES) COUNT
+        from DM_MAC_BRAND_V
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+        </trim>
+        group by MAC_TYPE
+    </select>
+    <select id="listMacBrandFaultRate" resultType="java.util.HashMap">
+        select MAC_BRAND,SUM(REPAIR_TIMES) COUNT
+        FROM DM_MAC_BRAND_V
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+        </trim>
+        GROUP BY MAC_BRAND
+    </select>
+    <select id="listMacReplaceOtcRateMonthly" resultType="java.util.HashMap">
+        select round(b.busi_count/a.busi_count*100,2) CARD_RATE,round(c.busi_count/a.busi_count*100,2) PAY_COUNT,a.RECORD_TIME MONTH
+        from (
+                (
+                select sum(BUSI_COUNT) busi_count, to_char(RECORD_TIME, 'yyyymm') record_time
+                from DM_BUSI_COUNT_TB
+                <trim prefix="where" prefixOverrides="and">
+                    <if test="params.BRANCH_NO != null">
+                        BRANCH_NO = #{params.BRANCH_NO}
+                    </if>
+                    <if test="params.SITE_NO != null">
+                        and SITE_NO = #{params.SITE_NO}
+                    </if>
+                    <if test="params.ZONE_NO != null">
+                        and ZONE_NO = #{params.ZONE_NO}
+                    </if>
+                    <if test="params.START_TIME != null and params.END_TIME != null">
+                        and to_date(to_char(RECORD_TIME,'yyyymm'),'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+                    </if>
+                </trim>
+                group by to_char(RECORD_TIME, 'yyyymm')) a join
+                (
+                select sum(BUSI_COUNT) busi_count, to_char(to_date(RECORD_TIME, 'yyyymmdd'), 'yyyymm') record_time
+                from DM_MAC_BUSI_TB
+                <trim prefix="where" prefixOverrides="and">
+                    MAC_TYPE = '自助发卡机'
+                    <if test="params.BRANCH_NO != null">
+                        and BRANCH_NO = #{params.BRANCH_NO}
+                    </if>
+                    <if test="params.SITE_NO != null">
+                        and SITE_NO = #{params.SITE_NO}
+                    </if>
+                    <if test="params.ZONE_NO != null">
+                        and ZONE_NO = #{params.ZONE_NO}
+                    </if>
+                    <if test="params.START_TIME != null and params.END_TIME != null">
+                        and to_date(to_char(to_date(RECORD_TIME,'yyyymmdd'),'yyyymm'),'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+                    </if>
+                </trim>
+                group by to_char(to_date(RECORD_TIME, 'yyyymmdd'), 'yyyymm')) b on a.record_time = b.record_time join
+                (
+                select sum(BUSI_COUNT) busi_count, to_char(to_date(RECORD_TIME, 'yyyymmdd'), 'yyyymm') record_time
+                from DM_MAC_BUSI_TB
+                <trim prefix="where" prefixOverrides="and">
+                    MAC_TYPE = '自助缴款机'
+                    <if test="params.BRANCH_NO != null">
+                        and BRANCH_NO = #{params.BRANCH_NO}
+                    </if>
+                    <if test="params.SITE_NO != null">
+                        and SITE_NO = #{params.SITE_NO}
+                    </if>
+                    <if test="params.ZONE_NO != null">
+                        and ZONE_NO = #{params.ZONE_NO}
+                    </if>
+                    <if test="params.START_TIME != null and params.END_TIME != null">
+                        and to_date(to_char(to_date(RECORD_TIME,'yyyymmdd'),'yyyymm'),'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+                    </if>
+                </trim>
+                group by to_char(to_date(RECORD_TIME, 'yyyymmdd'), 'yyyymm')) c on b.record_time = c.record_time
+                )
+        order by MONTH
+    </select>
+    <select id="listMacTypeBusiMonthly" resultType="java.util.HashMap">
+        select count(decode(MAC_TYPE,'自助发卡机',1,null)) CARD_COUNT,count(decode(MAC_TYPE,'自助查询机',1,null)) SEARCH_COUNT,
+               count(decode(MAC_TYPE,'自助存取款机',1,null)) CASH_COUNT,count(decode(MAC_TYPE,'自助缴款机',1,null)) PAY_COUNT,
+               to_char(to_date(RECORD_TIME,'yyyymmdd'),'yyyymm') MONTH
+        from DM_MAC_BUSI_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and to_date(to_char(to_date(RECORD_TIME,'yyyymmdd'),'yyyymm'),'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+            </if>
+        </trim>
+        group by to_char(to_date(RECORD_TIME,'yyyymmdd'),'yyyymm')
+    </select>
+    <select id="listMacTypeSuccessAndFaultRate" resultType="java.util.HashMap">
+        select a.MAC_TYPE,round(e.busi_count/a.BUSI_COUNT*100,2) error_rate,100-round(e.busi_count/a.BUSI_COUNT*100,2) success_rate
+        from (
+             select v.mac_type,count(*) busi_count
+             from DM_BUSI_DETAIL_ERROR_TB t
+             join DM_MAC_BRAND_V v on t.MAC_NO = v.MAC_NO
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                t.BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and t.SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and t.ZONE_NO = #{params.ZONE_NO}
+            </if>
+        </trim>
+             group by v.mac_type) e
+                 join (
+                      select MAC_TYPE,sum(busi_count) BUSI_COUNT
+                      from DM_MAC_BUSI_TB
+                    <trim prefix="where" prefixOverrides="and">
+                        <if test="params.BRANCH_NO != null">
+                            BRANCH_NO = #{params.BRANCH_NO}
+                        </if>
+                        <if test="params.SITE_NO != null">
+                            and SITE_NO = #{params.SITE_NO}
+                        </if>
+                        <if test="params.ZONE_NO != null">
+                            and ZONE_NO = #{params.ZONE_NO}
+                        </if>
+                    </trim>
+                      group by MAC_TYPE) a
+                     on e.mac_type = a.MAC_TYPE
+    </select>
+    <select id="listMacMaintainMonthly" resultType="java.util.HashMap">
+        select count(decode(MAC_TYPE,'自助发卡机',1,null)) card_count,count(decode(MAC_TYPE,'自助查询机',1,null)) search_count,
+               count(decode(MAC_TYPE,'自助存取款机',1,null)) cash_count,count(decode(MAC_TYPE,'自助缴款机',1,null)) pay_count,
+               to_char(to_date(MAINTAIN_TIME,'yyyymmdd'),'yyyymm') month
+        from DM_MAC_MAINTAIN_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+        </trim>
+        group by to_char(to_date(MAINTAIN_TIME,'yyyymmdd'),'yyyymm')
+    </select>
+    <select id="listMacTypeBusiCount" resultType="java.util.HashMap">
+        select MAC_TYPE,sum(BUSI_COUNT) BUSI_COUNT
+        from DM_MAC_BUSI_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+        </trim>
+        group by MAC_TYPE order by BUSI_COUNT desc
+    </select>
+    <select id="listMacBusiCount" resultType="java.util.HashMap">
+        select MAC_NO,sum(BUSI_COUNT) BUSI_COUNT
+        from DM_MAC_BUSI_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+        </trim>
+        group by MAC_NO
+        order by BUSI_COUNT desc
+    </select>
 
 </mapper>

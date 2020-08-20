@@ -165,14 +165,14 @@ public class systemTest {
 //
 //    }
 //
-//    public static Connection getOracleConn(String url,String username,String password){
-//        try {
-//            Class.forName("oracle.jdbc.driver.OracleDriver");
-//            return DriverManager.getConnection(url, username, password);
-//        }catch (Exception e){
-//            return null;
-//        }
-//    }
+    public static Connection getOracleConn(String url,String username,String password){
+        try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            return DriverManager.getConnection(url, username, password);
+        }catch (Exception e){
+            return null;
+        }
+    }
 //
 //
 //    public static List<String[]> getSites(){
@@ -284,4 +284,45 @@ public class systemTest {
 //
 //    }
 
+    @Test
+    public void updateMacModel() throws Exception{
+        List<String> macList = new ArrayList<>();
+        Connection conn = getOracleConn("jdbc:oracle:thin:@172.1.1.11:1521:orcl", "sundap", "123456");
+        PreparedStatement ps = conn.prepareStatement("select MAC_NO from  DM_MAC_TB");
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()){
+            macList.add(rs.getString(1));
+        }
+
+        String[] types = new String[]{"自助发卡机","自助缴款机","自助查询机","自助存取款机"};
+        String[] brands = new String[]{"广电运通","NCR","恒银金融","东信"};
+
+        String sql = "update DM_MAC_TB set mac_model = ? where mac_no = ?";
+        for (int i = 0 ; i < macList.size() ; i++){
+            ps = conn.prepareStatement(sql);
+            int flag = RandomUtil.randomInt(0, 101);
+            String type,brand;
+
+
+            if (flag > 50){
+                type = types[3];
+            }else if (flag > 20){
+                type = types[2];
+            }else if (flag > 5){
+                type = types[1];
+            }else {
+                type = types[0];
+            }
+
+            brand = brands[RandomUtil.randomInt(0,4)];
+
+            ps.setString(1,brand+"_"+type);
+            ps.setString(2,macList.get(i));
+            ps.execute();
+            IoUtil.close(ps);
+        }
+
+        IoUtil.close(rs);
+        IoUtil.close(conn);
+    }
 }

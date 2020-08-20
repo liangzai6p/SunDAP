@@ -1,5 +1,6 @@
 package com.sunyard.dap.consumer.dataserve.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sunyard.dap.common.model.ReturnT;
 import com.sunyard.dap.consumer.dataserve.client.DataServeClient;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +78,7 @@ public class BusiRTController {
     }
 
     @PostMapping("/listByState")
-    public ReturnT<List> listByState(@RequestBody Map<String,Object> params){
+    public ReturnT<Page<HashMap<String, Object>>> listByState(@RequestBody Map<String,Object> params){
         return client.getBusiListByState(params);
     }
 

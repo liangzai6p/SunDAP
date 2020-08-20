@@ -213,7 +213,6 @@
         group by MONTH,BRANCH_NO,BRANCH_NAME
         order by MONTH
     </select>
-b
     <select id="listSiteMonthly" resultType="java.util.HashMap">
         select  SITE_NO,SITE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT,MONTH
         from DM_BUSI_COUNT_MONTHLY_V

@@ -1,5 +1,6 @@
 package com.sunyard.dap.dataserve.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sunyard.dap.common.model.ReturnT;
 import com.sunyard.dap.dataserve.entity.BusiRtDO;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -38,9 +39,10 @@ public interface BusiRtService extends IService<BusiRtDO> {
 
     ReturnT<List> listChannelDRT(Map<String,Object> params);
 
-    ReturnT<List> listByState(Map<String,Object> params);
+    ReturnT<Page<HashMap<String, Object>>> listByState(Map<String,Object> params);
 
     ReturnT<List> countState(Map<String,Object> params);
+
 
 
 }

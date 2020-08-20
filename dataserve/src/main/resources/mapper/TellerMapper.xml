@@ -38,7 +38,9 @@
         </trim>
     </select>
     <select id="listTellerAssess" resultType="java.util.HashMap">
-        select * from DM_TELLER_ASSESS_TB
+        select t.*,ROUND(ROLLBACK_COUNT/TRANS_COUNT*100,2) ROLLBACK_RATE,
+        ROUND(ERROR_COUNT/TRANS_COUNT*100,2) ERROR_RATE,ROUND(ATTENDANCE_DAY/24*100,2) ATTENDANCE_RATE
+        from DM_TELLER_ASSESS_TB t
         <trim prefix="where" prefixOverrides="and">
             <if test="params.TELLER_NO != null">
                 TELLER_NO = #{params.TELLER_NO}

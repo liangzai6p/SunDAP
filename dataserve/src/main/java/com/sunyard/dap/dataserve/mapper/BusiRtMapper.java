@@ -1,5 +1,6 @@
 package com.sunyard.dap.dataserve.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sunyard.dap.dataserve.entity.BusiRtDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -37,7 +38,7 @@ public interface BusiRtMapper extends BaseMapper<BusiRtDO> {
 
     List<HashMap<String,Object>> listChannelDRT(@Param("params") Map<String,Object> params);
 
-    List<HashMap<String,Object>> listByState(@Param("params") Map<String,Object> params);
+    Page<HashMap<String, Object>> listByState(Page<?> page,@Param("params") Map<String,Object> params);
 
     List<HashMap<String,Object>> countState(@Param("params") Map<String,Object> params);
 
