@@ -28,4 +28,8 @@ public interface BusiTrtMapper extends BaseMapper<BusiTrtDO> {
     List<HashMap<String,Object>> listChannel(@Param("params") Map<String,Object> params);
 
     List<HashMap<String,Object>> listTypeHourly(@Param("params") Map<String,Object> params);
+
+    List<HashMap<String,Object>> listCurrencyIO(@Param("params") Map<String,Object> params);
+
+
 }

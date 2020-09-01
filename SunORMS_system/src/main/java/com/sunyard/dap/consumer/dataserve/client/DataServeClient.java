@@ -149,6 +149,9 @@ public interface DataServeClient {
     @PostMapping("/busiTrt/typeHourly")
     ReturnT<List> getBusiTrtInfoHourly(Map<String, Object> params);
 
+    @PostMapping("/busiTrt/listCurrencyIO")
+    ReturnT<List> getBusiTrtListCurrencyIO(Map<String, Object> params);
+
     /**
      * 交易明细
      **/

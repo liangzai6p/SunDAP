@@ -80,4 +80,14 @@ public class BusiTrtServiceImpl extends ServiceImpl<BusiTrtMapper, BusiTrtDO> im
             return ReturnT.listFAIL;
         }
     }
+
+    @Override
+    public ReturnT<List> listCurrencyIO(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listCurrencyIO(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
 }

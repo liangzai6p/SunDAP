@@ -27,4 +27,6 @@ public interface BusiTrtService extends IService<BusiTrtDO> {
     ReturnT<List> listChannel(Map<String,Object> params);
 
     ReturnT<List> listTypeHourly(Map<String,Object> params);
+
+    ReturnT<List> listCurrencyIO(Map<String,Object> params);
 }

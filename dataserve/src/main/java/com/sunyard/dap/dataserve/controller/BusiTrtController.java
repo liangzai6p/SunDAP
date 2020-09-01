@@ -41,7 +41,7 @@ public class BusiTrtController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/list")
-    public ReturnT<List> getListType(@RequestBody Map<String,Object> params){
+    public ReturnT<List> listType(@RequestBody Map<String,Object> params){
         return service.listType(params);
     }
 
@@ -53,7 +53,7 @@ public class BusiTrtController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/channel")
-    public ReturnT<List> getChannelInfo(@RequestBody Map<String,Object> params){
+    public ReturnT<List> listChannel(@RequestBody Map<String,Object> params){
         return service.listChannel(params);
     }
 
@@ -65,7 +65,7 @@ public class BusiTrtController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/branch")
-    public ReturnT<List> getBranchInfo(@RequestBody Map<String,Object> params){
+    public ReturnT<List> listBranch(@RequestBody Map<String,Object> params){
         return service.listBranch(params);
     }
 
@@ -77,7 +77,7 @@ public class BusiTrtController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/site")
-    public ReturnT<List> getSiteInfo(@RequestBody Map<String,Object> params){
+    public ReturnT<List> listSite(@RequestBody Map<String,Object> params){
         return service.listSite(params);
     }
 
@@ -89,7 +89,7 @@ public class BusiTrtController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/zone")
-    public ReturnT<List> getZoneInfo(@RequestBody Map<String,Object> params){
+    public ReturnT<List> listZone(@RequestBody Map<String,Object> params){
         return service.listZone(params);
     }
 
@@ -101,8 +101,13 @@ public class BusiTrtController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/typeHourly")
-    public ReturnT<List> getTypeHourly(@RequestBody Map<String,Object> params){
+    public ReturnT<List> listTypeHourly(@RequestBody Map<String,Object> params){
         return service.listTypeHourly(params);
+    }
+
+    @PostMapping("/listCurrencyIO")
+    public ReturnT<List> listCurrencyIO(@RequestBody Map<String,Object> params){
+        return service.listCurrencyIO(params);
     }
 }
 

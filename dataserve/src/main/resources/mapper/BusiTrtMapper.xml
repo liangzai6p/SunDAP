@@ -171,5 +171,19 @@
         order by RECORD_TIME
 
     </select>
+    <select id="listCurrencyIO" resultType="java.util.HashMap">
+        select i.CURRENCY,i.AMOUNT IM_AMOUNT,o.AMOUNT OUT_AMOUNT from
+      (
+          select CURRENCY,sum(TRANS_AMOUNT) AMOUNT
+          from DM_BUSI_DETAIL_TB
+          where STYPE_NAME like '%（入）'
+          group by CURRENCY
+      ) i join (
+            select CURRENCY,sum(TRANS_AMOUNT) AMOUNT
+            from DM_BUSI_DETAIL_TB
+            where STYPE_NAME like '%（出）'
+            group by CURRENCY
+      ) o on i.CURRENCY = o.CURRENCY
+    </select>
 
 </mapper>

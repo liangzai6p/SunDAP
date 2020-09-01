@@ -41,9 +41,6 @@
             <if test="params.BUSI_NO != null">
                 and BUSI_NO = #{params.BUSI_NO}
             </if>
-            <if test="params.STYPE_NAME != null">
-                and STYPE_NAME like #{params.STYPE_NAME}
-            </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
                 and to_date(to_char(CREATE_TIME,'hh24'),'hh24')
                 between to_date(#{params.START_TIME},'hh24')

@@ -53,4 +53,9 @@ public class BusiTrtController {
         return client.getBusiTrtInfoHourly(params);
     }
 
+    @PostMapping("/listCurrencyIO")
+    public ReturnT<List> getListCurrencyIO(@RequestBody Map<String,Object> params){
+        return client.getBusiTrtListCurrencyIO(params);
+    }
+
 }
