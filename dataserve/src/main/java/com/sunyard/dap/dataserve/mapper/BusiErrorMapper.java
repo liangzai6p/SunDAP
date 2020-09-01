@@ -19,4 +19,6 @@ import java.util.Map;
 public interface BusiErrorMapper extends BaseMapper<BusiErrorDetailDo> {
     List<HashMap<String,Object>> listBranchErrorCount(@Param("params") Map<String,Object> params);
 
+    List<HashMap<String,Object>> listSiteErrorCount(@Param("params") Map<String,Object> params);
+
 }

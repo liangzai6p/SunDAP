@@ -27,4 +27,11 @@ public interface TellerMapper extends BaseMapper<DmTellerTb> {
     List<HashMap<String,Object>> listStatus(@Param("params") Map<String,Object> params);
 
     List<HashMap<String, Object>> listBranchOffline(@Param("params") Map<String,Object> params);
+
+    List<HashMap<String, Object>> listSiteOffline(@Param("params") Map<String,Object> params);
+
+    List<HashMap<String,Object>> listRoleStatus(@Param("params") Map<String,Object> params);
+
+    Page<HashMap<String, Object>> listTellerRank(Page<?> page, @Param("params") Map<String, Object> params);
+
 }

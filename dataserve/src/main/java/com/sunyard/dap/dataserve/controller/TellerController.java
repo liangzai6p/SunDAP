@@ -93,5 +93,41 @@ public class TellerController {
     public ReturnT<List> listBranchOffline(@RequestBody Map<String,Object> params){
         return service.listBranchOffline(params);
     }
+
+    /**
+     * 网点不在岗人员排名
+     * @Author yey.he
+     * @Date 9:17 AM 2020/8/24
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listSiteOffline")
+    public ReturnT<List> listSiteOffline(@RequestBody Map<String,Object> params){
+        return service.listSiteOffline(params);
+    }
+
+    /**
+     * 柜台角色状态
+     * @Author yey.he
+     * @Date 5:03 PM 2020/8/26
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listRoleStatus")
+    public ReturnT<List> listRoleStatus(@RequestBody Map<String,Object> params){
+        return service.listRoleStatus(params);
+    }
+
+    /**
+     * 柜员排名
+     * @Author yey.he
+     * @Date 11:25 AM 2020/8/27
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<com.baomidou.mybatisplus.extension.plugins.pagination.Page<java.util.HashMap<java.lang.String,java.lang.Object>>>
+     **/
+    @PostMapping("/listTellerRank")
+    public ReturnT<Page<HashMap<String, Object>>> listTellerRank(@RequestBody Map<String,Object> params){
+        return service.listTellerRank(params);
+    }
 }
 

@@ -30,4 +30,14 @@ public class BusiErrorServiceImpl extends ServiceImpl<BusiErrorMapper, BusiError
             return ReturnT.listFAIL;
         }
     }
+
+    @Override
+    public ReturnT<List> listSiteErrorCount(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listSiteErrorCount(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
 }

@@ -30,4 +30,8 @@ public class BusiErrorController {
         return client.getBusiErrorListBranchErrorCount(params);
     }
 
+    @PostMapping("/listSiteErrorCount")
+    public ReturnT<List> getListSiteErrorCount(@RequestBody Map<String,Object> params){
+        return client.getBusiErrorListSiteErrorCount(params);
+    }
 }

@@ -45,5 +45,17 @@ public class BusiErrorController {
         return service.listBranchErrorCount(params);
     }
 
+    /**
+     * 网点业务量差错排名
+     * @Author yey.he
+     * @Date 2:01 PM 2020/8/24
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listSiteErrorCount")
+    public ReturnT<List> listSiteErrorCount(@RequestBody Map<String,Object> params){
+        return service.listSiteErrorCount(params);
+    }
+
 }
 

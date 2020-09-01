@@ -44,5 +44,13 @@ public class DapTellerController {
     @PostMapping("/listBranchOffline")
     public ReturnT<List> getListBranchOffline(@RequestBody Map<String,Object> params){return client.getTellerListBranchOffline(params);}
 
+    @PostMapping("/listSiteOffline")
+    public ReturnT<List> getListSiteOffline(@RequestBody Map<String,Object> params){return client.getTellerListSiteOffline(params);}
+
+    @PostMapping("/listRoleStatus")
+    public ReturnT<List> getListRoleStatus(@RequestBody Map<String,Object> params){return client.getTellerListRoleStatus(params);}
+
+    @PostMapping("/listTellerRank")
+    public ReturnT<Page<HashMap<String, Object>>> getListTellerRank(@RequestBody Map<String,Object> params){return client.getTellerListTellerRank(params);}
 
 }

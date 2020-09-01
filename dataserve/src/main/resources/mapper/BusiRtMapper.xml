@@ -41,6 +41,9 @@
             <if test="params.BUSI_NO != null">
                 and BUSI_NO = #{params.BUSI_NO}
             </if>
+            <if test="params.STYPE_NAME != null">
+                and STYPE_NAME like #{params.STYPE_NAME}
+            </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
                 and to_date(to_char(CREATE_TIME,'hh24'),'hh24')
                 between to_date(#{params.START_TIME},'hh24')
@@ -163,8 +166,33 @@
         order by RECORD_TIME
     </select>
     <select id="listDRT" resultType="java.util.HashMap">
-        select sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT
-        from DM_BUSI_RT_TB
+        select count(*) BUSI_COUNT,sum(TRANS_AMOUNT) AMOUNT,count(distinct CUS_NO) CUS_COUNT
+        from DM_BUSI_DETAIL_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.ZONE_NO != null">
+                and ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.CHANNEL_NO != null">
+                and CHANNEL_NO = #{params.CHANNEL_NO}
+            </if>
+            <if test="params.BUSI_NO != null">
+                and BUSI_NO = #{params.BUSI_NO}
+            </if>
+            <if test="params.STYPE_NAME != null">
+                and STYPE_NAME like #{params.STYPE_NAME}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and to_date(to_char(CREATE_TIME,'hh24'),'hh24')
+                between to_date(#{params.START_TIME},'hh24')
+                and to_date(#{params.END_TIME},'hh24')
+            </if>
+        </trim>
     </select>
     <select id="listBranchDRT" resultType="java.util.HashMap">
         select BRANCH_NO,BRANCH_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT

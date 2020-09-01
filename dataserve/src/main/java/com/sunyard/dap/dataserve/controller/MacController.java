@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sunyard.dap.common.model.ReturnT;
 import com.sunyard.dap.dataserve.service.MacService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,6 +82,19 @@ public class MacController {
     }
 
     /**
+     * 网点设备故障率
+     * @Author yey.he
+     * @Date 2:36 PM 2020/8/24
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listSiteFaultRate")
+    public ReturnT<List> listSiteFaultRate(@RequestBody Map<String,Object> params){
+        return service.listSiteFaultRate(params);
+    }
+
+
+    /**
      * 设备地区分布相关
      **/
     
@@ -103,8 +115,8 @@ public class MacController {
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
-    @PostMapping("/listBranchMacErrorRate")
-    public ReturnT<List> listBranchMacErrorRate(@RequestBody Map<String,Object> params){return service.listBranchMacErrorRate(params);}
+    @PostMapping("/listBranchMacFaultCount")
+    public ReturnT<List> listBranchMacFaultCount(@RequestBody Map<String,Object> params){return service.listBranchMacFaultCount(params);}
 
     /**
      * 分行自助设备替代率
@@ -239,6 +251,24 @@ public class MacController {
      **/
     @PostMapping("/listMacBusiCount")
     public ReturnT<Page<HashMap<String, Object>>> listMacBusiCount(@RequestBody Map<String, Object> params){return service.listMacBusiCount(params);}
+
+
+
+
+
+    /**
+     * 网点设备故障量
+     * @Author yey.he
+     * @Date 1:57 PM 2020/8/24
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listSiteFaultCount")
+    public ReturnT<List> listSiteFaultCount(@RequestBody Map<String, Object> params){return service.listSiteFaultCount(params);}
+
+
+
+
 
 
 

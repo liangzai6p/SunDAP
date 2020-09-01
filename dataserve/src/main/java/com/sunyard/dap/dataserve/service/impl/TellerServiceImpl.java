@@ -79,4 +79,35 @@ public class TellerServiceImpl extends ServiceImpl<TellerMapper, DmTellerTb> imp
             return ReturnT.listFAIL;
         }
     }
+
+    @Override
+    public ReturnT<List> listSiteOffline(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listSiteOffline(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
+
+    @Override
+    public ReturnT<List> listRoleStatus(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listRoleStatus(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
+
+    @Override
+    public ReturnT<Page<HashMap<String, Object>>> listTellerRank(Map<String, Object> params) {
+        Page<HashMap> page = new Page<>();
+        CommonUtil.setPageByParams(page,params);
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listTellerRank(page,params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new ReturnT<>(ReturnT.FAIL_CODE,"查询失败",null);
+        }    }
 }

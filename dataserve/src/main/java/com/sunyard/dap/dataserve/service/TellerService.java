@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sunyard.dap.common.model.ReturnT;
 import com.sunyard.dap.dataserve.entity.DmTellerTb;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,13 @@ public interface TellerService extends IService<DmTellerTb> {
     ReturnT<List> listStatus(Map<String,Object> params);
 
     ReturnT<List> listBranchOffline(Map<String,Object> params);
+
+    ReturnT<List> listSiteOffline(Map<String,Object> params);
+
+    ReturnT<List> listRoleStatus(@Param("params") Map<String,Object> params);
+
+    ReturnT<Page<HashMap<String, Object>>> listTellerRank(Map<String,Object> params);
+
 
 
 }

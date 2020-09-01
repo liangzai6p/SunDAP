@@ -27,12 +27,14 @@ public interface MacService extends IService<MacDO> {
 
     ReturnT<List> listBranchFaultRate(Map<String,Object> params);
 
+    ReturnT<List> listSiteFaultRate(Map<String,Object> params);
+
     /**
      * 设备地区分布相关
      **/
     ReturnT<List> listBranchOnlineMac(@Param("params") Map<String,Object> params);
 
-    ReturnT<List> listBranchMacErrorRate(@Param("params") Map<String,Object> params);
+    ReturnT<List> listBranchMacFaultCount(@Param("params") Map<String,Object> params);
 
     ReturnT<List> listBranchMacReplaceRate(@Param("params") Map<String,Object> params);
 
@@ -63,5 +65,8 @@ public interface MacService extends IService<MacDO> {
 
     ReturnT<Page<HashMap<String, Object>>> listMacBusiCount(@Param("params") Map<String, Object> params);
 
+
+
+    ReturnT<List> listSiteFaultCount(@Param("params") Map<String,Object> params);
 
 }

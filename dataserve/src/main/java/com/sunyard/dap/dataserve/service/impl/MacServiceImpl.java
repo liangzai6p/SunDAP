@@ -63,13 +63,20 @@ public class MacServiceImpl extends ServiceImpl<MacMapper, MacDO> implements Mac
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
-        }    }
+        }
+    }
 
-        
-        
-        
-        
-        
+    @Override
+    public ReturnT<List> listSiteFaultRate(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listSiteFaultRate(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
+
+
     @Override
     public ReturnT<List> listBranchOnlineMac(Map<String, Object> params) {
         try {
@@ -81,9 +88,9 @@ public class MacServiceImpl extends ServiceImpl<MacMapper, MacDO> implements Mac
     }
 
     @Override
-    public ReturnT<List> listBranchMacErrorRate(Map<String, Object> params) {
+    public ReturnT<List> listBranchMacFaultCount(Map<String, Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listBranchMacErrorRate(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listBranchMacFaultCount(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -219,6 +226,16 @@ public class MacServiceImpl extends ServiceImpl<MacMapper, MacDO> implements Mac
         }catch (Exception e){
             log.error(e.getMessage());
             return new ReturnT<>(ReturnT.FAIL_CODE,"查询失败",null);
+        }
+    }
+
+    @Override
+    public ReturnT<List> listSiteFaultCount(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listSiteFaultCount(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
         }
     }
 }

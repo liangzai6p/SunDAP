@@ -56,7 +56,11 @@
             <if test="params.TELLER_NO != null">
                 TELLER_NO = #{params.TELLER_NO}
             </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
         </trim>
+        order by COMPRE_SCORE desc
     </select>
 
     <select id="listStatus" resultType="java.util.HashMap">
@@ -80,4 +84,47 @@
         order by COUNT desc
     </select>
 
+    <select id="listSiteOffline" resultType="java.util.HashMap">
+        select COUNT(*) COUNT,b.SITE_NO,b.SITE_NAME
+        from DM_TELLER_TB t join SM_BANKS_TB b on t.SITE_NO = b.SITE_NO
+        <trim prefix="where" prefixOverrides="and">
+            STATUS = 0
+            <if test="params.BRANCH_NO != null">
+                and b.BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+        </trim>
+        group by b.SITE_NO,b.SITE_NAME
+        order by COUNT desc
+    </select>
+
+    <select id="listRoleStatus" resultType="java.util.HashMap">
+        select ROLE_NO,ROLE_NAME,count(decode(STATUS,'1',1,null)) ONLINE_COUNT,count(decode(STATUS,'0',1,null)) OFFLINE_COUNT
+        from DM_TELLER_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.SITE_NO != null">
+                SITE_NO = #{params.SITE_NO}
+            </if>
+        </trim>
+        group by ROLE_NO,ROLE_NAME
+    </select>
+    <select id="listTellerRank" resultType="java.util.HashMap">
+        select b.TELLER_NAME,b.BRANCH_NO,a.* from (
+          SELECT TELLER_NO,SITE_NO,avg(COMPRE_SCORE) COMPRE_SCORE
+          FROM DM_TELLER_ASSESS_TB
+          group by TELLER_NO,SITE_NO
+          ) a join (
+                   select TELLER_NO,TELLER_NAME,t1.SITE_NO,BRANCH_NO
+                   from DM_TELLER_TB t1 join SM_BANKS_TB t2
+                                on t1.SITE_NO = t2.SITE_NO
+                   ) b on a.TELLER_NO = b.TELLER_NO
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.SITE_NO != null">
+                a.SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.BRANCH_NO != null">
+                and b.BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+        </trim>
+        order by COMPRE_SCORE desc
+    </select>
 </mapper>

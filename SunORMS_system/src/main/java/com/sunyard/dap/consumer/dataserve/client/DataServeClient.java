@@ -194,6 +194,9 @@ public interface DataServeClient {
     @PostMapping("/mac/listBranchFaultRate")
     ReturnT<List> getMacListBranchFaultRate(Map<String, Object> params);
 
+    @PostMapping("/mac/listSiteFaultRate")
+    ReturnT<List> getMacListSiteFaultRate(Map<String, Object> params);
+
 
     /**
      * 设备地区分布相关
@@ -202,8 +205,8 @@ public interface DataServeClient {
     @PostMapping("/mac/listBranchOnlineMac")
     ReturnT<List> getMacListBranchOnlineMac(Map<String,Object> params);
     
-    @PostMapping("/mac/listBranchMacErrorRate")
-    ReturnT<List> getMacListBranchMacErrorRate(Map<String,Object> params);
+    @PostMapping("/mac/listBranchMacFaultCount")
+    ReturnT<List> getMacListBranchMacFaultCount(Map<String,Object> params);
 
     @PostMapping("/mac/listBranchMacReplaceRate")
     ReturnT<List> getMacListBranchMacReplaceRate(Map<String,Object> params);
@@ -248,6 +251,10 @@ public interface DataServeClient {
     ReturnT<Page<HashMap<String, Object>>> getMacListMacBusiCount(Map<String, Object> params);
 
 
+    @PostMapping("/mac/listSiteFaultCount")
+    ReturnT<List> getMacListSiteFaultCount(Map<String,Object> params);
+
+
 
 
     /**
@@ -268,11 +275,72 @@ public interface DataServeClient {
     @PostMapping("/teller/listBranchOffline")
     ReturnT<List> getTellerListBranchOffline(Map<String, Object> params);
 
+    @PostMapping("/teller/listSiteOffline")
+    ReturnT<List> getTellerListSiteOffline(Map<String, Object> params);
+
+    @PostMapping("/teller/listRoleStatus")
+    ReturnT<List> getTellerListRoleStatus(Map<String, Object> params);
+
+    @PostMapping("/teller/listTellerRank")
+    ReturnT<Page<HashMap<String, Object>>> getTellerListTellerRank(Map<String, Object> params);
+
+
     /**
      * 业务差错
      **/
     @PostMapping("/busiError/listBranchErrorCount")
     ReturnT<List> getBusiErrorListBranchErrorCount(Map<String, Object> params);
 
+    @PostMapping("/busiError/listSiteErrorCount")
+    ReturnT<List> getBusiErrorListSiteErrorCount(Map<String, Object> params);
+
+    /**
+     * 网点机构
+     **/
+    @PostMapping("/site/listBaseInfo")
+    ReturnT<List> getSiteListBaseInfo(Map<String,Object> params);
+
+    @PostMapping("/site/listSiteGrade")
+    ReturnT<List> getSiteListSiteGrade(Map<String,Object> params);
+
+    @PostMapping("/site/listTransStatus")
+    ReturnT<List> getSiteListTransStatus(Map<String,Object> params);
+
+    @PostMapping("/site/listHallInfo")
+    ReturnT<List> getSiteListHallInfo(Map<String,Object> params);
+
+
+    @PostMapping("/site/listCashInfo")
+    ReturnT<List> getSiteListCashInfo(Map<String,Object> params);
+
+    @PostMapping("/site/listQueHourly")
+    ReturnT<List> getSiteListQueHourly(Map<String,Object> params);
+
+    /**
+     * 渠道
+     **/
+    @PostMapping("/channel/findEleAllRplRate")
+    ReturnT<List> getChannelFindEleAllRplRate(Map<String,Object> params);
+
+    @PostMapping("/channel/listEleRplRateByBranch")
+    ReturnT<List> getChannelListEleRplRateByBranch(Map<String,Object> params);
+
+    @PostMapping("/channel/listEleAllRplRateDaily")
+    ReturnT<List> getChannelListEleAllRplRateDaily(Map<String,Object> params);
+
+    @PostMapping("/channel/listEleAllRplRateMonthly")
+    ReturnT<List> getChannelListEleAllRplRateMonthly(Map<String,Object> params);
+
+    @PostMapping("/channel/listEleGradeByChannel")
+    ReturnT<List> getChannelListEleGradeByChannel(Map<String,Object> params);
+
+    @PostMapping("/channel/listEleSatisByChannel")
+    ReturnT<List> getChannelListEleSatisByChannel(Map<String,Object> params);
+
+    @PostMapping("/channel/listEleRplRateByChannel")
+    ReturnT<List> getChannelListEleRplRateByChannel(Map<String,Object> params);
+
+    @PostMapping("/channel/listCusCountByChannel")
+    ReturnT<List> getChannelListCusCountByChannel(Map<String,Object> params);
 
 }

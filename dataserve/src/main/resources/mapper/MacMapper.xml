@@ -101,10 +101,10 @@
         from DM_MAC_TB group by BRANCH_NO, BRANCH_NAME
         order by ONLINE_COUNT desc
     </select>
-    <select id="listBranchMacErrorRate" resultType="java.util.HashMap">
+    <select id="listBranchMacFaultCount" resultType="java.util.HashMap">
         select a.BRANCH_NO,a.BRANCH_NAME,nvl(b.repair_times,0) FAULT_TIMES from
          (select BRANCH_NO,BRANCH_NAME from SM_BANKS_TB group by BRANCH_NO, BRANCH_NAME) a left join
-              (select BRANCH_NO,BRANCH_NAME,sum(REPAIR_TIMES) repair_times
+              (select BRANCH_NO,BRANCH_NAME,COUNT(r.REPAIR_ETIME) repair_times
                 from  DM_MAC_REPAIR_TB r join  DM_MAC_TB m
                 on m.MAC_NO = r.MAC_NO
                 <trim prefix="where" prefixOverrides="and">
@@ -294,6 +294,7 @@
             </if>
         </trim>
         group by to_char(to_date(RECORD_TIME,'yyyymmdd'),'yyyymm')
+        order by MONTH
     </select>
     <select id="listMacTypeSuccessAndFaultRate" resultType="java.util.HashMap">
         select a.MAC_TYPE,round(e.busi_count/a.BUSI_COUNT*100,2) error_rate,100-round(e.busi_count/a.BUSI_COUNT*100,2) success_rate
@@ -344,6 +345,7 @@
             </if>
         </trim>
         group by to_char(to_date(MAINTAIN_TIME,'yyyymmdd'),'yyyymm')
+        order by month
     </select>
     <select id="listMacTypeBusiCount" resultType="java.util.HashMap">
         select MAC_TYPE,sum(BUSI_COUNT) BUSI_COUNT
@@ -377,6 +379,45 @@
         </trim>
         group by MAC_NO
         order by BUSI_COUNT desc
+    </select>
+
+
+    <select id="listSiteFaultCount" resultType="java.util.HashMap">
+        select a.SITE_NO,a.SITE_NAME,nvl(b.repair_times,0) FAULT_TIMES from
+        (select SITE_NO,SITE_NAME,BRANCH_NO from SM_BANKS_TB group by SITE_NO, SITE_NAME,BRANCH_NO) a left join
+        (select SITE_NO,SITE_NAME,COUNT(r.REPAIR_ETIME) repair_times
+        from  DM_MAC_REPAIR_TB R join  DM_MAC_TB M
+        on m.MAC_NO = r.MAC_NO
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                R.FAULT_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+        </trim>
+        group by SITE_NO,SITE_NAME) b
+        on a.SITE_no = b.SITE_no
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                a.BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+        </trim>
+        order by FAULT_TIMES DESC
+    </select>
+    <select id="listSiteFaultRate" resultType="java.util.HashMap">
+        select round(nvl(t2.fault_count,0)/t1.mac_count*100,3) FAULT_RATE,t1.SITE_NO,t1.SITE_NAME from (
+                (select COUNT(MAC_NO) mac_count,SITE_NO,SITE_NAME
+                 from DM_MAC_TB
+                <trim prefix="where" prefixOverrides="and">
+                    <if test="params.BRANCH_NO != null">
+                        BRANCH_NO = #{params.BRANCH_NO}
+                    </if>
+                </trim>
+                 group by SITE_NO,SITE_NAME) t1 left join
+                        (select COUNT(MAC_NO) fault_count,SITE_NO,SITE_NAME
+                         from DM_MAC_TB
+                         where STATUS = '2'
+                         group by SITE_NO,SITE_NAME) t2
+                        on t1.SITE_no = t2.SITE_no)
+        order by FAULT_RATE desc
     </select>
 
 </mapper>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.dap.dataserve.mapper.SiteMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sunyard.dap.dataserve.entity.SiteDO">
+        <id column="SITE_NO" property="siteNo" />
+        <result column="ZONE_NO" property="zoneNo" />
+        <result column="ZONE_NAME" property="zoneName" />
+        <result column="BRANCH_NO" property="branchNo" />
+        <result column="BRANCH_NAME" property="branchName" />
+        <result column="SITE_NAME" property="siteName" />
+        <result column="PRESIDENT" property="president" />
+        <result column="VICE_PRESIDENT" property="vicePresident" />
+        <result column="ADDR" property="addr" />
+        <result column="TEL" property="tel" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, PRESIDENT, VICE_PRESIDENT, ADDR, TEL
+    </sql>
+    <select id="listBaseInfo" resultType="java.util.HashMap">
+        select SITE_NO,SITE_NAME,PRESIDENT,VICE_PRESIDENT,ADDR,TEL
+        from SM_BANKS_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.SITE_NO != null">
+                SITE_NO = #{params.SITE_NO}
+            </if>
+        </trim>
+
+    </select>
+
+    <select id="listSiteGrade" resultType="java.util.HashMap">
+        select  a.*,b.rank from DM_ORGAN_GRADE_TB a
+            join (
+                 select SITE_NO,rank() over (order by score desc ) rank
+                 from DM_ORGAN_GRADE_TB) b
+                on a.SITE_NO = b.SITE_NO
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.SITE_NO != null">
+                a.SITE_NO = #{params.SITE_NO}
+            </if>
+        </trim>
+    </select>
+
+    <select id="listTransStatus" resultType="java.util.HashMap">
+        select round(SUCCESS_COUNT/(SUCCESS_COUNT+ROLLBACK_COUNT+ERROR_COUNT)*100,2) SUCCESS_RATE,
+               round(ERROR_COUNT/(SUCCESS_COUNT+ROLLBACK_COUNT+ERROR_COUNT)*100,2) ERROR_RATE,
+               round(ROLLBACK_COUNT/(SUCCESS_COUNT+ROLLBACK_COUNT+ERROR_COUNT)*100,2) ROLLBACK_RATE
+        from
+             (
+             select count(TASK_ID) ERROR_COUNT
+             from DM_BUSI_DETAIL_ERROR_TB
+            <trim prefix="where" prefixOverrides="and">
+                <if test="params.SITE_NO != null">
+                    SITE_NO = #{params.SITE_NO}
+                </if>
+            </trim>
+        ) e,
+             (
+             select count(decode(TRANS_STATE,'5',1,null)) SUCCESS_COUNT,count(decode(TRANS_STATE,'4',1,null)) ROLLBACK_COUNT
+             from DM_BUSI_DETAIL_HISTORY_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.SITE_NO != null">
+                SITE_NO = #{params.SITE_NO}
+            </if>
+        </trim>
+             ) d
+    </select>
+
+    <select id="listHallInfo" resultType="java.util.HashMap">
+        select * from DM_ORGAN_HALL_V
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.SITE_NO != null">
+                SITE_NO = #{params.SITE_NO}
+            </if>
+        </trim>
+    </select>
+
+    <select id="listCashInfo" resultType="java.util.HashMap">
+        select t1.HOUR,nvl(IN_COUNT,0) IN_COUNT ,nvl(OUT_COUNT,0) OUT_COUNT FROM
+         (select to_char(COMPLETE_TIME,'hh24') HOUR
+          from DM_BUSI_DETAIL_HISTORY_TB
+          group by to_char(COMPLETE_TIME,'hh24')
+         ) t1 left join
+             (
+             select a.HOUR,IN_COUNT,OUT_COUNT from
+               (
+               select sum(TRANS_AMOUNT) IN_COUNT,to_char(COMPLETE_TIME,'hh24') HOUR
+               from DM_BUSI_DETAIL_HISTORY_TB
+               where BUSI_NAME = '现金交易'
+                 and STYPE_NAME like '%（入）%'
+                <if test="params.SITE_NO != null">
+                    and SITE_NO = #{params.SITE_NO}
+                </if>
+               group by to_char(COMPLETE_TIME,'hh24')
+               ) a join
+                       (
+                       select sum(TRANS_AMOUNT) OUT_COUNT,to_char(COMPLETE_TIME,'hh24') HOUR
+                       from DM_BUSI_DETAIL_HISTORY_TB
+                       where BUSI_NAME = '现金交易'
+                         and STYPE_NAME like '%（出）%'
+                        <if test="params.SITE_NO != null">
+                            and SITE_NO = #{params.SITE_NO}
+                        </if>
+                       group by to_char(COMPLETE_TIME,'hh24')
+                       ) b on a.HOUR = B.HOUR
+             ) t2 on t1.HOUR = t2.HOUR
+        order by HOUR
+
+    </select>
+    <select id="listQueHourly" resultType="java.util.HashMap">
+        <choose>
+            <when test="params.SITE_NO != null">
+                select a.HOUR,nvl(b.COUNT,0) COUNT,nvl(MAX_WAIT_LENGTH,0) MAX_WAIT_LENGTH FROM
+                (
+                select to_char(CALL_TIME,'hh24') HOUR
+                from DM_QUE_DETAIL_TB group by to_char(CALL_TIME,'hh24')
+                ) a left join
+                (
+                select to_char(CALL_TIME,'hh24') HOUR,COUNT(*) COUNT,max(WAIT_LENGTH) MAX_WAIT_LENGTH
+                from DM_QUE_DETAIL_TB
+                where to_char(TAKE_TIME,'hh24') &lt;&gt; to_char(CALL_TIME,'hh24')
+                and SITE_NO = #{params.SITE_NO}
+                group by to_char(CALL_TIME,'hh24')
+                ) b on a.HOUR = b.HOUR
+                order by HOUR
+            </when>
+            <otherwise>
+                select a.HOUR,nvl(b.COUNT,0) COUNT FROM
+                (
+                select to_char(CALL_TIME,'hh24') HOUR
+                from DM_QUE_DETAIL_TB group by to_char(CALL_TIME,'hh24')
+                ) a left join
+                (
+                select HOUR,round(avg(COUNT),2) COUNT from (
+                select to_char(CALL_TIME,'hh24') HOUR,COUNT(*) COUNT,SITE_NO
+                from DM_QUE_DETAIL_TB
+                where to_char(TAKE_TIME,'hh24') &lt;&gt; to_char(CALL_TIME,'hh24')
+                group by to_char(CALL_TIME,'hh24'),SITE_NO
+                )
+                group by HOUR
+                ) b on a.HOUR = b.HOUR
+                order by HOUR
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

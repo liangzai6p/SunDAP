@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.dap.dataserve.mapper.ChannelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sunyard.dap.dataserve.entity.ChannelGradeDO">
+        <result column="BRANCH_NO" property="branchNo" />
+        <result column="BRANCH_NAME" property="branchName" />
+        <result column="CHANNEL_NO" property="channelNo" />
+        <result column="CHANNEL_NAME" property="channelName" />
+        <result column="BUSI_SCORE" property="busiScore" />
+        <result column="QUALITY_SCORE" property="qualityScore" />
+        <result column="SATIS_SCORE" property="satisScore" />
+        <result column="SUCCESS_RATE" property="successRate" />
+        <result column="COVER_RATE" property="coverRate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        BRANCH_NO, BRANCH_NAME, CHANNEL_NO, CHANNEL_NAME, BUSI_SCORE, QUALITY_SCORE, SATIS_SCORE, SUCCESS_RATE, COVER_RATE
+    </sql>
+    <select id="findEleAllRplRate" resultType="java.util.HashMap">
+        select ELE_COUNT,trunc(ELE_COUNT/decode((COUNT-ELE_COUNT),0,1,(COUNT-ELE_COUNT))*100) ELE_REPLACE_RATE
+        from (
+            SELECT SUM(BUSI_COUNT) COUNT FROM DM_BUSI_COUNT_TB
+            <trim prefix="where" prefixOverrides="and">
+                <if test="params.START_TIME != null and params.END_TIME != null">
+                    RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                </if>
+            </trim>
+        ),
+        (
+            SELECT SUM(BUSI_COUNT) ELE_COUNT FROM DM_BUSI_COUNT_TB
+            WHERE CHANNEL_NO &lt;&gt; 'CH000'
+            <if test="params.START_TIME != null and params.END_TIME != null">
+               and RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+        )
+    </select>
+
+    <select id="listEleRplRateByBranch" resultType="java.util.HashMap">
+        select a.BRANCH_NO,a.BRANCH_NAME,ELE_COUNT,trunc(ELE_COUNT/decode((COUNT-ELE_COUNT),0,1,(COUNT-ELE_COUNT))*100) ELE_REPLACE_RATE
+        from (
+            SELECT BRANCH_NO,BRANCH_NAME,SUM(BUSI_COUNT) COUNT FROM DM_BUSI_COUNT_TB
+            <trim prefix="where" prefixOverrides="and">
+                <if test="params.START_TIME != null and params.END_TIME != null">
+                    RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                </if>
+            </trim>
+            group by BRANCH_NO,BRANCH_NAME
+        )a
+        full join (
+            SELECT BRANCH_NO,BRANCH_NAME,SUM(BUSI_COUNT) ELE_COUNT FROM DM_BUSI_COUNT_TB
+            WHERE CHANNEL_NO &lt;&gt; 'CH000'
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+            group by BRANCH_NO,BRANCH_NAME
+        ) b
+        on a.BRANCH_NO = b.BRANCH_NO
+        order by ELE_REPLACE_RATE desc
+    </select>
+
+    <select id="listEleAllRplRateDaily" resultType="java.util.HashMap">
+        select ELE_COUNT,trunc(ELE_COUNT/decode((COUNT-ELE_COUNT),0,1,(COUNT-ELE_COUNT))*100) ELE_REPLACE_RATE,to_char(a.RECORD_TIME,'yyyymmdd') RECORD_TIME
+        from (
+            SELECT RECORD_TIME,SUM(BUSI_COUNT) COUNT FROM DM_BUSI_COUNT_TB
+            <trim prefix="where" prefixOverrides="and">
+                <if test="params.START_TIME != null and params.END_TIME != null">
+                    RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                </if>
+            </trim>
+            group by RECORD_TIME
+        ) a
+        join (
+            SELECT RECORD_TIME,SUM(BUSI_COUNT) ELE_COUNT FROM DM_BUSI_COUNT_TB
+            WHERE CHANNEL_NO &lt;&gt; 'CH000'
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+            group by RECORD_TIME
+        ) b
+        on a.RECORD_TIME = b.RECORD_TIME
+        order by RECORD_TIME
+    </select>
+
+    <select id="listEleAllRplRateMonthly" resultType="java.util.HashMap">
+        select ELE_COUNT,trunc(ELE_COUNT/decode((COUNT-ELE_COUNT),0,1,(COUNT-ELE_COUNT))*100) ELE_REPLACE_RATE,a.RECORD_TIME
+        from (
+            SELECT to_char(RECORD_TIME,'yyyymm') RECORD_TIME,SUM(BUSI_COUNT) COUNT FROM DM_BUSI_COUNT_TB
+            <trim prefix="where" prefixOverrides="and">
+                <if test="params.START_TIME != null and params.END_TIME != null">
+                    RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                </if>
+            </trim>
+            group by to_char(RECORD_TIME,'yyyymm')
+        ) a
+        join (
+            SELECT to_char(RECORD_TIME,'yyyymm') RECORD_TIME,SUM(BUSI_COUNT) ELE_COUNT FROM DM_BUSI_COUNT_TB
+            WHERE CHANNEL_NO &lt;&gt; 'CH000'
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+            </if>
+            group by to_char(RECORD_TIME,'yyyymm')
+        ) b
+        on a.RECORD_TIME = b.RECORD_TIME
+        order by RECORD_TIME
+    </select>
+
+    <select id="listEleGradeByChannel" resultType="java.util.HashMap">
+        select * from DM_CHANNEL_GRADE_TB
+        where CHANNEL_NO &lt;&gt; 'CH000'
+        <if test="params.BRANCH_NO != null">
+            and BRANCH_NO = #{params.BRANCH_NO}
+        </if>
+    </select>
+
+    <select id="listEleSatisByChannel" resultType="java.util.HashMap">
+        select CHANNEL_NO,CHANNEL_NAME,SATIS_SCORE from DM_CHANNEL_GRADE_TB
+        where CHANNEL_NO &lt;&gt; 'CH000'
+        <if test="params.BRANCH_NO != null">
+            and BRANCH_NO = #{params.BRANCH_NO}
+        </if>
+        order by to_number(SATIS_SCORE) desc
+    </select>
+
+    <select id="listEleRplRateByChannel" resultType="java.util.HashMap">
+        select CHANNEL_NO,CHANNEL_NAME,TRUNC(CHANNEL_COUNT/COUNT * 100) REPLACE_RATE
+        from (
+            select CHANNEL_NO,CHANNEL_NAME,sum(BUSI_COUNT) CHANNEL_COUNT
+            from DM_BUSI_COUNT_TB
+            where CHANNEL_NO &lt;&gt; 'CH000'
+            <if test="params.BRANCH_NO != null">
+                and BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            group by CHANNEL_NO, CHANNEL_NAME
+        ) a,
+        (
+            select sum(BUSI_COUNT) COUNT
+            from DM_BUSI_COUNT_TB
+            <trim prefix="where" prefixOverrides="and">
+                <if test="params.BRANCH_NO != null">
+                    BRANCH_NO = #{params.BRANCH_NO}
+                </if>
+            </trim>
+        )
+        ORDER BY REPLACE_RATE DESC
+    </select>
+
+    <select id="listCusCountByChannel" resultType="java.util.HashMap">
+        select a.CHANNEL_NO,a.CHANNEL_NAME,COUNT,AVG_COUNT
+        from (
+            select CHANNEL_NO,CHANNEL_NAME,trunc(avg(CUS_COUNT)) AVG_COUNT
+            from (
+                select CHANNEL_NO,CHANNEL_NAME,sum(CUS_COUNT) CUS_COUNT
+                from DM_BUSI_COUNT_TB
+                where CHANNEL_NO &lt;&gt; 'CH000'
+                <if test="params.BRANCH_NO != null">
+                    and BRANCH_NO = #{params.BRANCH_NO}
+                </if>
+                group by CHANNEL_NO, CHANNEL_NAME,RECORD_TIME
+            )
+            group by CHANNEL_NO, CHANNEL_NAME
+        ) a join
+        (
+            select CHANNEL_NO,CHANNEL_NAME,count(distinct CUS_NO) COUNT
+            from DM_BUSI_DETAIL_HISTORY_TB
+            <trim prefix="where" prefixOverrides="and">
+                <if test="params.BRANCH_NO != null">
+                    BRANCH_NO = #{params.BRANCH_NO}
+                </if>
+            </trim>
+            group by CHANNEL_NO, CHANNEL_NAME
+        ) b
+        on a.CHANNEL_NO = b.CHANNEL_NO
+    </select>
+
+</mapper>

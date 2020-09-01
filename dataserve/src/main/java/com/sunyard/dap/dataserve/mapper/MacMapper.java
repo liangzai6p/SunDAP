@@ -26,16 +26,20 @@ public interface MacMapper extends BaseMapper<MacDO> {
 
     List<HashMap<String,Object>> listBranchFaultRate(@Param("params") Map<String,Object> params);
 
+    List<HashMap<String,Object>> listSiteFaultRate(@Param("params") Map<String,Object> params);
+
     /**
      * 设备地区分布相关
      **/
     List<HashMap<String,Object>> listBranchOnlineMac(@Param("params") Map<String,Object> params);
 
-    List<HashMap<String,Object>> listBranchMacErrorRate(@Param("params") Map<String,Object> params);
+    List<HashMap<String,Object>> listBranchMacFaultCount(@Param("params") Map<String,Object> params);
 
     List<HashMap<String,Object>> listBranchMacReplaceRate(@Param("params") Map<String,Object> params);
 
     List<HashMap<String,Object>> listMacReplaceRateMonthly(@Param("params") Map<String,Object> params);
+
+    List<HashMap<String,Object>> listSiteFaultCount(@Param("params") Map<String,Object> params);
 
     /**
      * 设备画像相关

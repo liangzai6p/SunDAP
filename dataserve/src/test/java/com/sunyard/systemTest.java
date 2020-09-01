@@ -325,4 +325,35 @@ public class systemTest {
         IoUtil.close(rs);
         IoUtil.close(conn);
     }
+
+    @Test
+    public void setSite() throws Exception{
+        List<String> nameList = new ArrayList<>();
+        List<String> siteList = new ArrayList<>();
+        Connection conn = getOracleConn("jdbc:oracle:thin:@172.1.1.11:1521:orcl", "sundap", "123456");
+        PreparedStatement ps = conn.prepareStatement("select NAME from  CH_NAME");
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()){
+            nameList.add(rs.getString(1));
+        }
+        IoUtil.close(rs);
+        System.out.println("name over");
+        ps = conn.prepareStatement("select site_no from SM_BANKS_TB");
+        rs = ps.executeQuery();
+        while (rs.next()){
+            siteList.add(rs.getString(1));
+        }
+        IoUtil.close(rs);
+        System.out.println("site over");
+        for (int i = 0 ; i < siteList.size() ; i ++){
+            ps = conn.prepareStatement("update SM_BANKS_TB set PRESIDENT = ?, VICE_PRESIDENT = ? where SITE_NO = ?");
+            ps.setString(1,nameList.get(RandomUtil.randomInt(0,nameList.size())));
+            ps.setString(2,nameList.get(RandomUtil.randomInt(0,nameList.size())));
+            ps.setString(3,siteList.get(i));
+            ps.executeUpdate();
+            IoUtil.close(ps);
+        }
+        IoUtil.close(ps);
+        IoUtil.close(conn);
+    }
 }

@@ -44,6 +44,12 @@ public class MacController {
         return client.getMacListBranchFaultRate(params);
     }
 
+    @PostMapping("/listSiteFaultRate")
+    public ReturnT<List> getListSiteFaultRate(@RequestBody Map<String,Object> params){
+        return client.getMacListSiteFaultRate(params);
+    }
+
+
     /**
      * 设备地区分布相关
      **/
@@ -51,8 +57,8 @@ public class MacController {
     @PostMapping("/listBranchOnlineMac")
     public ReturnT<List> getListBranchOnlineMac(@RequestBody Map<String,Object> params){return client.getMacListBranchOnlineMac(params);}
 
-    @PostMapping("/listBranchMacErrorRate")
-    public ReturnT<List> getListBranchMacErrorRate(@RequestBody Map<String,Object> params){return client.getMacListBranchMacErrorRate(params);}
+    @PostMapping("/listBranchMacFaultCount")
+    public ReturnT<List> getListBranchMacFaultCount(@RequestBody Map<String,Object> params){return client.getMacListBranchMacFaultCount(params);}
 
     @PostMapping("/listBranchMacReplaceRate")
     public ReturnT<List> getListBranchMacReplaceRate(@RequestBody Map<String,Object> params){return client.getMacListBranchMacReplaceRate(params);}
@@ -96,6 +102,12 @@ public class MacController {
 
     @PostMapping("/listMacBusiCount")
     public ReturnT<Page<HashMap<String, Object>>> getListMacBusiCount(@RequestBody Map<String, Object> params){return client.getMacListMacBusiCount(params);}
+
+
+
+    @PostMapping("/listSiteFaultCount")
+    public ReturnT<List> getListSiteFaultCount(@RequestBody Map<String,Object> params){return client.getMacListSiteFaultCount(params);}
+
 
 
 }
