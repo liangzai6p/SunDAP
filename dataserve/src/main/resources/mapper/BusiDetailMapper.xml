@@ -64,7 +64,7 @@
                 and BUSI_NO = #{params.BUSI_NO}
             </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                and to_date(to_char(CREATE_TIME,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                and to_char(CREATE_TIME,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
             </if>
             <if test="params.TRANS_STATE  != null">
                 and TRANS_STATE = #{params.TRANS_STATE}

@@ -104,5 +104,15 @@ public class SiteController {
     public ReturnT<List> listQueHourly(@RequestBody Map<String,Object> params){
         return service.listQueHourly(params);
     }
+
+
+    @PostMapping("/listMacBusiTypeCountHourly")
+    public ReturnT<List> listMacBusiTypeCountHourly(@RequestBody Map<String,Object> params){
+        return service.listMacBusiTypeCountHourly(params);
+    }
+
+
+
+
 }
 

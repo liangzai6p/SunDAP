@@ -319,6 +319,10 @@ public interface DataServeClient {
     @PostMapping("/site/listQueHourly")
     ReturnT<List> getSiteListQueHourly(Map<String,Object> params);
 
+
+    @PostMapping("/site/listMacBusiTypeCountHourly")
+    ReturnT<List> getSiteListMacBusiTypeCountHourly(Map<String,Object> params);
+
     /**
      * 渠道
      **/

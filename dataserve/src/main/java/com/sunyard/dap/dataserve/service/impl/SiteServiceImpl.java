@@ -81,4 +81,14 @@ public class SiteServiceImpl extends ServiceImpl<SiteMapper, SiteDO> implements 
             return ReturnT.listFAIL;
         }
     }
+
+    @Override
+    public ReturnT<List> listMacBusiTypeCountHourly(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listMacBusiTypeCountHourly(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
 }

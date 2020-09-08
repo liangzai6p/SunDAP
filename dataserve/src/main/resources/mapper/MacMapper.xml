@@ -133,15 +133,15 @@
     <select id="listMacReplaceRateMonthly" resultType="java.util.HashMap">
         select MONTH,round(c1/c2*100,2) REPLACE_RATE
         from (
-            select  to_char(RECORD_TIME,'yyyymm') month,count(decode(CHANNEL_NO,'CH005',1,NULL)) c1,count(decode(CHANNEL_NO,'CH000',1,null)) c2
-            from DM_BUSI_COUNT_TB
-            <trim prefix="where" prefixOverrides="and">
-                <if test="params.START_TIME != null and params.END_TIME != null">
-                    to_date(to_char(RECORD_TIME,'yyyymm'),'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
-                </if>
-            </trim>
-            group by to_char(RECORD_TIME,'yyyymm')
+            select  MONTH,count(decode(CHANNEL_NO,'CH005',1,NULL)) c1,count(decode(CHANNEL_NO,'CH000',1,null)) c2
+            from DM_BUSI_COUNT_MONTHLY_TB
+            group by month
           )
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                MONTH between #{params.START_TIME} and #{params.END_TIME}
+            </if>
+        </trim>
         order by  MONTH
     </select>
     <select id="macProtrayal" resultType="java.util.HashMap">
@@ -213,11 +213,11 @@
         GROUP BY MAC_BRAND
     </select>
     <select id="listMacReplaceOtcRateMonthly" resultType="java.util.HashMap">
-        select round(b.busi_count/a.busi_count*100,2) CARD_RATE,round(c.busi_count/a.busi_count*100,2) PAY_COUNT,a.RECORD_TIME MONTH
+        select round(b.busi_count/a.busi_count*100,2) CARD_RATE,round(c.busi_count/a.busi_count*100,2) PAY_COUNT,a.MONTH
         from (
                 (
-                select sum(BUSI_COUNT) busi_count, to_char(RECORD_TIME, 'yyyymm') record_time
-                from DM_BUSI_COUNT_TB
+                select sum(BUSI_COUNT) busi_count, month
+                from DM_BUSI_COUNT_MONTHLY_TB
                 <trim prefix="where" prefixOverrides="and">
                     <if test="params.BRANCH_NO != null">
                         BRANCH_NO = #{params.BRANCH_NO}
@@ -229,12 +229,13 @@
                         and ZONE_NO = #{params.ZONE_NO}
                     </if>
                     <if test="params.START_TIME != null and params.END_TIME != null">
-                        and to_date(to_char(RECORD_TIME,'yyyymm'),'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+                        and month between #{params.START_TIME} and #{params.END_TIME}
                     </if>
                 </trim>
-                group by to_char(RECORD_TIME, 'yyyymm')) a join
+                group by month
+              ) a join
                 (
-                select sum(BUSI_COUNT) busi_count, to_char(to_date(RECORD_TIME, 'yyyymmdd'), 'yyyymm') record_time
+                select sum(BUSI_COUNT) busi_count, to_char(to_date(RECORD_TIME, 'yyyymmdd'), 'yyyymm') month
                 from DM_MAC_BUSI_TB
                 <trim prefix="where" prefixOverrides="and">
                     MAC_TYPE = '自助发卡机'
@@ -248,12 +249,12 @@
                         and ZONE_NO = #{params.ZONE_NO}
                     </if>
                     <if test="params.START_TIME != null and params.END_TIME != null">
-                        and to_date(to_char(to_date(RECORD_TIME,'yyyymmdd'),'yyyymm'),'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+                        and to_char(to_date(RECORD_TIME,'yyyymmdd'),'yyyymm') between #{params.START_TIME} and #{params.END_TIME}
                     </if>
                 </trim>
-                group by to_char(to_date(RECORD_TIME, 'yyyymmdd'), 'yyyymm')) b on a.record_time = b.record_time join
+                group by to_char(to_date(RECORD_TIME, 'yyyymmdd'), 'yyyymm')) b on a.month = b.month join
                 (
-                select sum(BUSI_COUNT) busi_count, to_char(to_date(RECORD_TIME, 'yyyymmdd'), 'yyyymm') record_time
+                select sum(BUSI_COUNT) busi_count, to_char(to_date(RECORD_TIME, 'yyyymmdd'), 'yyyymm') month
                 from DM_MAC_BUSI_TB
                 <trim prefix="where" prefixOverrides="and">
                     MAC_TYPE = '自助缴款机'
@@ -267,10 +268,10 @@
                         and ZONE_NO = #{params.ZONE_NO}
                     </if>
                     <if test="params.START_TIME != null and params.END_TIME != null">
-                        and to_date(to_char(to_date(RECORD_TIME,'yyyymmdd'),'yyyymm'),'yyyymm') between to_date(#{params.START_TIME},'yyyymm') and to_date(#{params.END_TIME},'yyyymm')
+                        and to_char(to_date(RECORD_TIME,'yyyymmdd'),'yyyymm') between #{params.START_TIME} and #{params.END_TIME}
                     </if>
                 </trim>
-                group by to_char(to_date(RECORD_TIME, 'yyyymmdd'), 'yyyymm')) c on b.record_time = c.record_time
+                group by to_char(to_date(RECORD_TIME, 'yyyymmdd'), 'yyyymm')) c on b.month = c.month
                 )
         order by MONTH
     </select>

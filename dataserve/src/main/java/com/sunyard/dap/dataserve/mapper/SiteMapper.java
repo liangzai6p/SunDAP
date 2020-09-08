@@ -30,6 +30,8 @@ public interface SiteMapper extends BaseMapper<SiteDO> {
 
     List<HashMap<String,Object>> listQueHourly(@Param("params") Map<String,Object> params);
 
+    List<HashMap<String,Object>> listMacBusiTypeCountHourly(@Param("params") Map<String,Object> params);
+
 
 
 

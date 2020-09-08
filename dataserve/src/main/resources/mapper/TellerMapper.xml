@@ -51,7 +51,7 @@
         </trim>
     </select>
     <select id="listTellerGrade" resultType="java.util.HashMap">
-        select * from DM_TELLER_GRADE_V
+        select * from DM_TELLER_GRADE_TB
         <trim prefix="where" prefixOverrides="and">
             <if test="params.TELLER_NO != null">
                 TELLER_NO = #{params.TELLER_NO}

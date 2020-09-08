@@ -44,7 +44,7 @@
                 from dm_busi_count_tb
                 <trim prefix="where" prefixOverrides="and">
                     <if test="params.START_TIME != null and params.END_TIME != null">
-                        to_date(to_char(RECORD_TIME,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                        to_char(RECORD_TIME,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
                     </if>
                 </trim>
                 group by branch_no,branch_name
@@ -54,7 +54,7 @@
                 from DM_BUSI_DETAIL_TB
                 <trim prefix="where" prefixOverrides="and">
                     <if test="params.START_TIME != null and params.END_TIME != null">
-                        to_date(to_char(CREATE_TIME,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                        to_char(CREATE_TIME,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
                     </if>
                 </trim>
                 group by BRANCH_NO, BRANCH_NAME
@@ -65,7 +65,7 @@
             from DM_BUSI_DETAIL_ERROR_TB
             <trim prefix="where" prefixOverrides="and">
                 <if test="params.START_TIME != null and params.END_TIME != null">
-                    to_date(to_char(CREATE_TIME,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                    to_char(CREATE_TIME,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
                 </if>
             </trim>
             group by BRANCH_NO, BRANCH_NAME
@@ -86,7 +86,7 @@
                 BRANCH_NO = #{params.BRANCH_NO}
             </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                and to_date(to_char(RECORD_TIME,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                and to_char(RECORD_TIME,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
             </if>
         </trim>
         group by SITE_no,SITE_name
@@ -99,7 +99,7 @@
                 BRANCH_NO = #{params.BRANCH_NO}
             </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                and to_date(to_char(CREATE_TIME,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                and to_char(CREATE_TIME,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
             </if>
         </trim>
         group by SITE_NO, SITE_NAME
@@ -113,7 +113,7 @@
                 BRANCH_NO = #{params.BRANCH_NO}
             </if>
             <if test="params.START_TIME != null and params.END_TIME != null">
-                and to_date(to_char(CREATE_TIME,'yyyymmdd'),'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                and to_char(CREATE_TIME,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
             </if>
         </trim>
         group by SITE_NO, SITE_NAME
