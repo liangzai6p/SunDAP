@@ -318,6 +318,8 @@
             </if>
         </trim>
         group by branch_no,branch_name
+        order by BUSI_COUNT desc
+
     </select>
     <select id="zoneCount" resultType="java.util.HashMap">
         select ZONE_NO,ZONE_NAME,sum(BUSI_COUNT) BUSI_COUNT
@@ -340,6 +342,8 @@
             </if>
         </trim>
         group by ZONE_NO,ZONE_NAME
+        order by BUSI_COUNT desc
+
     </select>
     <select id="siteCount" resultType="java.util.HashMap">
         select SITE_NO,SITE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT
@@ -362,6 +366,8 @@
             </if>
         </trim>
         group by SITE_NO,SITE_NAME
+        order by BUSI_COUNT desc
+
     </select>
     <select id="channelCount" resultType="java.util.HashMap">
         select CHANNEL_NO,CHANNEL_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT
@@ -384,6 +390,7 @@
             </if>
         </trim>
         group by CHANNEL_NO,CHANNEL_NAME
+        order by BUSI_COUNT desc
     </select>
 
 
