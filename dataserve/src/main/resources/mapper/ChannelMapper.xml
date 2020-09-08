@@ -20,7 +20,7 @@
         BRANCH_NO, BRANCH_NAME, CHANNEL_NO, CHANNEL_NAME, BUSI_SCORE, QUALITY_SCORE, SATIS_SCORE, SUCCESS_RATE, COVER_RATE
     </sql>
     <select id="findEleAllRplRate" resultType="java.util.HashMap">
-        select ELE_COUNT,trunc(ELE_COUNT/decode((COUNT-ELE_COUNT),0,1,(COUNT-ELE_COUNT))*100) ELE_REPLACE_RATE
+        select ELE_COUNT,trunc(ELE_COUNT/decode(COUNT,0,1,COUNT)*100) ELE_REPLACE_RATE
         from (
             SELECT SUM(BUSI_COUNT) COUNT FROM DM_BUSI_COUNT_TB
             <trim prefix="where" prefixOverrides="and">
@@ -39,7 +39,7 @@
     </select>
 
     <select id="listEleRplRateByBranch" resultType="java.util.HashMap">
-        select a.BRANCH_NO,a.BRANCH_NAME,ELE_COUNT,trunc(ELE_COUNT/decode((COUNT-ELE_COUNT),0,1,(COUNT-ELE_COUNT))*100) ELE_REPLACE_RATE
+        select a.BRANCH_NO,a.BRANCH_NAME,ELE_COUNT,trunc(ELE_COUNT/decode(COUNT,0,1,COUNT)*100) ELE_REPLACE_RATE
         from (
             SELECT BRANCH_NO,BRANCH_NAME,SUM(BUSI_COUNT) COUNT FROM DM_BUSI_COUNT_TB
             <trim prefix="where" prefixOverrides="and">
@@ -62,7 +62,7 @@
     </select>
 
     <select id="listEleAllRplRateDaily" resultType="java.util.HashMap">
-        select ELE_COUNT,trunc(ELE_COUNT/decode((COUNT-ELE_COUNT),0,1,(COUNT-ELE_COUNT))*100) ELE_REPLACE_RATE,to_char(a.RECORD_TIME,'yyyymmdd') RECORD_TIME
+        select ELE_COUNT,trunc(ELE_COUNT/decode(COUNT,0,1,COUNT)*100) ELE_REPLACE_RATE,to_char(a.RECORD_TIME,'yyyymmdd') RECORD_TIME
         from (
             SELECT RECORD_TIME,SUM(BUSI_COUNT) COUNT FROM DM_BUSI_COUNT_TB
             <trim prefix="where" prefixOverrides="and">
@@ -85,7 +85,7 @@
     </select>
 
     <select id="listEleAllRplRateMonthly" resultType="java.util.HashMap">
-        select ELE_COUNT,trunc(ELE_COUNT/decode((COUNT-ELE_COUNT),0,1,(COUNT-ELE_COUNT))*100) ELE_REPLACE_RATE,a.MONTH
+        select ELE_COUNT,trunc(ELE_COUNT/decode(COUNT,0,1,COUNT)*100) ELE_REPLACE_RATE,a.MONTH
         from (
             SELECT MONTH,SUM(BUSI_COUNT) COUNT FROM DM_BUSI_COUNT_MONTHLY_TB
             <trim prefix="where" prefixOverrides="and">
