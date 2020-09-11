@@ -103,6 +103,7 @@
                 SITE_NO = #{params.SITE_NO}
             </if>
         </trim>
+        order by HOUR
     </select>
     <select id="listMacBusiTypeCountHourly" resultType="java.util.HashMap">
         select BUSI_NO, BUSI_NAME, count(*) COUNT, to_char(CREATE_TIME, 'hh24') HOUR

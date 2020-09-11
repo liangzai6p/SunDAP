@@ -1,0 +1,16 @@
+server:
+  port: 9021
+
+spring:
+  application:
+    name: sundap-forecast
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.1.1.43:8848
+      config:
+        server-addr: 172.1.1.43:8848
+        file-extension: yaml
+
+sundap:
+  param: test

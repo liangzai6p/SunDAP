@@ -209,6 +209,7 @@
             </if>
         </trim>
         group by BRANCH_NO,BRANCH_NAME
+        order by BUSI_COUNT DESC
     </select>
     <select id="listZoneDRT" resultType="java.util.HashMap">
         select ZONE_NO,ZONE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT
@@ -228,6 +229,7 @@
             </if>
         </trim>
         group by ZONE_NO,ZONE_NAME
+        order by BUSI_COUNT DESC
     </select>
     <select id="listSiteDRT" resultType="java.util.HashMap">
         select SITE_NO,SITE_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT
@@ -247,6 +249,7 @@
             </if>
         </trim>
         group by SITE_NO,SITE_NAME
+        order by BUSI_COUNT DESC
     </select>
     <select id="listChannelDRT" resultType="java.util.HashMap">
         select CHANNEL_NO,CHANNEL_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(AMOUNT) AMOUNT,sum(CUS_COUNT) CUS_COUNT
@@ -266,6 +269,7 @@
             </if>
         </trim>
         group by CHANNEL_NO,CHANNEL_NAME
+        order by BUSI_COUNT DESC
     </select>
 
     <select id="listByState" resultType="java.util.HashMap">

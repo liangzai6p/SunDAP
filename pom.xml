@@ -11,7 +11,7 @@
 
     <modules>
         <module>common</module>
-        <module>system</module>
+        <module>forecast</module>
         <module>dataserve</module>
         <module>SunORMS_system</module>
     </modules>

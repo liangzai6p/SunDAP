@@ -19,3 +19,9 @@ scp -P 22 SunORMS_system/target/SunORMS-system.jar root@172.1.1.43:/root/SunDAP/
 echo "=========上传SunDAP-Common.jar到ORMS========="
 scp -P 22 common/target/SunDap-Common.jar root@172.1.1.43:/root/SunDAP/orms-system/lib
 
+echo "=========上传SunDAP-forecast.jar========="
+scp -P 22 forecast/target/SunORMS-system.jar root@172.1.1.43:/root/SunDAP/forecast/lib
+
+echo "=========上传SunDAP-Common.jar到ORMS========="
+scp -P 22 common/target/SunDap-Common.jar root@172.1.1.43:/root/SunDAP/forecast/lib
+
