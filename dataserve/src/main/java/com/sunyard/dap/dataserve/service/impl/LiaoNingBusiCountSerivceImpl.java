@@ -132,7 +132,7 @@ public class LiaoNingBusiCountSerivceImpl implements LiaoNingBusiCountService {
             List<Map<String, Object>> list = liaoNingBusiCountMapper.getTransStateCount(date);
             Map<String, Object> busiCount = liaoNingBusiCountMapper.getDayBusiCount(date);
 
-            int[] stateStr = {5,6,1};
+            int[] stateStr = {6,5,9};
 
             List<String> xAxis = new ArrayList<String>();
             xAxis.add("总业务量");
@@ -140,11 +140,11 @@ public class LiaoNingBusiCountSerivceImpl implements LiaoNingBusiCountService {
             yAxis.add(busiCount.get("busiCount"));
             //sql查询出的状态没有业务量的，补充0
             for(int i = 0;i<stateStr.length;i++){
-                if(stateStr[i] ==1){
-                    xAxis.add("处理中");
-                }else if(stateStr[i] == 5){
+                if(stateStr[i] ==9){
+                    xAxis.add("待处理");
+                }else if(stateStr[i] == 6){
                     xAxis.add("通过");
-                }else if(stateStr[i]== 6){
+                }else if(stateStr[i]== 5){
                     xAxis.add("拒绝");
                 }
 
