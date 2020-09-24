@@ -25,32 +25,36 @@ public class BusiCountController {
     @Autowired
     private DataServeClient client;
 
-    @PostMapping("/info")
-    public ReturnT<List> getInfo(@RequestBody Map<String,Object> params){return client.getBusiCountInfo(params);}
+    @PostMapping("/allCount")
+    public ReturnT<List> getAllCount(@RequestBody Map<String,Object> params){return client.getBusiCountAllCount(params);}
 
-    @PostMapping("/channel")
-    public ReturnT<List> getChannelInfo(@RequestBody Map<String,Object> params){
-        return client.getBusiCountChannelInfo(params);
+    @PostMapping("/allDaily")
+    public ReturnT<List> getAllDaily(@RequestBody Map<String,Object> params){return client.getBusiCountAllDaily(params);}
+
+
+    @PostMapping("/channelDaily")
+    public ReturnT<List> getChannelDaily(@RequestBody Map<String,Object> params){
+        return client.getBusiCountChannelDaily(params);
     }
 
-    @PostMapping("/branch")
-    public ReturnT<List> getBranchInfo(@RequestBody Map<String,Object> params){
-        return client.getBusiCountBranchInfo(params);
+    @PostMapping("/branchDaily")
+    public ReturnT<List> getBranchDaily(@RequestBody Map<String,Object> params){
+        return client.getBusiCountBranchDaily(params);
     }
 
-    @PostMapping("/site")
-    public ReturnT<List> getSiteInfo(@RequestBody Map<String,Object> params){
-        return client.getBusiCountSiteInfo(params);
+    @PostMapping("/siteDaily")
+    public ReturnT<List> getSiteDaily(@RequestBody Map<String,Object> params){
+        return client.getBusiCountSiteDaily(params);
     }
 
-    @PostMapping("/zone")
-    public ReturnT<List> getZoneInfo(@RequestBody Map<String,Object> params){
-        return client.getBusiCountZoneInfo(params);
+    @PostMapping("/zoneDaily")
+    public ReturnT<List> getZoneDaily(@RequestBody Map<String,Object> params){
+        return client.getBusiCountZoneDaily(params);
     }
 
-    @PostMapping("/infoMonthly")
-    public ReturnT<List> getInfoMonthly(@RequestBody Map<String,Object> params){
-        return client.getBusiCountInfoMonthly(params);
+    @PostMapping("/allMonthly")
+    public ReturnT<List> getAllMonthly(@RequestBody Map<String,Object> params){
+        return client.getBusiCountAllMonthly(params);
     }
 
 

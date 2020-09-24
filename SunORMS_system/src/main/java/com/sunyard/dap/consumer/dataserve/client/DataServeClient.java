@@ -24,23 +24,26 @@ public interface DataServeClient {
     /**
      * 离线运营业务量
      **/
-    @PostMapping("/busiCount/info")
-    ReturnT<List> getBusiCountInfo(Map<String, Object> params);
+    @PostMapping("/busiCount/allCount")
+    ReturnT<List> getBusiCountAllCount(Map<String, Object> params);
 
-    @PostMapping("/busiCount/channel")
-    ReturnT<List> getBusiCountChannelInfo(Map<String, Object> params);
+    @PostMapping("/busiCount/allDaily")
+    ReturnT<List> getBusiCountAllDaily(Map<String, Object> params);
 
-    @PostMapping("/busiCount/branch")
-    ReturnT<List> getBusiCountBranchInfo(Map<String, Object> params);
+    @PostMapping("/busiCount/channelDaily")
+    ReturnT<List> getBusiCountChannelDaily(Map<String, Object> params);
 
-    @PostMapping("/busiCount/site")
-    ReturnT<List> getBusiCountSiteInfo(Map<String, Object> params);
+    @PostMapping("/busiCount/branchDaily")
+    ReturnT<List> getBusiCountBranchDaily(Map<String, Object> params);
 
-    @PostMapping("/busiCount/zone")
-    ReturnT<List> getBusiCountZoneInfo(Map<String, Object> params);
+    @PostMapping("/busiCount/siteDaily")
+    ReturnT<List> getBusiCountSiteDaily(Map<String, Object> params);
 
-    @PostMapping("/busiCount/infoMonthly")
-    ReturnT<List> getBusiCountInfoMonthly(Map<String, Object> params);
+    @PostMapping("/busiCount/zoneDaily")
+    ReturnT<List> getBusiCountZoneDaily(Map<String, Object> params);
+
+    @PostMapping("/busiCount/allMonthly")
+    ReturnT<List> getBusiCountAllMonthly(Map<String, Object> params);
 
     @PostMapping("/busiCount/branchMonthly")
     ReturnT<List> getBusiCountBranchMonthly(Map<String, Object> params);

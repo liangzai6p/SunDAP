@@ -29,63 +29,76 @@ public class BusiCountController {
     private BusiCountService service;
 
     /**
-     * 离线运营业务量总数据
+     * 全行业务总量统计
      * @Author yey.he
      * @Date 9:41 AM 2020/6/18
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
-    @PostMapping("/info")
-    public ReturnT<List> getInfo(@RequestBody Map<String,Object> params){
-        return service.list(params);
+    @PostMapping("/allCount")
+    public ReturnT<List> allCount(@RequestBody Map<String,Object> params){
+        return service.allCount(params);
     }
 
     /**
-     * 分渠道离线运营业务量
+     * 全行日度离线运营业务量
+     * @Author yey.he
+     * @Date 10:39 AM 2020/9/22
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/allDaily")
+    public ReturnT<List> allDaily(@RequestBody Map<String,Object> params){
+        return service.allDaily(params);
+    }
+
+
+    /**
+     * 分渠道日度离线运营业务量
      * @Author yey.he
      * @Date 9:41 AM 2020/6/18
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
-    @PostMapping("/channel")
-    public ReturnT<List> getChannelInfo(@RequestBody Map<String,Object> params){
-        return service.listChannel(params);
+    @PostMapping("/channelDaily")
+    public ReturnT<List> channelDaily(@RequestBody Map<String,Object> params){
+        return service.channelDaily(params);
     }
 
     /**
-     * 分行离线运营业务量
+     * 分行日度离线运营业务量
      * @Author yey.he
      * @Date 9:58 AM 2020/6/18
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
-    @PostMapping("/branch")
-    public ReturnT<List> getBranchInfo(@RequestBody Map<String,Object> params){
-        return service.listBranch(params);
+    @PostMapping("/branchDaily")
+    public ReturnT<List> branchDaily(@RequestBody Map<String,Object> params){
+        return service.branchDaily(params);
     }
 
     /**
-     * 网点离线运营业务量
+     * 网点日度离线运营业务量
      * @Author yey.he 
      * @Date 9:59 AM 2020/6/18
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
-    @PostMapping("/site")
-    public ReturnT<List> getSiteInfo(@RequestBody Map<String,Object> params){
-        return service.listSite(params);
+    @PostMapping("/siteDaily")
+    public ReturnT<List> siteDaily(@RequestBody Map<String,Object> params){
+        return service.siteDaily(params);
     }
 
     /**
-     * 区域离线运营业务量
+     * 区域日度离线运营业务量
      * @Author yey.he
      * @Date 10:19 AM 2020/6/18
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
-    @PostMapping("/zone")
-    public ReturnT<List> getZoneInfo(@RequestBody Map<String,Object> params){
-        return service.listZone(params);
+    @PostMapping("/zoneDaily")
+    public ReturnT<List> zoneDaily(@RequestBody Map<String,Object> params){
+        return service.zoneDaily(params);
     }
 
     /**
@@ -95,9 +108,9 @@ public class BusiCountController {
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
-    @PostMapping("/infoMonthly")
-    public ReturnT<List> getInfoMonthly(@RequestBody Map<String,Object> params){
-        return service.listMonthly(params);
+    @PostMapping("/allMonthly")
+    public ReturnT<List> allMonthly(@RequestBody Map<String,Object> params){
+        return service.allMonthly(params);
     }
 
     /**
@@ -108,8 +121,8 @@ public class BusiCountController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/branchMonthly")
-    public ReturnT<List> getBranchMonthly(@RequestBody Map<String,Object> params){
-        return service.listBranchMonthly(params);
+    public ReturnT<List> branchMonthly(@RequestBody Map<String,Object> params){
+        return service.branchMonthly(params);
     }
 
     /**
@@ -120,8 +133,8 @@ public class BusiCountController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/zoneMonthly")
-    public ReturnT<List> getZoneMonthly(@RequestBody Map<String,Object> params){
-        return service.listZoneMonthly(params);
+    public ReturnT<List> zoneMonthly(@RequestBody Map<String,Object> params){
+        return service.zoneMonthly(params);
     }
 
     /**
@@ -132,8 +145,8 @@ public class BusiCountController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/siteMonthly")
-    public ReturnT<List> getSiteMonthly(@RequestBody Map<String,Object> params){
-        return service.listSiteMonthly(params);
+    public ReturnT<List> siteMonthly(@RequestBody Map<String,Object> params){
+        return service.siteMonthly(params);
     }
 
     /**
@@ -144,8 +157,8 @@ public class BusiCountController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/channelMonthly")
-    public ReturnT<List> getChannelMonthly(@RequestBody Map<String,Object> params){
-        return service.listChannelMonthly(params);
+    public ReturnT<List> channelMonthly(@RequestBody Map<String,Object> params){
+        return service.channelMonthly(params);
     }
 
     /**
@@ -156,8 +169,8 @@ public class BusiCountController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/branchCount")
-    public ReturnT<List> getBranchCount(@RequestBody Map<String,Object> params){
-        return service.countBranch(params);
+    public ReturnT<List> branchCount(@RequestBody Map<String,Object> params){
+        return service.branchCount(params);
     }
 
     /**
@@ -168,8 +181,8 @@ public class BusiCountController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/zoneCount")
-    public ReturnT<List> getZoneCount(@RequestBody Map<String,Object> params){
-        return service.countZone(params);
+    public ReturnT<List> zoneCount(@RequestBody Map<String,Object> params){
+        return service.zoneCount(params);
     }
 
     /**
@@ -180,8 +193,8 @@ public class BusiCountController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/siteCount")
-    public ReturnT<List> getSiteCount(@RequestBody Map<String,Object> params){
-        return service.countSite(params);
+    public ReturnT<List> siteCount(@RequestBody Map<String,Object> params){
+        return service.siteCount(params);
     }
 
     /**
@@ -192,8 +205,8 @@ public class BusiCountController {
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
      **/
     @PostMapping("/channelCount")
-    public ReturnT<List> getChannelCount(@RequestBody Map<String,Object> params){
-        return service.countChannel(params);
+    public ReturnT<List> channelCount(@RequestBody Map<String,Object> params){
+        return service.channelCount(params);
     }
 }
 

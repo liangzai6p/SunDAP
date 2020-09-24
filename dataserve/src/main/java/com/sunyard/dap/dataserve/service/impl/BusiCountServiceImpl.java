@@ -24,9 +24,9 @@ import java.util.Map;
 public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCountDO> implements BusiCountService {
 
     @Override
-    public ReturnT<List> list(Map<String,Object> params) {
+    public ReturnT<List> allCount(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listByTime(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.allCount(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -35,9 +35,20 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> listBranch(Map<String,Object> params) {
+    public ReturnT<List> allDaily(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listBranch(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.allDaily(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+
+    }
+
+    @Override
+    public ReturnT<List> branchDaily(Map<String,Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.branchDaily(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -45,9 +56,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> listSite(Map<String,Object> params) {
+    public ReturnT<List> siteDaily(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listSite(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.siteDaily(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -55,9 +66,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> listZone(Map<String,Object> params) {
+    public ReturnT<List> zoneDaily(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listZone(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.zoneDaily(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -65,9 +76,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> listChannel(Map<String,Object> params) {
+    public ReturnT<List> channelDaily(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listChannel(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.channelDaily(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -75,9 +86,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> listMonthly(Map<String,Object> params) {
+    public ReturnT<List> allMonthly(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listMonthly(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.allMonthly(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -85,9 +96,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> listBranchMonthly(Map<String,Object> params) {
+    public ReturnT<List> branchMonthly(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listBranchMonthly(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.branchMonthly(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -95,9 +106,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> listZoneMonthly(Map<String,Object> params) {
+    public ReturnT<List> zoneMonthly(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listZoneMonthly(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.zoneMonthly(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -105,9 +116,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> listSiteMonthly(Map<String,Object> params) {
+    public ReturnT<List> siteMonthly(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listSiteMonthly(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.siteMonthly(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -115,9 +126,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> listChannelMonthly(Map<String,Object> params) {
+    public ReturnT<List> channelMonthly(Map<String,Object> params) {
         try {
-            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listChannelMonthly(params));
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.channelMonthly(params));
         }catch (Exception e){
             log.error(e.getMessage());
             return ReturnT.listFAIL;
@@ -125,7 +136,7 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> countBranch(Map<String, Object> params) {
+    public ReturnT<List> branchCount(Map<String, Object> params) {
         try {
             return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.branchCount(params));
         }catch (Exception e){
@@ -134,7 +145,7 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
         }    }
 
     @Override
-    public ReturnT<List> countZone(Map<String, Object> params) {
+    public ReturnT<List> zoneCount(Map<String, Object> params) {
         try {
             return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.zoneCount(params));
         }catch (Exception e){
@@ -144,7 +155,7 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> countSite(Map<String, Object> params) {
+    public ReturnT<List> siteCount(Map<String, Object> params) {
         try {
             return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.siteCount(params));
         }catch (Exception e){
@@ -154,7 +165,7 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     }
 
     @Override
-    public ReturnT<List> countChannel(Map<String, Object> params) {
+    public ReturnT<List> channelCount(Map<String, Object> params) {
         try {
             return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.channelCount(params));
         }catch (Exception e){

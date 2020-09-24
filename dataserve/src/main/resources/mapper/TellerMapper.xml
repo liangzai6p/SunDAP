@@ -49,6 +49,7 @@
                 and to_date(ASSESS_MONTH,'yyyymmdd') between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
             </if>
         </trim>
+        order by ASSESS_MONTH
     </select>
     <select id="listTellerGrade" resultType="java.util.HashMap">
         select * from DM_TELLER_GRADE_TB

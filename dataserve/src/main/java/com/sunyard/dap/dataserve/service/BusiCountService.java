@@ -17,31 +17,33 @@ import java.util.Map;
  */
 public interface BusiCountService extends IService<BusiCountDO>{
 
-    ReturnT<List> list(Map<String,Object> params);
+    ReturnT<List> allCount(Map<String,Object> params);
 
-    ReturnT<List> listBranch(Map<String,Object> params);
+    ReturnT<List> allDaily(Map<String,Object> params);
 
-    ReturnT<List> listSite(Map<String,Object> params);
+    ReturnT<List> branchDaily(Map<String,Object> params);
 
-    ReturnT<List> listZone(Map<String,Object> params);
+    ReturnT<List> siteDaily(Map<String,Object> params);
 
-    ReturnT<List> listChannel(Map<String,Object> params);
+    ReturnT<List> zoneDaily(Map<String,Object> params);
 
-    ReturnT<List> listMonthly(Map<String,Object> params);
+    ReturnT<List> channelDaily(Map<String,Object> params);
 
-    ReturnT<List> listBranchMonthly(Map<String,Object> params);
+    ReturnT<List> allMonthly(Map<String,Object> params);
 
-    ReturnT<List> listZoneMonthly(Map<String,Object> params);
+    ReturnT<List> branchMonthly(Map<String,Object> params);
 
-    ReturnT<List> listSiteMonthly(Map<String,Object> params);
+    ReturnT<List> zoneMonthly(Map<String,Object> params);
 
-    ReturnT<List> listChannelMonthly(Map<String,Object> params);
+    ReturnT<List> siteMonthly(Map<String,Object> params);
 
-    ReturnT<List> countBranch(Map<String,Object> params);
+    ReturnT<List> channelMonthly(Map<String,Object> params);
 
-    ReturnT<List> countZone(Map<String,Object> params);
+    ReturnT<List> branchCount(Map<String,Object> params);
 
-    ReturnT<List> countSite(Map<String,Object> params);
+    ReturnT<List> zoneCount(Map<String,Object> params);
 
-    ReturnT<List> countChannel(Map<String,Object> params);
+    ReturnT<List> siteCount(Map<String,Object> params);
+
+    ReturnT<List> channelCount(Map<String,Object> params);
 }

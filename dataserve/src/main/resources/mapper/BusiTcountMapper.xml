@@ -24,6 +24,23 @@
          ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, CHANNEL_NO, CHANNEL_NAME, BUSI_NO, BUSI_NAME, BUSI_COUNT,CUS_COUNT,RECORD_TIME
     </sql>
     <select id="listType" resultType="java.util.HashMap">
+      <choose>
+        <when test="params.QUICK != null">
+            select BUSI_NO,BUSI_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(CUS_COUNT) CUS_COUNT
+            FROM
+            DM_BUSI_TCOUNT_ALL_TB
+            <trim prefix="where" prefixOverrides="and">
+                <if test="params.START_TIME != null and params.END_TIME != null">
+                    to_char(record_time,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
+                </if>
+                <if test="params.BUSI_NO != null">
+                    and BUSI_NO = #{params.BUSI_NO}
+                </if>
+            </trim>
+            group by BUSI_NO,BUSI_NAME
+            order by BUSI_COUNT desc
+        </when>
+        <otherwise>
         select BUSI_NO,BUSI_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(CUS_COUNT) CUS_COUNT
         from DM_BUSI_TCOUNT_TB
             <trim prefix="where" prefixOverrides="and">
@@ -42,9 +59,15 @@
                 <if test="params.START_TIME != null and params.END_TIME != null">
                     and to_char(record_time,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
                 </if>
+                <if test="params.BUSI_NO != null">
+                    and BUSI_NO = #{params.BUSI_NO}
+                </if>
             </trim>
             group by BUSI_NO,BUSI_NAME
             order by BUSI_COUNT desc
+        </otherwise>
+      </choose>
+
     </select>
     <select id="listBranch" resultType="java.util.HashMap">
         select BRANCH_NO,BRANCH_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(CUS_COUNT) CUS_COUNT

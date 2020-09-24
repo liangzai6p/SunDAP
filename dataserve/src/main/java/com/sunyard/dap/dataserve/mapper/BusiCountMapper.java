@@ -19,34 +19,35 @@ import java.util.Map;
 public interface BusiCountMapper extends BaseMapper<BusiCountDO>{
 
 
-    List<HashMap<String,Object>> listByTime(@Param("params") Map<String,Object> params);
+    List<HashMap<String,Object>> allCount(@Param("params") Map<String,Object> params);
+
+    List<HashMap<String,Object>> allDaily(@Param("params") Map<String,Object> params);
 
 
-    List<HashMap<String,Object>> listBranch(@Param("params") Map<String,Object> params);
+    List<HashMap<String,Object>> branchDaily(@Param("params") Map<String,Object> params);
 
 
-    List<HashMap<String,Object>> listSite(@Param("params") Map<String,Object> params);
+    List<HashMap<String,Object>> siteDaily(@Param("params") Map<String,Object> params);
 
 
-    List<HashMap<String,Object>> listZone(@Param("params") Map<String,Object> params);
+    List<HashMap<String,Object>> zoneDaily(@Param("params") Map<String,Object> params);
 
 
-    List<HashMap<String,Object>> listChannel(@Param("params") Map<String,Object> params);
+    List<HashMap<String,Object>> channelDaily(@Param("params") Map<String,Object> params);
 
 
-    List<HashMap<String,Object>> listMonthly(@Param("params") Map<String,Object> params);
+    List<HashMap<String,Object>> allMonthly(@Param("params") Map<String,Object> params);
 
 
-    List<HashMap<String,Object>> listBranchMonthly(@Param("params") Map<String,Object> params);
+    List<HashMap<String,Object>> branchMonthly(@Param("params") Map<String,Object> params);
 
 
-    List<HashMap<String,Object>> listSiteMonthly(@Param("params") Map<String,Object> params);
+    List<HashMap<String,Object>> siteMonthly(@Param("params") Map<String,Object> params);
 
 
-    List<HashMap<String,Object>> listZoneMonthly(@Param("params") Map<String,Object> params);
+    List<HashMap<String,Object>> zoneMonthly(@Param("params") Map<String,Object> params);
 
-
-    List<HashMap<String,Object>> listChannelMonthly(@Param("params") Map<String,Object> params);
+    List<HashMap<String,Object>> channelMonthly(@Param("params") Map<String,Object> params);
 
     List<HashMap<String,Object>> branchCount(@Param("params") Map<String,Object> params);
 
