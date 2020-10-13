@@ -105,6 +105,13 @@ public class BusiTrtController {
         return service.listTypeHourly(params);
     }
 
+    /**
+     * 现金收支
+     * @Author yey.he
+     * @Date 2:33 PM 2020/9/28
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
     @PostMapping("/listCurrencyIO")
     public ReturnT<List> listCurrencyIO(@RequestBody Map<String,Object> params){
         return service.listCurrencyIO(params);

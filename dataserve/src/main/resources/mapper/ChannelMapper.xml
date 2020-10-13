@@ -125,54 +125,20 @@
     </select>
 
     <select id="listEleRplRateByChannel" resultType="java.util.HashMap">
-        select CHANNEL_NO,CHANNEL_NAME,TRUNC(CHANNEL_COUNT/COUNT * 100) REPLACE_RATE
-        from (
-            select CHANNEL_NO,CHANNEL_NAME,sum(BUSI_COUNT) CHANNEL_COUNT
-            from DM_BUSI_COUNT_TB
-            where CHANNEL_NO &lt;&gt; 'CH000'
+        select CHANNEL_NO,CHANNEL_NAME,REPLACE_RATE from DM_CHANNEL_ELE_RPL_RATE_TB
+        <trim prefix="where" prefixOverrides="and">
             <if test="params.BRANCH_NO != null">
-                and BRANCH_NO = #{params.BRANCH_NO}
+                BRANCH_NO = #{params.BRANCH_NO}
             </if>
-            group by CHANNEL_NO, CHANNEL_NAME
-        ) a,
-        (
-            select sum(BUSI_COUNT) COUNT
-            from DM_BUSI_COUNT_TB
-            <trim prefix="where" prefixOverrides="and">
-                <if test="params.BRANCH_NO != null">
-                    BRANCH_NO = #{params.BRANCH_NO}
-                </if>
-            </trim>
-        )
-        ORDER BY REPLACE_RATE DESC
+        </trim>
     </select>
 
     <select id="listCusCountByChannel" resultType="java.util.HashMap">
-        select a.CHANNEL_NO,a.CHANNEL_NAME,COUNT,AVG_COUNT
-        from (
-            select CHANNEL_NO,CHANNEL_NAME,trunc(avg(CUS_COUNT)) AVG_COUNT
-            from (
-                select CHANNEL_NO,CHANNEL_NAME,sum(CUS_COUNT) CUS_COUNT
-                from DM_BUSI_COUNT_TB
-                where CHANNEL_NO &lt;&gt; 'CH000'
-                <if test="params.BRANCH_NO != null">
-                    and BRANCH_NO = #{params.BRANCH_NO}
-                </if>
-                group by CHANNEL_NO, CHANNEL_NAME,RECORD_TIME
-            )
-            group by CHANNEL_NO, CHANNEL_NAME
-        ) a join
-        (
-            select CHANNEL_NO,CHANNEL_NAME,count(distinct CUS_NO) COUNT
-            from DM_BUSI_DETAIL_HISTORY_TB
-            <trim prefix="where" prefixOverrides="and">
-                <if test="params.BRANCH_NO != null">
-                    BRANCH_NO = #{params.BRANCH_NO}
-                </if>
-            </trim>
-            group by CHANNEL_NO, CHANNEL_NAME
-        ) b
-        on a.CHANNEL_NO = b.CHANNEL_NO
+        SELECT CHANNEL_NO,CHANNEL_NAME,COUNT,AVG_COUNT from DM_CHANNEL_CUS_TB
+        where CHANNEL_NO &lt;&gt; 'CH000'
+        <if test="params.BRANCH_NO != null">
+            and BRANCH_NO = #{params.BRANCH_NO}
+        </if>
     </select>
 
 </mapper>

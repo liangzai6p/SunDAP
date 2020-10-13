@@ -106,6 +106,13 @@ public class SiteController {
     }
 
 
+    /**
+     * 网点分时分类业务量
+     * @Author yey.he 
+     * @Date 2:34 PM 2020/9/28
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
     @PostMapping("/listMacBusiTypeCountHourly")
     public ReturnT<List> listMacBusiTypeCountHourly(@RequestBody Map<String,Object> params){
         return service.listMacBusiTypeCountHourly(params);
