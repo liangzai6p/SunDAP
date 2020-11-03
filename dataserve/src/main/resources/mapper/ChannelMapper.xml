@@ -62,26 +62,13 @@
     </select>
 
     <select id="listEleAllRplRateDaily" resultType="java.util.HashMap">
-        select ELE_COUNT,trunc(ELE_COUNT/decode(COUNT,0,1,COUNT)*100) ELE_REPLACE_RATE,to_char(a.RECORD_TIME,'yyyymmdd') RECORD_TIME
-        from (
-            SELECT RECORD_TIME,SUM(BUSI_COUNT) COUNT FROM DM_BUSI_COUNT_TB
-            <trim prefix="where" prefixOverrides="and">
-                <if test="params.START_TIME != null and params.END_TIME != null">
-                    RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
-                </if>
-            </trim>
-            group by RECORD_TIME
-        ) a
-        join (
-            SELECT RECORD_TIME,SUM(BUSI_COUNT) ELE_COUNT FROM DM_BUSI_COUNT_TB
-            WHERE CHANNEL_NO &lt;&gt; 'CH000'
-            <if test="params.START_TIME != null and params.END_TIME != null">
-                and RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
-            </if>
-            group by RECORD_TIME
-        ) b
-        on a.RECORD_TIME = b.RECORD_TIME
-        order by RECORD_TIME
+        select *
+        from DM_ELE_RPLRATE_DAILY_TB
+        <trim prefix="where" prefixOverrides="and">
+          <if test="params.START_TIME != null and params.END_TIME != null">
+              RECORD_TIME between #{params.START_TIME} and#{params.END_TIME}
+        </if>
+        </trim>
     </select>
 
     <select id="listEleAllRplRateMonthly" resultType="java.util.HashMap">

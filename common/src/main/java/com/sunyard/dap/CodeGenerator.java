@@ -35,8 +35,7 @@ public class CodeGenerator {
 
 
     public static void main(String[] args) throws Exception {
-        generate("dataserve",new String[]{"DM_CHANNEL_GRADE_TB"});
-
+        generate("dataserve",new String[]{"MICM"});
     }
 
 
@@ -83,7 +82,7 @@ public class CodeGenerator {
         dsc.setDbType(DbType.ORACLE);
         dsc.setDriverName("oracle.jdbc.OracleDriver");
         dsc.setUrl("jdbc:oracle:thin:@172.1.1.11:1521/ORCL");
-        dsc.setUsername("sundap");
+        dsc.setUsername("scott");
         dsc.setPassword("123456");
         mpg.setDataSource(dsc);
 
