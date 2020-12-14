@@ -8,6 +8,8 @@ import com.sunyard.dap.common.util.DapJsonUtil;
 import com.sunyard.dap.common.util.FitUtils;
 import com.sunyard.dap.forecast.service.FittingService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import java.util.List;
 /**
@@ -19,6 +21,9 @@ import java.util.List;
 @Service
 @Slf4j
 public class FittingServiceImpl implements FittingService {
+
+    protected Log log = LogFactory.getLog(getClass());
+
     @Override
     public ReturnT<List> lineFitting(String params) {
         try {
