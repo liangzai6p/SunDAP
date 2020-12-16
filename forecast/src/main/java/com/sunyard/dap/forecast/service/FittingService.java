@@ -1,8 +1,10 @@
 package com.sunyard.dap.forecast.service;
 
 import com.sunyard.dap.common.model.ReturnT;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: SunDAP
@@ -17,6 +19,31 @@ public interface FittingService {
 
     ReturnT<String> standardDeviation(String params);
 
+    /**
+     * 周线
+     * @Author jie1.zheng
+     * @Date 10:01 AM 2020/12/15
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    ReturnT<Map> contourFitting(String params);
 
+    /**
+     * 月线
+     * @Author jie1.zheng
+     * @Date 10:01 AM 2020/12/15
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    ReturnT<Map> onLineFitting(String params);
+
+    /**
+     * 年线
+     * @Author jie1.zheng
+     * @Date 10:01 AM 2020/12/15
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    ReturnT<Map> annualLineFitting(String params);
 
 }

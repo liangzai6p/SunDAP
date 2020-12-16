@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import java.util.Map;
+
 /**
  * @program: SunDAP
  * @description: 拟合运算
@@ -58,6 +60,42 @@ public class FittingController {
     @PostMapping("standardDeviation")
     public ReturnT<String> standardDeviation(@RequestBody String params){
         return service.standardDeviation(params);
+    }
+
+    /**
+     * 周线
+     * @Author jie1.zheng
+     * @Date 10:01 AM 2020/12/15
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("contourFitting")
+    public ReturnT<Map> contourFitting(@RequestBody String params){
+        return service.contourFitting(params);
+    }
+
+    /**
+     * 月线
+     * @Author jie1.zheng
+     * @Date 10:01 AM 2020/12/15
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("onLineFitting")
+    public ReturnT<Map> onLineFitting(@RequestBody String params){
+        return service.onLineFitting(params);
+    }
+
+    /**
+     * 年线
+     * @Author jie1.zheng
+     * @Date 10:01 AM 2020/12/15
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("annualLineFitting")
+    public ReturnT<Map> annualLineFitting(@RequestBody String params){
+        return service.annualLineFitting(params);
     }
 
 }

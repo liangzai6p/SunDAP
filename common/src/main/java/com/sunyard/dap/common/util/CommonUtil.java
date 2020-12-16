@@ -13,6 +13,7 @@ import java.util.*;
  **/
 @Slf4j
 public class CommonUtil {
+
     public static void setPageByParams(Page<?> page, Map<String, Object> map){
         boolean flag = false;
         if (map.get("currentPage")!=null && map.get("recordSize")!=null){

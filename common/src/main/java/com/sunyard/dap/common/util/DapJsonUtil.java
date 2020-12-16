@@ -21,6 +21,16 @@ public class DapJsonUtil {
         return rsArray;
     }
 
+    public static String[] getJsonStrArray(String json,String key) throws Exception{
+        JSONObject paramsObj = JSONUtil.parseObj(json);
+        JSONArray rsJson = JSONUtil.parseArray(paramsObj.getStr(key));
+        String[] rsArray = new String[rsJson.size()];
+        for (int i = 0 ; i < rsJson.size() ; i++){
+            rsArray[i] = rsJson.getStr(i);
+        }
+        return rsArray;
+    }
+
     public static String parseObjToJsonStr(Object obj,String key){
         JSONObject rsObj = JSONUtil.createObj();
         rsObj.put(key,obj);

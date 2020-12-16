@@ -1,5 +1,11 @@
 package com.sunyard.dap.common.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * @program: SunDAP
  * @description: 预测工具类
@@ -298,5 +304,122 @@ package com.sunyard.dap.common.util;
             deviation += Math.pow((values[i] - average), 2);
         }
         return Math.sqrt(deviation / (values.length - 1));
+    }
+
+    /**
+     * 周线
+     * @description: 预测工具类
+     * @Author jie1.zheng
+     * @Date 10:01 AM 2020/12/15
+     **/
+    //周线 y=a+bx
+    //
+    //<param name="Y">Y数组</param>
+    //<returns>a,b</returns>
+    public static double[] contourFitting(double[] y) {
+        // X,Y -- X,Y两轴的坐标
+        double[] result=new double[y.length];
+        double count=0;
+        double sum=0;
+        for(int i=0;i<y.length;i++){
+            if(i<7){
+                for(int j=0;j<=i;j++){
+                    sum+=y[j];
+                    count++;
+                }
+                result[i]=sum/count;
+                sum=0;
+                count=0;
+            }else{
+                for(int j=i;j>i-7;j--){
+                    sum+=y[j];
+                }
+                result[i]=sum/7;
+                sum=0;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 月线
+     * @description: 预测工具类
+     * @Author jie1.zheng
+     * @Date 10:01 AM 2020/12/15
+     **/
+    //月线
+    //<param name="Y">Y数组</param>
+    public static double[] onLineFitting(double[] y) {
+        // X,Y -- X,Y两轴的坐标
+        double[] result=new double[y.length];
+        double count=0;
+        double sum=0;
+        for(int i=0;i<y.length;i++){
+            if(i<30){
+                for(int j=0;j<=i;j++){
+                    sum+=y[j];
+                    count++;
+                }
+                result[i]=sum/count;
+                sum=0;
+                count=0;
+            }else{
+                for(int j=i;j>i-30;j--){
+                    sum+=y[j];
+                }
+                result[i]=sum/30;
+                sum=0;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 月线
+     * @description: 预测工具类
+     * @Author jie1.zheng
+     * @Date 10:01 AM 2020/12/15
+     **/
+    //月线
+    //<param name="Y">Y数组</param>
+    public static double[] annualLineFitting(double[] y) {
+        // X,Y -- X,Y两轴的坐标
+        double[] result=new double[y.length];
+        double count=0;
+        double sum=0;
+        for(int i=0;i<y.length;i++){
+            for(int j=0;j<=i;j++){
+                sum+=y[j];
+                count++;
+            }
+            result[i]=sum/count;
+            sum=0;
+            count=0;
+        }
+        return result;
+    }
+
+    /**
+     * 日期转星期
+     *
+     * @param datetime
+     * @return
+     */
+    public static int dateToWeek(String datetime) {
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        int[] weekDays = { 7, 1, 2, 3, 4, 5, 6 };
+        Calendar cal = Calendar.getInstance(); // 获得一个日历
+        Date datet = null;
+        try {
+            datet = f.parse(datetime);
+            cal.setTime(datet);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1; // 指示一个星期中的某天。
+        if (w < 0){
+            w = 0;
+        }
+        return weekDays[w];
     }
 }

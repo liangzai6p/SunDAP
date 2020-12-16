@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: SunDAP
@@ -35,6 +36,19 @@ public class FittingController {
     public ReturnT<List> polyFitting(@RequestBody String params){
         return client.getFittingPolyFitting(params);
     }
+
+    @PostMapping("contourFitting")
+    public ReturnT<Map> contourFitting(@RequestBody String params){
+        return client.getFittingContourFitting(params);
+    }
+
+    @PostMapping("onLineFitting")
+    public ReturnT<Map> onLineFitting(@RequestBody String params){
+        return client.getFittingOnLineFitting(params);
+    }
+
+    @PostMapping("annualLineFitting")
+    public ReturnT<Map> annualLineFitting(@RequestBody String params){ return client.getFittingAnnualLineFitting(params); }
 
     @PostMapping("standardDeviation")
     public ReturnT<String> standardDeviation(@RequestBody String params){
