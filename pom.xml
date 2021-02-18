@@ -13,6 +13,7 @@
         <module>common</module>
         <module>forecast</module>
         <module>dataserve</module>
+        <module>intilligentSchedual</module>
         <module>SunORMS_system</module>
     </modules>
 

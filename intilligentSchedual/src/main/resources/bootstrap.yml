@@ -1,0 +1,36 @@
+server:
+  port: 9121
+
+spring:
+  application:
+    name: sundap-intilligentSchedual
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:oracle:thin:@172.1.1.36:1521:orcl
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      username: sunaos
+      password: J23c0uX730VsqfmYe0rTZgyCw6kMfL3s9mYf5mQOYiPexeHaJza9+qGB11SyN6VnZJJA0QRwxvS4fwDd0fb+/w==
+      public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALVFF26mCykydDPGetHeD86vpTxSoGdWo3CVaspGjs1t/f+djM8x2KJrvDRcebHC1T9oAI7KVpoxxIALmEufcD0CAwEAAQ==
+      # 初始化，最小，最大连接数
+      initialSize: 3
+      minidle: 3
+      maxActive: 18
+      # 获取数据库连接等待的超时时间
+      maxWait: 60000
+      # 开启加密配置
+      connectionProperties: config.decrypt=true;config.decrypt.key=${spring.datasource.druid.public-key};druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # 开启Druid监控
+      filters: stat,wall,config
+      web-stat-filter:
+        enabled: true
+
+sundap:
+  param: test
