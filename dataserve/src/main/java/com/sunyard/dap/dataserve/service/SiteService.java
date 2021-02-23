@@ -29,7 +29,13 @@ public interface SiteService extends IService<SiteDO> {
 
     ReturnT<List> listCashInfo(@Param("params") Map<String,Object> params);
 
+    ReturnT<Map> listCashInfoBar(@Param("params") Map<String,Object> params);
+
     ReturnT<List> listQueHourly(@Param("params") Map<String,Object> params);
 
+    ReturnT<Map> listQueHourlyLine(@Param("params") Map<String,Object> params);
+
     ReturnT<List> listMacBusiTypeCountHourly(@Param("params") Map<String,Object> params);
+
+    ReturnT<Map> listMacBusiTypeCountHourlyLine(@Param("params") Map<String,Object> params);
 }

@@ -33,7 +33,7 @@ public class BusiTcountController {
 
     /**
      * 业务种类历史业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 9:29 AM 2020/7/17
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -44,8 +44,20 @@ public class BusiTcountController {
     }
 
     /**
+     * 业务种类历史业务量
+     * @Author yey.he
+     * @Date 9:29 AM 2020/7/17
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listPie")
+    public ReturnT<Map> getListTypePie(@RequestBody Map<String,Object> params){
+        return service.listTypePie(params);
+    }
+
+    /**
      * 渠道业务种类历史业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 9:30 AM 2020/7/17
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -53,6 +65,18 @@ public class BusiTcountController {
     @PostMapping("/channel")
     public ReturnT<List> getChannelInfo(@RequestBody Map<String,Object> params){
         return service.listChannel(params);
+    }
+
+    /**
+     * 渠道业务种类历史业务量
+     * @Author xiao.xie
+     * @Date 9:30 AM 2020/7/17
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/channelPie")
+    public ReturnT<Map> getChannelInfoPie(@RequestBody Map<String,Object> params){
+        return service.listChannelPie(params);
     }
 
     /**

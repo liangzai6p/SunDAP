@@ -46,6 +46,18 @@ public class BusiErrorController {
     }
 
     /**
+     * 分行业务差错量排名
+     * @Author yey.he
+     * @Date 5:28 PM 2020/8/20
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listBranchErrorCountBar")
+    public ReturnT<Map> listBranchErrorCountBar(@RequestBody Map<String,Object> params){
+        return service.listBranchErrorCountBar(params);
+    }
+
+    /**
      * 网点业务量差错排名
      * @Author yey.he
      * @Date 2:01 PM 2020/8/24
@@ -57,5 +69,16 @@ public class BusiErrorController {
         return service.listSiteErrorCount(params);
     }
 
+    /**
+     * 网点业务量差错排名
+     * @Author xiao.xie
+     * @Date 2021-1-29 17:44:11
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("/listSiteErrorCountBar")
+    public ReturnT<Map> listSiteErrorCountBar(@RequestBody Map<String,Object> params){
+        return service.listSiteErrorCountBar(params);
+    }
 }
 

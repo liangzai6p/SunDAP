@@ -27,18 +27,28 @@ public interface MacService extends IService<MacDO> {
 
     ReturnT<List> listBranchFaultRate(Map<String,Object> params);
 
+    ReturnT<Map> listBranchFaultRateXY(Map<String,Object> params);
+
     ReturnT<List> listSiteFaultRate(Map<String,Object> params);
+
+    ReturnT<Map> listSiteFaultRateBar(Map<String,Object> params);
 
     /**
      * 设备地区分布相关
      **/
     ReturnT<List> listBranchOnlineMac(@Param("params") Map<String,Object> params);
 
+    ReturnT<Map> listBranchOnlineMacMap(@Param("params") Map<String,Object> params);
+
     ReturnT<List> listBranchMacFaultCount(@Param("params") Map<String,Object> params);
 
     ReturnT<List> listBranchMacReplaceRate(@Param("params") Map<String,Object> params);
 
+    ReturnT<Map> listBranchMacReplaceRateXY(@Param("params") Map<String,Object> params);
+
     ReturnT<List> listMacReplaceRateMonthly(@Param("params") Map<String,Object> params);
+
+    ReturnT<Map> listMacReplaceRateMonthlyXY(@Param("params") Map<String,Object> params);
 
     /**
      * 设备画像相关
@@ -49,23 +59,41 @@ public interface MacService extends IService<MacDO> {
 
     ReturnT<List> listMacTypeAssess(@Param("params") Map<String,Object> params);
 
+    ReturnT<Map> listMacTypeAssessRadar(@Param("params") Map<String,Object> params);
+
     ReturnT<List> listMacTypeFaultRate(@Param("params") Map<String,Object> params);
+
+    ReturnT<Map> listMacTypeFaultRatePie(@Param("params") Map<String,Object> params);
 
     ReturnT<List> listMacBrandFaultRate(@Param("params") Map<String,Object> params);
 
+    ReturnT<Map> listMacBrandFaultRatePie(@Param("params") Map<String,Object> params);
+
     ReturnT<List> listMacReplaceOtcRateMonthly(@Param("params") Map<String,Object> params);
+
+    ReturnT<Map> listMacReplaceOtcRateMonthlyLine(@Param("params") Map<String,Object> params);
 
     ReturnT<List> listMacTypeBusiMonthly(@Param("params") Map<String,Object> params);
 
+    ReturnT<Map> listMacTypeBusiMonthlyLine(@Param("params") Map<String,Object> params);
+
     ReturnT<List> listMacTypeSuccessAndFaultRate(@Param("params") Map<String,Object> params);
+
+    ReturnT<Map> listMacTypeSuccessAndFaultRateBar(@Param("params") Map<String,Object> params);
 
     ReturnT<List> listMacMaintainMonthly(@Param("params") Map<String,Object> params);
 
+    ReturnT<Map> listMacMaintainMonthlyBar(@Param("params") Map<String,Object> params);
+
+    ReturnT<List> listMacMaintainSuccessRateMonthly(@Param("params") Map<String,Object> params);
+
     ReturnT<List> listMacTypeBusiCount(@Param("params") Map<String,Object> params);
+
+    ReturnT<Map> listMacTypeBusiCountBar(@Param("params") Map<String,Object> params);
 
     ReturnT<Page<HashMap<String, Object>>> listMacBusiCount(@Param("params") Map<String, Object> params);
 
-
+    ReturnT<Map> listMacBusiCountBar(@Param("params") Map<String, Object> params);
 
     ReturnT<List> listSiteFaultCount(@Param("params") Map<String,Object> params);
 

@@ -11,7 +11,7 @@
  * into with Sunyard.
  */
 
-package  com.sunyard.ars.common.comm;
+package com.sunyard.ars.common.comm;
 
 import java.util.HashMap;
 import java.util.Map;

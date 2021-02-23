@@ -50,6 +50,75 @@ public class FittingServiceImpl implements FittingService {
     }
 
     @Override
+    public ReturnT<Map> lineFittingXY(String params) {
+        try {
+            double[] xArray = DapJsonUtil.getJsonDoubleArray(params,"X-AXIS");
+            double[] yArray = DapJsonUtil.getJsonDoubleArray(params,"Y-AXIS");
+            Integer timeLength=DapJsonUtil.getJsonInteger(params,"timeLength");
+            Integer index=0;
+            if (params.indexOf("index")!=-1){
+                 index=DapJsonUtil.getJsonInteger(params,"index");
+            }
+            double[] results = FitUtils.lineFitting(xArray, yArray);
+            ArrayList<Double> list=CommonUtil.toDoubleList(results);
+            List dottedData = new ArrayList();
+            List solidData = new ArrayList();
+            for (int i = 0; i < timeLength; i++) {
+                dottedData.add(list.get(1) * (i + 1) + list.get(0));
+                if (params.indexOf("index")!=-1){
+                    if (i < index) {
+                        solidData.add(list.get(1) * (i + 1) + list.get(0));
+                    }
+                }
+
+            }
+            HashMap map = new HashMap();
+            map.put("dottedData", dottedData);
+            map.put("solidData", solidData);
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"计算成功",map);
+        }catch (NumberFormatException e){
+            log.error(e.getMessage());
+            return new ReturnT<>(ReturnT.FAIL_CODE,"数字格式异常\n"+e.getMessage(),null);
+        }catch (JSONException e){
+            log.error(e.getMessage());
+            return new ReturnT<>(ReturnT.FAIL_CODE,"JSON转换异常\n"+e.getLocalizedMessage(),null);
+        }
+        catch (Exception e){
+            log.error(e.getMessage());
+            return new ReturnT<>(ReturnT.FAIL_CODE,"计算异常\n"+e.getMessage(),null);
+        }
+    }
+
+    @Override
+    public ReturnT<Map> lineFittingElcXY(String params) {
+        try {
+            double[] xArray = DapJsonUtil.getJsonDoubleArray(params,"X-AXIS");
+            double[] yArray = DapJsonUtil.getJsonDoubleArray(params,"Y-AXIS");
+            Integer length=DapJsonUtil.getJsonInteger(params,"fitLineDataLength");
+            double[] results = FitUtils.lineFitting(xArray, yArray);
+            ArrayList<Double> list=CommonUtil.toDoubleList(results);
+            List fitData = new ArrayList();
+            for (int i = 0; i < length; i++) {
+                fitData.add(list.get(1) * (i + 1) + list.get(0));
+
+            }
+            HashMap map = new HashMap();
+            map.put("fitData", fitData);
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"计算成功",map);
+        }catch (NumberFormatException e){
+            log.error(e.getMessage());
+            return new ReturnT<>(ReturnT.FAIL_CODE,"数字格式异常\n"+e.getMessage(),null);
+        }catch (JSONException e){
+            log.error(e.getMessage());
+            return new ReturnT<>(ReturnT.FAIL_CODE,"JSON转换异常\n"+e.getLocalizedMessage(),null);
+        }
+        catch (Exception e){
+            log.error(e.getMessage());
+            return new ReturnT<>(ReturnT.FAIL_CODE,"计算异常\n"+e.getMessage(),null);
+        }
+    }
+
+    @Override
     public ReturnT<List> polyFitting(String params) {
         try {
             int times = Integer.parseInt(JSONUtil.parseObj(params).getStr("TIMES"));

@@ -348,6 +348,25 @@
         group by to_char(to_date(MAINTAIN_TIME,'yyyymmdd'),'yyyymm')
         order by month
     </select>
+    <select id="listMacMaintainSuccessRateMonthly" resultType="java.util.HashMap">
+        select count(decode(MAC_TYPE,'自助发卡机',1,null)) card_count,count(decode(MAC_TYPE,'自助查询机',1,null)) search_count,
+        count(decode(MAC_TYPE,'自助存取款机',1,null)) cash_count,count(decode(MAC_TYPE,'自助缴款机',1,null)) pay_count,
+        to_char(to_date(MAINTAIN_TIME,'yyyymmdd'),'yyyymm') month
+        from DM_MAC_MAINTAIN_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.SUCCESS != null">
+                and SUCCESS = #{params.SUCCESS}
+            </if>
+        </trim>
+        group by to_char(to_date(MAINTAIN_TIME,'yyyymmdd'),'yyyymm')
+        order by month
+    </select>
     <select id="listMacTypeBusiCount" resultType="java.util.HashMap">
         select MAC_TYPE,sum(BUSI_COUNT) BUSI_COUNT
         from DM_MAC_BUSI_TB

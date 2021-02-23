@@ -28,9 +28,19 @@ public class BusiTcountController {
     @PostMapping("/list")
     public ReturnT<List> getListType(@RequestBody Map<String,Object> params){return client.getBusiTcountListType(params);}
 
+    @PostMapping("/listPie")
+    ReturnT<Map> getListTypePie(@RequestBody Map<String,Object> params){
+        return client.getListTypePie(params);
+    };
+
     @PostMapping("/channel")
     public ReturnT<List> getChannelInfo(@RequestBody Map<String,Object> params){
         return client.getBusiTcountChannelInfo(params);
+    }
+
+    @PostMapping("/channelPie")
+    public ReturnT<Map> getChannelInfoPie(@RequestBody Map<String,Object> params){
+        return client.getBusiTcountChannelInfoPie(params);
     }
 
     @PostMapping("/branch")

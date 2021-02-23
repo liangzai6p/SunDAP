@@ -15,6 +15,10 @@ import java.util.Map;
 public interface FittingService {
     ReturnT<List> lineFitting(String params);
 
+    ReturnT<Map> lineFittingXY(String params);
+
+    ReturnT<Map> lineFittingElcXY(String params);
+
     ReturnT<List> polyFitting(String params);
 
     ReturnT<String> standardDeviation(String params);

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,11 +31,17 @@ public interface DataServeClient {
     @PostMapping("/busiCount/allDaily")
     ReturnT<List> getBusiCountAllDaily(Map<String, Object> params);
 
+    @PostMapping("/busiCount/allDailyMsg")
+    ReturnT<Map> getBusiCountAllDailyMsg(Map<String, Object> params);
+
     @PostMapping("/busiCount/channelDaily")
     ReturnT<List> getBusiCountChannelDaily(Map<String, Object> params);
 
     @PostMapping("/busiCount/branchDaily")
     ReturnT<List> getBusiCountBranchDaily(Map<String, Object> params);
+
+    @PostMapping("/busiCount/branchDailyLine")
+    ReturnT<Map> getBusiCountBranchDailyLine(Map<String, Object> params);
 
     @PostMapping("/busiCount/siteDaily")
     ReturnT<List> getBusiCountSiteDaily(Map<String, Object> params);
@@ -57,11 +64,26 @@ public interface DataServeClient {
     @PostMapping("/busiCount/channelMonthly")
     ReturnT<List> getBusiCountChannelMonthly(Map<String, Object> params);
 
+    @PostMapping("/busiCount/channelMonthlyLine")
+    ReturnT<Map> getBusiCountChannelMonthlyLine(Map<String, Object> params);
+
     @PostMapping("/busiCount/branchCount")
     ReturnT<List> getBusiCountBranchCount(Map<String, Object> params);
 
     @PostMapping("/busiCount/zoneCount")
     ReturnT<List> getBusiCountZoneCount(Map<String, Object> params);
+
+    @PostMapping("/busiCount/zoneCountTable")
+    public ReturnT<Map> zoneCountTable(Map<String,Object> params);
+
+    @PostMapping("/busiCount/zoneCountBVDTable")
+    public ReturnT<Map> zoneCountBVDTable(Map<String,Object> params);
+
+    @PostMapping("/busiCount/zoneCountMap")
+    public ReturnT<Map> zoneCountMap(Map<String,Object> params);
+
+    @PostMapping("/busiCount/zoneCountBVDMap")
+    public ReturnT<Map> zoneCountBVDMap(Map<String,Object> params);
 
     @PostMapping("/busiCount/siteCount")
     ReturnT<List> getBusiCountSiteCount(Map<String, Object> params);
@@ -69,6 +91,20 @@ public interface DataServeClient {
     @PostMapping("/busiCount/channelCount")
     ReturnT<List> getBusiCountChannelCount(Map<String, Object> params);
 
+    @PostMapping("/busiCount/channelCountPie")
+    ReturnT<Map> channelCountPie(Map<String, Object> params);
+
+    @PostMapping("/busiCount/channelCountElcPie")
+    ReturnT<Map> channelCountElcPie(Map<String, Object> params);
+
+    @PostMapping("/busiCount/channelCountElcBar")
+    ReturnT<Map> channelCountElcBar(Map<String, Object> params);
+
+    @PostMapping("/busiCount/branchRank")
+    ReturnT<List> getBusiCountBranchRank(Map<String, Object> params);
+
+    @PostMapping("/busiCount/operateCost")
+    ReturnT<List> getBusiCountOperateCost(Map<String, Object> params);
 
     /**
      * 实时运营业务量
@@ -89,20 +125,35 @@ public interface DataServeClient {
     @PostMapping("/busiRT/channelH")
     ReturnT<List> getBusiChannelHRT(Map<String, Object> params);
 
+    @PostMapping("/busiRT/channelHLine")
+    ReturnT<Map> getBusiChannelHRTLine(Map<String, Object> params);
+
     @PostMapping("/busiRT/totalD")
     ReturnT<List> getBusiDRT(Map<String, Object> params);
 
     @PostMapping("/busiRT/branchD")
     ReturnT<List> getBusiBranchDRT(Map<String, Object> params);
 
+    @PostMapping("/busiRT/branchDBar")
+    ReturnT<Map> getBusiBranchDRTBar(Map<String, Object> params);
+
     @PostMapping("/busiRT/zoneD")
     ReturnT<List> getBusiZoneDRT(Map<String, Object> params);
+
+    @PostMapping("/busiRT/zoneDTable")
+    ReturnT<Map> getBusiZoneDRTTable(Map<String, Object> params);
+
+    @PostMapping("/busiRT/zoneDMap")
+    ReturnT<Map> getBusiZoneDRTMap(Map<String, Object> params);
 
     @PostMapping("/busiRT/siteD")
     ReturnT<List> getBusiSiteDRT(Map<String, Object> params);
 
     @PostMapping("/busiRT/channelD")
     ReturnT<List> getBusiChannelDRT(Map<String, Object> params);
+
+    @PostMapping("/busiRT/channelDPie")
+    ReturnT<Map> getBusiChannelDRTPie(Map<String, Object> params);
 
     @PostMapping("/busiRT/listByState")
     ReturnT<Page<HashMap<String, Object>>> getBusiListByState(Map<String, Object> params);
@@ -116,8 +167,14 @@ public interface DataServeClient {
     @PostMapping("/busiTcount/list")
     ReturnT<List> getBusiTcountListType(Map<String, Object> params);
 
+    @PostMapping("/busiTcount/listPie")
+    ReturnT<Map> getListTypePie(Map<String, Object> params);
+
     @PostMapping("/busiTcount/channel")
     ReturnT<List> getBusiTcountChannelInfo(Map<String, Object> params);
+
+    @PostMapping("/busiTcount/channelPie")
+    ReturnT<Map> getBusiTcountChannelInfoPie(Map<String, Object> params);
 
     @PostMapping("/busiTcount/branch")
     ReturnT<List> getBusiTcountBranchInfo(Map<String, Object> params);
@@ -200,8 +257,21 @@ public interface DataServeClient {
     @PostMapping("/mac/listBranchFaultRate")
     ReturnT<List> getMacListBranchFaultRate(Map<String, Object> params);
 
+    @PostMapping("/mac/listBranchFaultRateXY")
+    public ReturnT<Map> listBranchFaultRateXY( Map<String,Object> params);
+
+    @PostMapping("/mac/listBranchMacReplaceRateXY")
+    public ReturnT<Map> listBranchMacReplaceRateXY( Map<String,Object> params);
+
     @PostMapping("/mac/listSiteFaultRate")
     ReturnT<List> getMacListSiteFaultRate(Map<String, Object> params);
+
+    @PostMapping("/mac/listSiteFaultRateBar")
+    ReturnT<Map> getMacListSiteFaultRateBar(Map<String, Object> params);
+
+    @PostMapping("/mac/listBranchOnlineMacMap")
+    public ReturnT<Map> listBranchOnlineMacMap(@RequestBody Map<String,Object> params);
+
 
 
     /**
@@ -210,7 +280,7 @@ public interface DataServeClient {
 
     @PostMapping("/mac/listBranchOnlineMac")
     ReturnT<List> getMacListBranchOnlineMac(Map<String,Object> params);
-    
+
     @PostMapping("/mac/listBranchMacFaultCount")
     ReturnT<List> getMacListBranchMacFaultCount(Map<String,Object> params);
 
@@ -233,29 +303,62 @@ public interface DataServeClient {
     @PostMapping("/mac/listMacTypeAssess")
     ReturnT<List> getMacListMacTypeAssess(Map<String,Object> params);
 
+    @PostMapping("/mac/listMacTypeAssessRadar")
+    ReturnT<Map> getMacListMacTypeAssessRadar(Map<String,Object> params);
+
     @PostMapping("/mac/listMacTypeFaultRate")
     ReturnT<List> getMacListMacTypeFaultRate(Map<String,Object> params);
 
+    @PostMapping("/mac/listMacTypeFaultRatePie")
+    ReturnT<Map> getMacListMacTypeFaultRatePie(Map<String,Object> params);
+
     @PostMapping("/mac/listMacBrandFaultRate")
     ReturnT<List> getMacListMacBrandFaultRate(Map<String,Object> params);
+
+    @PostMapping("/mac/listMacBrandFaultRatePie")
+    ReturnT<Map> getMacListMacBrandFaultRatePie(Map<String,Object> params);
+
     @PostMapping("/mac/listMacReplaceOtcRateMonthly")
     ReturnT<List> getMacListMacReplaceOtcRateMonthly(Map<String,Object> params);
+
+    @PostMapping("/mac/listMacReplaceOtcRateMonthlyLine")
+    ReturnT<Map> getMacListMacReplaceOtcRateMonthlyLine(Map<String,Object> params);
 
     @PostMapping("/mac/listMacTypeBusiMonthly")
     ReturnT<List> getMacListMacTypeBusiMonthly(Map<String,Object> params);
 
+    @PostMapping("/mac/listMacTypeBusiMonthlyLine")
+    ReturnT<Map> getMacListMacTypeBusiMonthlyLine(Map<String,Object> params);
+
     @PostMapping("/mac/listMacTypeSuccessAndFaultRate")
     ReturnT<List> getMacListMacTypeSuccessAndFaultRate(Map<String,Object> params);
+
+    @PostMapping("/mac/listMacTypeSuccessAndFaultRateBar")
+    ReturnT<Map> getMacListMacTypeSuccessAndFaultRateBar(Map<String,Object> params);
 
     @PostMapping("/mac/listMacMaintainMonthly")
     ReturnT<List> getMacListMacMaintainMonthly(Map<String,Object> params);
 
+    @PostMapping("/mac/listMacMaintainMonthlyBar")
+    ReturnT<Map> getMacListMacMaintainMonthlyBar(Map<String,Object> params);
+
     @PostMapping("/mac/listMacTypeBusiCount")
     ReturnT<List> getMacListMacTypeBusiCount(Map<String,Object> params);
+
+    @PostMapping("/mac/listMacTypeBusiCountBar")
+    ReturnT<Map> getMacListMacTypeBusiCountBar(Map<String,Object> params);
+
+    @PostMapping("/mac/listMacMaintainSuccessRateMonthly")
+    ReturnT<List> getMacListMacMaintainSuccessRateMonthly(Map<String,Object> params);
 
     @PostMapping("/mac/listMacBusiCount")
     ReturnT<Page<HashMap<String, Object>>> getMacListMacBusiCount(Map<String, Object> params);
 
+    @PostMapping("/mac/listMacBusiCountBar")
+    ReturnT<Map> getMacListMacBusiCountBar(Map<String, Object> params);
+
+    @PostMapping("/mac/listMacReplaceRateMonthlyXY")
+    public ReturnT<Map> listMacReplaceRateMonthlyXY(Map<String,Object> params);
 
     @PostMapping("/mac/listSiteFaultCount")
     ReturnT<List> getMacListSiteFaultCount(Map<String,Object> params);
@@ -271,7 +374,10 @@ public interface DataServeClient {
 
     @PostMapping("/teller/listTellerAssess")
     ReturnT<Page<HashMap<String, Object>>> getTellerListTellerAssess(Map<String, Object> params);
-
+    @PostMapping("/teller/listTellerAssessCompreScore")
+    public ReturnT<Page<HashMap<String, Object>>> listTellerAssessCompreScore( Map<String,Object> params);
+    @PostMapping("/teller/listTellerAssessChartData")
+    public ReturnT<Map> listTellerAssessChartData( Map<String,Object> params);
     @PostMapping("/teller/listTellerGrade")
     ReturnT<Page<HashMap<String, Object>>> getTellerListTellerGrade(Map<String, Object> params);
 
@@ -281,14 +387,30 @@ public interface DataServeClient {
     @PostMapping("/teller/listBranchOffline")
     ReturnT<List> getTellerListBranchOffline(Map<String, Object> params);
 
+    @PostMapping("/teller/listBranchOfflineBarChart")
+    public ReturnT<Map> listBranchOfflineBarChart(Map<String,Object> params);
+
     @PostMapping("/teller/listSiteOffline")
     ReturnT<List> getTellerListSiteOffline(Map<String, Object> params);
+
+    @PostMapping("/teller/listSiteOfflineBar")
+    ReturnT<Map> getTellerListSiteOfflineBar(Map<String, Object> params);
 
     @PostMapping("/teller/listRoleStatus")
     ReturnT<List> getTellerListRoleStatus(Map<String, Object> params);
 
+    @PostMapping("/teller/listRoleStatusBar")
+    ReturnT<Map> getTellerListRoleStatusBar(Map<String, Object> params);
+
     @PostMapping("/teller/listTellerRank")
     ReturnT<Page<HashMap<String, Object>>> getTellerListTellerRank(Map<String, Object> params);
+
+    @PostMapping("/teller/listTellerRankBar")
+    ReturnT<Map> getTellerListTellerRankBar(Map<String, Object> params);
+
+    @PostMapping("/teller/listByBranch")
+    ReturnT<List> listByBranch(Map<String, Object> params);
+
 
 
     /**
@@ -297,8 +419,14 @@ public interface DataServeClient {
     @PostMapping("/busiError/listBranchErrorCount")
     ReturnT<List> getBusiErrorListBranchErrorCount(Map<String, Object> params);
 
+    @PostMapping("/busiError/listBranchErrorCountBar")
+    ReturnT<Map> getBusiErrorListBranchErrorCountBar(Map<String, Object> params);
+
     @PostMapping("/busiError/listSiteErrorCount")
     ReturnT<List> getBusiErrorListSiteErrorCount(Map<String, Object> params);
+
+    @PostMapping("/busiError/listSiteErrorCountBar")
+    ReturnT<Map> getBusiErrorListSiteErrorCountBar(Map<String, Object> params);
 
     /**
      * 网点机构
@@ -319,12 +447,20 @@ public interface DataServeClient {
     @PostMapping("/site/listCashInfo")
     ReturnT<List> getSiteListCashInfo(Map<String,Object> params);
 
+    @PostMapping("/site/listCashInfoBar")
+    ReturnT<Map> getSiteListCashInfoMap(Map<String,Object> params);
+
     @PostMapping("/site/listQueHourly")
     ReturnT<List> getSiteListQueHourly(Map<String,Object> params);
 
+    @PostMapping("/site/listQueHourlyLine")
+    ReturnT<Map> getSiteListQueHourlyLine(Map<String,Object> params);
 
     @PostMapping("/site/listMacBusiTypeCountHourly")
     ReturnT<List> getSiteListMacBusiTypeCountHourly(Map<String,Object> params);
+
+    @PostMapping("/site/listMacBusiTypeCountHourlyLine")
+    ReturnT<Map> getSiteListMacBusiTypeCountHourlyLine(Map<String,Object> params);
 
     /**
      * 渠道
@@ -335,22 +471,45 @@ public interface DataServeClient {
     @PostMapping("/channel/listEleRplRateByBranch")
     ReturnT<List> getChannelListEleRplRateByBranch(Map<String,Object> params);
 
+    @PostMapping("/channel/listEleRplRateByBranchMap")
+    ReturnT<Map> getChannelListEleRplRateByBranchMap(Map<String,Object> params);
+
+    @PostMapping("/channel/listEleRplRateByBranchTable")
+    ReturnT<List> getChannelListEleRplRateByBranchTable(Map<String,Object> params);
+
     @PostMapping("/channel/listEleAllRplRateDaily")
     ReturnT<List> getChannelListEleAllRplRateDaily(Map<String,Object> params);
+    @PostMapping("/channel/listEleAllRplRateDailyLineChat")
+    ReturnT<Map> listEleAllRplRateDailyLineChat(Map<String,Object> params);
 
     @PostMapping("/channel/listEleAllRplRateMonthly")
     ReturnT<List> getChannelListEleAllRplRateMonthly(Map<String,Object> params);
 
+    @PostMapping("/channel/listEleAllRplRateMonthlyLine")
+    ReturnT<Map> getChannelListEleAllRplRateMonthlyLine(Map<String,Object> params);
+
     @PostMapping("/channel/listEleGradeByChannel")
     ReturnT<List> getChannelListEleGradeByChannel(Map<String,Object> params);
+
+    @PostMapping("/channel/listEleGradeByChannelRadar")
+    ReturnT<Map> getChannelListEleGradeByChannelRadar(Map<String,Object> params);
 
     @PostMapping("/channel/listEleSatisByChannel")
     ReturnT<List> getChannelListEleSatisByChannel(Map<String,Object> params);
 
+    @PostMapping("/channel/listEleSatisByChannelBar")
+    ReturnT<Map> getChannelListEleSatisByChannelBar(Map<String,Object> params);
+
     @PostMapping("/channel/listEleRplRateByChannel")
     ReturnT<List> getChannelListEleRplRateByChannel(Map<String,Object> params);
 
+    @PostMapping("/channel/listEleRplRateByChannelBar")
+    ReturnT<Map> getChannelListEleRplRateByChannelBar(Map<String,Object> params);
+
     @PostMapping("/channel/listCusCountByChannel")
     ReturnT<List> getChannelListCusCountByChannel(Map<String,Object> params);
+
+    @PostMapping("/channel/listCusCountByChannelBar")
+    ReturnT<Map> getChannelListCusCountByChannelBar(Map<String,Object> params);
 
 }

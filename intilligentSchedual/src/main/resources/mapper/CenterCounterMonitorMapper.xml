@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- ... sql -->
+
+<mapper namespace="com.sunyard.dap.intilligentSchedual.mapper.CenterCounterMonitorMapper" >
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.sunyard.dap.intilligentSchedual.entity.CenterCounterMonitorDO">
+		<result column="attr1" property="attr1" />
+		<result column="attr2" property="attr2" />
+		<result column="is_open" property="is_open" />
+		<result column="is_lock" property="is_lock" />
+		<result column="last_modi_date" property="last_modi_date" />
+		<result column="bank_no" property="bank_no" />
+		<result column="system_no" property="system_no" />
+		<result column="project_no" property="project_no" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+        attr1, attr2, is_open, is_lock, last_modi_date, bank_no, system_no, project_no
+    </sql>
+	
+	<!-- 中心端业务量峰谷监控行领导视图表格数据查询 -->
+	<select id="centerDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 SELECT DEP.CENTER_NO, DEP.CENTER_NAME, DEP.DEP_NO, DEP.DEP_NAME, NVL(V.TOTAL,0) AS TOTAL 
+         FROM (
+              SELECT CENTER_NO, CENTER_NAME, DEP_NO, DEP_NAME 
+              FROM SM_DEP_ROLE_TB 
+              WHERE DEP_NO != 'CNYW20000'
+              GROUP BY CENTER_NO, CENTER_NAME, DEP_NO, DEP_NAME 
+         ) DEP
+         LEFT JOIN  (
+              SELECT CENTER_NO, DEP_NO, NVL(COUNT(1),0) AS TOTAL  FROM MN_ROLE_DETAIL_V 
+              WHERE CREATE_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD')
+              GROUP BY CENTER_NO, DEP_NO
+         ) V ON DEP.CENTER_NO = V.CENTER_NO AND DEP.DEP_NO = V.DEP_NO
+	     WHERE DEP.CENTER_NO = #{query_center_no} 
+	     ORDER BY NVL(V.TOTAL,0) DESC
+	</select>
+	
+	<!-- 中心端业务量峰谷监控行领导视图总业务量统计查询 -->
+	<select id="allBusiDataTotalQuery" parameterType="java.util.HashMap" resultType="int">
+		select nvl(count(1),0) as sumTotal from MN_ROLE_DETAIL_V
+	</select>
+	<!-- 中心端业务量峰谷监控行领导视图柱状图数据查询 -->
+	<select id="centerDataEchartQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 SELECT DEP.CENTER_NO, DEP.CENTER_NAME, DEP.DEP_NO, DEP.DEP_NAME, 
+                NVL(V.TRANS_STATE, 5) AS TRANS_STATE, NVL(V.TOTAL,0) AS TOTAL 
+         FROM (
+              SELECT CENTER_NO, CENTER_NAME, DEP_NO, DEP_NAME 
+              FROM SM_DEP_ROLE_TB 
+              WHERE DEP_NO != 'CNYW20000'
+              GROUP BY CENTER_NO, CENTER_NAME, DEP_NO, DEP_NAME 
+         ) DEP
+         LEFT JOIN  (
+              SELECT CENTER_NO, DEP_NO, TRANS_STATE, NVL(COUNT(1),0) AS TOTAL  FROM MN_ROLE_DETAIL_V 
+              WHERE CREATE_DATE = TO_CHAR(SYSDATE, 'YYYYMMDD')
+              GROUP BY CENTER_NO, DEP_NO, TRANS_STATE
+         ) V ON DEP.CENTER_NO = V.CENTER_NO AND DEP.DEP_NO = V.DEP_NO
+         WHERE DEP.CENTER_NO = #{query_center_no} 
+         ORDER BY NVL(V.TOTAL,0) DESC
+	</select>
+	<!-- 中心端业务量峰谷监控处长人员视图柱状图数据查询 -->
+	<select id="depEchartDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	      SELECT CENTER_NO,CENTER_NAME,DEP_NO,DEP_NAME,BUSINESS_ID,BUSINESS_NAME,TRANS_STATE,
+		         DECODE(TRANS_STATE,'4','已处理未完结','3','挂起','5','已完结') AS WORKSTATE,
+		         NVL(COUNT(1),0) AS TOTAL  
+		  FROM MN_ROLE_DETAIL_V
+		  WHERE CENTER_NO = #{query_center_no} 
+		        AND DEP_NO = #{query_dep_no}
+		  GROUP BY CENTER_NO,CENTER_NAME,DEP_NO,DEP_NAME,BUSINESS_ID,BUSINESS_NAME,TRANS_STATE
+		  ORDER BY COUNT(1) DESC 
+	</select>
+	<!-- 中心端业务量峰谷监控行领导视图处室时段业务量走势图数据查询 -->
+	<select id="postEchartDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT CENTER_NO, CENTER_NAME, DEP_NO, DEP_NAME, RUN_TIME, NVL(SUM(BUSI_COUNT),0) AS TOTAL 
+		FROM MN_ORGANTIME_DETAIL_TB
+		WHERE SUBSTR(CREATE_TIME, 0, 8) = TO_CHAR(SYSDATE, 'YYYYMMDD')
+		      AND CENTER_NO = #{query_center_no} AND DEP_NO = #{query_dep_no}
+		GROUP BY CENTER_NO, CENTER_NAME, DEP_NO, DEP_NAME, RUN_TIME     
+	</select>
+	<!-- 中心端业务量峰谷监控处长人员视图右侧表格数据查询 -->
+	<select id="prePostEchartDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT TRANS_ID, TRANS_NAME, NVL(SUM(DECODE(TRANS_STATE, '5', TOTAL, NULL)), 0) AS FINISHED_BUSI, 
+	           NVL(SUM(DECODE(TRANS_STATE, '4', TOTAL, NULL)), 0) AS PROCESS_UNFINISHED_BUSI,
+	           NVL(SUM(DECODE(TRANS_STATE, '3', TOTAL, NULL)), 0) AS PENDING_BUSI 
+		FROM(
+			   SELECT CENTER_NO,CENTER_NAME,DEP_NO,DEP_NAME,BUSINESS_ID,BUSINESS_NAME,
+	           		  TRANS_ID,TRANS_NAME,TRANS_STATE,
+			       	  DECODE(TRANS_STATE,'4','已处理未完结','3','挂起','5','已完结') AS WORKSTATE,
+			          NVL(COUNT(1),0) AS TOTAL  FROM MN_ROLE_DETAIL_V 
+			   WHERE CENTER_NO = #{query_center_no} 
+		       	     AND DEP_NO = #{query_dep_no} 
+		       	     AND BUSINESS_ID = #{query_busi_no}
+			   GROUP BY CENTER_NO,CENTER_NAME,DEP_NO,DEP_NAME,
+			            BUSINESS_ID,BUSINESS_NAME,TRANS_ID,TRANS_NAME,TRANS_STATE
+		 )
+		 GROUP BY TRANS_ID,TRANS_NAME
+		 ORDER BY SUM(TOTAL) DESC
+	</select>
+	<!-- 中心端业务量峰谷监控处长人员视图最下侧表格数据查询 -->
+	<select id="personDetailDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 SELECT MN.*,DECODE(MN.TRANS_STATE,'4','已处理未完结','3','挂起','5','已完结') AS WORKSTATE 
+		 FROM MN_ROLE_DETAIL_V MN
+	     WHERE MN.CENTER_NO = #{query_center_no} 
+               AND MN.DEP_NO = #{query_dep_no}
+			   AND MN.BUSINESS_ID = #{query_busi_no}
+	           AND MN.TRANS_ID = #{query_trans_no}
+	</select>
+	<!-- 处室业务量明细导出数据查询 -->
+	<select id="counterTopDepPerDetailExport" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT distinct TASK_ID,BUSINESS_NAME,TRANS_NAME,SYS_NAME,DEP_NAME,ROLE_NAME,OPER_NAME,CREATE_TIME,
+	       	   DECODE(TRANS_STATE,'5','已完结','4','已处理未完结','3','挂起') AS STATE
+	    FROM MN_ROLE_DETAIL_V  
+	    WHERE CENTER_NO = #{query_center_no} 
+	          AND DEP_NO = #{query_dep_no}
+	</select>
+	<!-- 根据机构号查询获取机构信息 -->
+	<select id="depBelongCenterQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from sm_organ_tb where organ_no = #{params.query_organ_no}
+	</select>
+	
+  
+</mapper>

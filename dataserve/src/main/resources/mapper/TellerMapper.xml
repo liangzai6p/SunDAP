@@ -128,4 +128,12 @@
         </trim>
         order by COMPRE_SCORE desc
     </select>
+    <select id="listByBranch" resultType="java.util.HashMap">
+        select * from DM_TELLER_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.SITE_NO != null">
+                SITE_NO = #{params.SITE_NO}
+            </if>
+        </trim>
+    </select>
 </mapper>

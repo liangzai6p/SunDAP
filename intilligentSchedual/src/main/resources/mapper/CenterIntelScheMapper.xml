@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.dap.intilligentSchedual.mapper.CenterIntelScheMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sunyard.dap.intilligentSchedual.entity.CenterIntelScheDO">
+        <result column="attr1" property="attr1" />
+        <result column="attr2" property="attr2" />
+        <result column="is_open" property="is_open" />
+        <result column="is_lock" property="is_lock" />
+        <result column="last_modi_date" property="last_modi_date" />
+        <result column="bank_no" property="bank_no" />
+        <result column="system_no" property="system_no" />
+        <result column="project_no" property="project_no" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        attr1, attr2, is_open, is_lock, last_modi_date, bank_no, system_no, project_no
+    </sql>
+
+    <!-- 智能排班结果处室表格数据查询 -->
+    <select id="depIntelScheTableDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select dep.center_no,substr(dep.center_name,8) as center_name,dep.dep_no,dep.dep_name,sche.work_date,
+        nvl(sche.total_sche,0) as total_sche from
+        (select center_no,center_name,dep_no,dep_name from sm_dep_role_tb
+        where dep_no not in('CNYW20000')
+        group by center_no,center_name,dep_no,dep_name) dep
+        left join
+        (select organ_no,work_date,count(1) as total_sche from SC_SCHEDULE_OUT_TB
+        where work_date like #{params.queryMonth}
+        <if test="params.organ_no != null and params.organ_no != ''" >
+            and organ_no = #{params.depNo}
+        </if>
+        and result in('2', '1')
+        group by organ_no,work_date) sche
+        on dep.dep_no = sche.organ_no
+        where 1=1 and sche.work_date is not null
+        <if test="params.centerNo != null and params.centerNo != ''" >
+            and dep.center_no = #{params.centerNo}
+        </if>
+        <if test="params.depNo != null and params.depNo != ''" >
+            and dep.dep_no = #{params.depNo}
+        </if>
+        order by dep.dep_no
+    </select>
+    <!-- 智能排班根据处室查询处室下的排班人员信息 -->
+    <select id="intelScheDepUserInfoQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select user_no,namea as user_name from sc_schedule_user_info_tb
+			where organ_no = #{params.depNo}
+       		group by user_no,namea
+	</select>
+    <!-- 智能排班结果处室表格数据查询 -->
+    <select id="intelScheDepCalDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from HS_INTEL_SCHE_V
+			where work_date like #{params.queryMonth}
+			and center_no = #{params.centerNo}
+       		and dep_no = #{params.depNo}
+       		and result in('2', '1')
+       		order by user_no
+	</select>
+    <!-- XX处室当日排班人员信息列表查询 -->
+    <select id="centerInteScheCalDateClassInfoQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from HS_INTEL_SCHE_V
+			where work_date = #{params.queryDate}
+       		and dep_no = #{params.queryDepNo}
+       		and result = #{params.ShowFlag}
+       		order by work_date
+	</select>
+    <!-- XX处室排班人员对应岗位信息列表查询 -->
+    <select id="centerInteScheCalDateUserRoleNameInfoQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select a.organ_no,a.organ_name,b.organ_name as depart_name,a.role_name,
+	       a.user_no,a.namea,b.role as bref_role from sc_schedule_user_info_tb a
+	       left join sc_schedule_job_classify_tb b
+	       on a.organ_no = b.organ_no and b.role_name like '%'||a.role_name||'%'
+	       where a.organ_no not in ('CNKF20001')
+	       and a.organ_no = #{params.queryDepNo}
+	       and b.organ_no is not null
+	       and a.is_schedule = '1'
+	       order by b.organ_no,a.user_no,a.role_name
+	</select>
+
+    <!-- 排班人员信息查询 -->
+    <select id="intelScheUserInfoQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select user_no,namea as user_name from SC_SCHEDULE_USER_INFO_TB group by user_no,namea
+	</select>
+    <!-- 排班明细导出查询 -->
+    <select id="intelScheDataExportQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select * from HS_INTEL_SCHE_V
+        where work_date like #{params.queryMonth}
+        <if test="params.centerNo != null and params.centerNo != ''" >
+            and center_no = #{params.centerNo}
+        </if>
+        <if test="params.depNo != null and params.depNo != ''" >
+            and dep_no = #{params.depNo}
+        </if>
+        order by dep_no
+    </select>
+    <!-- 智能排班人员视图排班数据查询 -->
+    <select id="centerIntelScheOperDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from SC_SCHEDULE_OUT_TB
+			where work_date like #{params.queryMonth}
+			and user_name = #{params.operName}
+       		and result in('2', '1')
+	</select>
+    <!-- 人员基本信息查询 -->
+    <select id="centerIntelScheOperBaseInfoQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select teller_no,teller_name,duty_name from sm_teller_duty_tb
+	       where teller_no = #{params.scheUserNo}
+	       group by teller_no,teller_name,duty_name
+	</select>
+    <!-- 人员工作时长统计 -->
+    <select id="centerIntelScheOperWorkTotalQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+
+        select worktime.user_no,sum(worktime.workTiemPlanTotal) as planworktime,
+        sum(worktime.workTiemActTotal) as actworktime,
+        (sum(worktime.workTiemPlanTotal)+sum(worktime.workTiemActTotal)) as totalworktime  from
+        (
+        <!-- 计划工作时间统计 -->
+        select user_no,nvl(sum(workTiemTotal),0) as workTiemPlanTotal,0 as workTiemActTotal from (
+        <!-- 非节假日工作时长统计 -->
+        select teller_no as user_no,post_date as work_date,count(1)*4 as workTiemTotal from sm_teller_state_tb stste
+        left join sm_duty_info_tb duty
+        on stste.state_no = duty.state_no
+        where post_date like #{params.queryMonth}
+        and post_date not in (select off_date from sm_dayoff_tb where is_open = '1' and off_date like #{params.queryMonth})
+        and teller_no = #{params.operNo}
+        and duty.is_cq = '1'
+        group by teller_no,post_date
+        union all
+        <!-- 非节假日加班时长统计  -->
+        select user_no,work_date,count(1)*2 as workTiemTotal from SC_SCHEDULE_OUT_TB
+        where work_date like #{params.queryMonth}
+        and work_date not in (select off_date from sm_dayoff_tb where is_open = '1' and off_date like #{params.queryMonth})
+        and user_no = #{params.operNo}
+        and result = '1'
+        group by user_no,work_date
+        union all
+        <!-- 节假日加班时长统计  -->
+        select user_no,work_date,count(1)*8 as workTiemTotal from SC_SCHEDULE_OUT_TB
+        where work_date like #{params.queryMonth}
+        and work_date in (select off_date from sm_dayoff_tb where is_open = '1' and off_date like #{params.queryMonth})
+        and user_no = #{params.operNo}
+        and result = '1'
+        group by user_no,work_date
+        ) group by user_no
+        union all
+        <!-- 实际工作时间统计 -->
+        select user_no,0 as workTiemPlanTotal,nvl(sum(workTimeTotal),0) as workTiemActTotal from (
+        select user_no,user_name,work_date,sum(work_time+week_time+workdate_time) as workTimeTotal
+        from sc_schedule_work_time_tb
+        where work_date &gt;= #{params.monthFirstData}
+        <if test="params.queryMonthStr == curDayMonth" >
+            and work_date &lt; #{params.curDayStr}
+        </if>
+        <if test="params.queryMonthStr != curDayMonth" >
+            and work_date &lt;= #{params.monthLastData}
+        </if>
+        and user_no = #{params.operNo}
+        group by user_no,user_name,work_date
+        ) group by user_no
+        ) worktime
+        group by worktime.user_no
+    </select>
+
+    <select id="intelScheAgainDepSelectDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+
+        select b.center_no,b.center_name,b.dep_no,b.dep_name from
+        (select organ_no from sc_schedule_job_classify_tb
+        group by organ_no) a
+        left join
+        (select center_no,center_name,dep_no,dep_name from sm_dep_role_tb
+        group by center_no,center_name,dep_no,dep_name) b
+        on a.organ_no = b.dep_no
+        where 1=1
+        <if test="params.centerNo != null and params.centerNo != ''" >
+            and b.center_no = #{params.centerNo}
+        </if>
+        <if test="params.depNo != null and params.depNo != ''" >
+            and b.dep_no = #{params.depNo}
+        </if>
+        group by b.center_no,b.center_name,b.dep_no,b.dep_name
+
+    </select>
+
+    <select id="intelScheAgainDepUserQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select user_no,namea as user_name  from sc_schedule_user_info_tb
+	       where organ_no = #{params.depNo}
+	       group by user_no,namea
+	</select>
+
+    <select id="scheAgainNoticePublishInfoQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from  SC_SCHEDULE_AGAIN_NOTICE_TB where notice_state = '0' and create_user_no = #{params.userNo}
+	</select>
+
+    <!-- 排班手动修改 -->
+    <insert id="intelScheDepModifySave" parameterType="java.util.HashMap">
+		merge into SC_SCHEDULE_OUT_TB a using
+        (select #{params.scheDate} as sche_date,#{params.user_no} as user_no,#{params.dep_no} as dep_no from dual) b
+		    on (a.work_date = b.sche_date and a.user_no = b.user_no
+		    	and a.organ_no = b.dep_no )
+		when matched then update set result = #{params.sche_result}, update_time = to_char(sysdate,'YYYYMMDD HH24:MI:SS')
+		when not matched then insert (work_date, user_no,organ_no, depart_name, organ_name, user_name, result, create_time, update_time)
+		values(#{params.scheDate},#{params.user_no},#{params.dep_no}, #{params.depart_name},#{params.organ_name},#{params.user_name},#{params.sche_result},
+    	to_char(sysdate,'YYYYMMDD HH24:MI:SS'),to_char(sysdate,'YYYYMMDD HH24:MI:SS'))
+	</insert>
+    <!-- 排班原值修改 -->
+    <insert id="intelScheDepModifyOldValUpdate" parameterType="java.util.HashMap">
+		merge into SC_SCHEDULE_OUT_TB a using
+        (select #{params.scheDate} as sche_date,#{params.user_no} as user_no,#{params.dep_no} as dep_no from dual) b
+		    on (a.work_date = b.sche_date and a.user_no = b.user_no
+		    	and a.organ_no = b.dep_no )
+		when matched then update set result = '4', update_time = to_char(sysdate,'YYYYMMDD HH24:MI:SS')
+		when not matched then insert (work_date, user_no,organ_no, depart_name, organ_name, user_name, result, create_time, update_time)
+		values(#{params.scheDate},#{params.user_no},#{params.dep_no}, #{params.depart_name},#{params.organ_name},#{params.user_name},'4',
+    	to_char(sysdate,'YYYYMMDD HH24:MI:SS'),to_char(sysdate,'YYYYMMDD HH24:MI:SS'))
+	</insert>
+    <!-- XX处室排班人员当日修改原值状态更新 -->
+    <update id="scheduleCalDateModifyOldValUpdate" parameterType="java.util.HashMap">
+		update sc_schedule_out_tb set result = '4',update_time = to_char(sysdate,'YYYYMMDD HH24:MI:SS')
+	       where work_date = #{params.scheDate}
+	       and organ_no = #{params.scheDepNo}
+	       and user_no = #{params.scheOldUserNo}
+		   and role_name = #{params.scheOldRoleName}
+	</update>
+    <!--导入前先将旧值更新为不排班状态  -->
+    <update id="scheduleExportOldValUpdate" parameterType="java.util.HashMap">
+		update sc_schedule_out_tb set result = '4',update_time = to_char(sysdate,'YYYYMMDD HH24:MI:SS')
+	       where work_date = #{params.scheDate}
+	       and organ_no = #{params.scheDepNo}
+	       and depart_name = #{params.scheNewDepartName}
+		   and result = #{params.ShowFlag}
+		   and role = #{params.scheBriefRole}
+	</update>
+
+    <!-- XX处室当日排班人员新增/修改信息保存 -->
+    <insert id="scheduleCalDateModifyNewValUpdateSave" parameterType="java.util.HashMap">
+		merge into SC_SCHEDULE_OUT_TB a using
+        (select #{params.scheDate} as sche_date,#{params.scheNewUserNo} as user_no,#{params.scheDepNo} as dep_no,
+        	#{params.scheNewRoleName} as role_name from dual) b
+		    on (a.work_date = b.sche_date and a.user_no = b.user_no
+		    	and a.organ_no = b.dep_no and a.role_name = b.role_name)
+		when matched then update set result = #{params.ShowFlag}, update_time = to_char(sysdate,'YYYYMMDD HH24:MI:SS')
+		when not matched then insert (work_date, user_no,organ_no, depart_name, organ_name, user_name, result,
+			create_time, update_time,role_name,role)
+		values(#{params.scheDate},#{params.scheNewUserNo},#{params.scheDepNo}, #{params.scheNewDepartName},#{params.scheNewOrganName},#{params.scheNewUserName},#{params.ShowFlag},
+    	to_char(sysdate,'YYYYMMDD HH24:MI:SS'),to_char(sysdate,'YYYYMMDD HH24:MI:SS'),#{params.scheNewRoleName},#{params.scheBriefRole})
+	</insert>
+
+    <!-- 排班信息excel保存 -->
+    <insert id="scheduleCalDateImportValUpdateSave" parameterType="java.util.HashMap">
+		merge into SC_SCHEDULE_OUT_TB a using
+        (select #{params.scheDate} as sche_date,#{params.scheNewUserNo} as user_no,
+        	#{params.scheNewUserName} as user_name,#{params.scheDepNo} as dep_no,
+        	#{params.scheNewRoleName} as role_name from dual) b
+		    on (a.work_date = b.sche_date
+		    	and a.user_no = b.user_no
+		    	and a.user_name = b.user_name
+		    	and a.organ_no = b.dep_no
+		    	and a.role_name = b.role_name)
+		when matched then update set result = #{params.ShowFlag}, update_time = to_char(sysdate,'YYYYMMDD HH24:MI:SS')
+		when not matched then insert (work_date, user_no,organ_no, depart_name, organ_name, user_name, result,
+			create_time, update_time,role_name,role)
+		values(#{params.scheDate},#{params.scheNewUserNo},#{params.scheDepNo}, #{params.scheNewDepartName},#{params.scheNewOrganName},#{params.scheNewUserName},#{params.ShowFlag},
+    	to_char(sysdate,'YYYYMMDD HH24:MI:SS'),to_char(sysdate,'YYYYMMDD HH24:MI:SS'),#{params.scheNewRoleName},#{params.scheBriefRole})
+	</insert>
+
+    <!-- 重新排班通知信息保存 -->
+    <insert id="intelScheAgainUserNoticeInfoSave" parameterType="java.util.HashMap">
+		merge into SC_SCHEDULE_AGAIN_NOTICE_TB a using
+	        (select #{params.dep_no} as dep_no,#{params.user_no} as user_no,#{params.notice_state} as notice_state,
+	        	#{params.create_user_no} as create_user_no from dual) b
+			on (a.notice_state = b.notice_state and a.user_no = b.user_no
+	           	and a.dep_no = b.dep_no and a.create_user_no = b.create_user_no)
+		when matched then update set notice_content = #{params.notice_content}, create_date = #{params.create_date},
+	      	create_time = #{params.create_time}
+		when not matched then insert (dep_no, dep_name,user_no, user_name, notice_state, notice_content, create_user_no,
+	       	create_user_name, create_date,create_time)
+			values(#{params.dep_no},#{params.dep_name},#{params.user_no}, #{params.user_name},#{params.notice_state},#{params.notice_content},#{params.create_user_no},
+	    	     	#{params.create_user_name},#{params.create_date},#{params.create_time})
+	</insert>
+
+    <update id="confireNoticePublishSave" parameterType="java.util.HashMap">
+		update SC_SCHEDULE_AGAIN_NOTICE_TB set notice_state = '1'
+			where notice_state = '0'
+			and dep_no = #{params.dep_no}
+			and user_no = #{params.user_no}
+			and create_user_no = #{params.create_user_no}
+			and create_time = #{params.create_time}
+	</update>
+    <!-- 处室人员值班天数统计查询-->
+    <select id="centerIntelDepDaysQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT USER_NO,USER_NAME,BRIEF_ROLE,COUNT(*) AS DAYS FROM HS_INTEL_SCHE_V
+		WHERE RESULT = 1
+		AND WORK_DATE BETWEEN #{params.start_month} and #{params.end_month}
+		AND DEP_NO = #{params.dep_no}
+		GROUP BY USER_NO,USER_NAME,BRIEF_ROLE
+		ORDER BY BRIEF_ROLE,DAYS DESC
+	</select>
+    <!-- 人员工作时长列表信息查询 -->
+    <select id="operDailyWorkTimeTableInfoQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 SELECT * FROM SC_SCHEDULE_WORK_TIME_TB
+           WHERE WORK_DATE &gt;= #{params.queryStartDate}
+           AND WORK_DATE &lt;= #{params.queryEndDate}
+           AND USER_NO = #{params.operWorkTimeUserNo}
+           ORDER BY WORK_DATE
+	</select>
+    <!-- 人员工作时长修改信息保存-->
+    <update id="operWorkTimeModifyInfoSave" parameterType="java.util.HashMap">
+		UPDATE SC_SCHEDULE_WORK_TIME_TB SET WORK_TIME = #{params.work_time},WEEK_TIME = #{params.week_time}
+                  WHERE USER_NO = #{params.user_no}
+                  AND USER_NAME = #{params.user_name}
+                  AND WORK_DATE = #{params.work_date}
+	</update>
+    <!-- 人员页面按钮权限查询 -->
+    <select id="centerIntelScheButtonRight" parameterType="java.util.HashMap" resultType="String">
+        select button_id from sm_right_tb
+        where menu_id = '#Y70057'
+        and role_no = #{params.role_no}
+        <!-- '9999' -->
+    </select>
+    <!-- 判断XX日期是否为节假日 -->
+    <select id="scheOperDailyWorkDateIsOffDay" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from sm_dayoff_tb where is_open = '1' and off_date = #{params.scheWorkDate}
+	</select>
+    <!-- 排班处室对应岗位信息查询 -->
+    <select id="roleDepartNameInfoQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from sc_schedule_job_classify_tb
+	</select>
+    <!--排班信息导入人员岗位信息查询  -->
+    <select id="scheExportUserRoleNameInfoQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT a.user_no,a.namea,a.organ_no,a.organ_name,a.role_name,b.role
+        FROM SC_SCHEDULE_USER_INFO_TB a left join sc_schedule_job_classify_tb b
+        on a.organ_no = b.organ_no and a.organ_name = b.organ_name
+        and b.role_name like '%'||a.role_name||'%'
+        WHERE  a.ORGAN_NO != 'CNKF20001'
+        <!-- and a.is_schedule = '1' -->
+    </select>
+    <!--业务量预测智能排班  -->
+    <insert id="busiForeShcduleRunLogSave" parameterType="java.util.HashMap">
+		INSERT INTO SC_FORECAST_SCHEDULE_LOG_TB(RUN_TYPE,RUN_CONTENT,RUN_DATE,RUN_TIME)
+			VALUES(#{params.run_type},#{params.run_content},to_char(sysdate,'YYYYMMDD'),to_char(sysdate,'HH24MISS'))
+	</insert>
+
+</mapper>

@@ -610,7 +610,7 @@ public class DateUtil {
 	 */
 	public String getDay(String reg, int days) {
 		Calendar cal1 = Calendar.getInstance();
-		cal1.setTime(new java.util.Date());
+		cal1.setTime(new Date());
 		cal1.add(Calendar.DATE, days);
 		SimpleDateFormat formatter = new SimpleDateFormat(reg);
 		String day = formatter.format(cal1.getTime());
@@ -643,7 +643,7 @@ public class DateUtil {
 		// "yyyy.MM.dd G 'at' HH:mm:ss z"
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, -ibefore);
-		java.util.Date date = calendar.getTime();
+		Date date = calendar.getTime();
 		SimpleDateFormat sFormat = new SimpleDateFormat(strFormat);
 		StringBuffer buftmp = new StringBuffer(10);
 		FieldPosition fp = new FieldPosition(0);
@@ -811,7 +811,7 @@ public class DateUtil {
 	 */
 	public static boolean checkLeapMonth(String date){
 		DateTime dt4 = new DateTime(date);
-		org.joda.time.DateTime.Property month = dt4.monthOfYear();
+		DateTime.Property month = dt4.monthOfYear();
 		return month.isLeap();
 
 	}
@@ -823,7 +823,7 @@ public class DateUtil {
 	 */
 	public static boolean checkLeapYear(String date){
 		DateTime dt4 = new DateTime(date);
-		org.joda.time.DateTime.Property year = dt4.year();
+		DateTime.Property year = dt4.year();
 		return year.isLeap();
 
 	}

@@ -56,13 +56,27 @@ public class SiteController {
         return client.getSiteListCashInfo(params);
     }
 
+    @PostMapping("/listCashInfoBar")
+    public ReturnT<Map> getListCashInfoMap(@RequestBody Map<String,Object> params){
+        return client.getSiteListCashInfoMap(params);
+    }
+
     @PostMapping("/listQueHourly")
     public ReturnT<List> getListQueHourly(@RequestBody Map<String,Object> params){
         return client.getSiteListQueHourly(params);
     }
 
+    @PostMapping("/listQueHourlyLine")
+    public ReturnT<Map> getListQueHourlyLine(@RequestBody Map<String,Object> params){
+        return client.getSiteListQueHourlyLine(params);
+    }
+
     @PostMapping("/listMacBusiTypeCountHourly")
     public ReturnT<List> getListMacBusiTypeCountHourly(@RequestBody Map<String,Object> params){
         return client.getSiteListMacBusiTypeCountHourly(params);
+    }
+    @PostMapping("/listMacBusiTypeCountHourlyLine")
+    public ReturnT<Map> getListMacBusiTypeCountHourlyLine(@RequestBody Map<String,Object> params){
+        return client.getSiteListMacBusiTypeCountHourlyLine(params);
     }
 }

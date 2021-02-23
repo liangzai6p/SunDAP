@@ -32,6 +32,16 @@ public class FittingController {
         return client.getFittingLineFitting(params);
     }
 
+    @PostMapping("lineFittingXY")
+    public ReturnT<Map> lineFittingXY(@RequestBody String params){
+        return client.getFittingLineFittingXY(params);
+    }
+
+    @PostMapping("lineFittingElcXY")
+    public ReturnT<Map> lineFittingElcXY(@RequestBody String params){
+        return client.lineFittingElcXY(params);
+    }
+
     @PostMapping("polyFitting")
     public ReturnT<List> polyFitting(@RequestBody String params){
         return client.getFittingPolyFitting(params);

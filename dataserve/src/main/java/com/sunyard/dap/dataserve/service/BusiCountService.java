@@ -21,7 +21,11 @@ public interface BusiCountService extends IService<BusiCountDO>{
 
     ReturnT<List> allDaily(Map<String,Object> params);
 
+    ReturnT<Map> allDailyMsg(Map<String,Object> params);
+
     ReturnT<List> branchDaily(Map<String,Object> params);
+
+    ReturnT<Map> branchDailyLine(Map<String,Object> params);
 
     ReturnT<List> siteDaily(Map<String,Object> params);
 
@@ -39,11 +43,32 @@ public interface BusiCountService extends IService<BusiCountDO>{
 
     ReturnT<List> channelMonthly(Map<String,Object> params);
 
+    ReturnT<Map> channelMonthlyLine(Map<String,Object> params);
+
     ReturnT<List> branchCount(Map<String,Object> params);
 
     ReturnT<List> zoneCount(Map<String,Object> params);
 
+    ReturnT<Map> zoneCountTable(Map<String,Object> params);
+
+    ReturnT<Map> zoneCountBVDTable(Map<String,Object> params);
+
+    ReturnT<Map> zoneCountMap(Map<String,Object> params);
+
+    ReturnT<Map> zoneCountBVDMap(Map<String,Object> params);
+
     ReturnT<List> siteCount(Map<String,Object> params);
 
     ReturnT<List> channelCount(Map<String,Object> params);
+
+    ReturnT<Map> channelCountPie(Map<String,Object> params);
+
+    ReturnT<Map> channelCountElcPie(Map<String,Object> params);
+
+    ReturnT<Map> channelCountElcBar(Map<String,Object> params);
+
+    ReturnT<List> branchRank(Map<String,Object> params);
+
+    ReturnT<List> operateCost(Map<String,Object> params);
+
 }

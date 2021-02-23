@@ -29,15 +29,25 @@ public interface BusiRtService extends IService<BusiRtDO> {
 
     ReturnT<List> listChannelHRT(Map<String,Object> params);
 
+    ReturnT<Map> listChannelHRTLine(Map<String,Object> params);
+
     ReturnT<List> listDRT(Map<String,Object> params);
 
     ReturnT<List> listBranchDRT(Map<String,Object> params);
 
+    ReturnT<Map> listBranchDRTBar(Map<String,Object> params);
+
     ReturnT<List> listZoneDRT(Map<String,Object> params);
+
+    ReturnT<Map> listZoneDRTMap(Map<String,Object> params);
+
+    ReturnT<Map> listZoneDRTTable(Map<String,Object> params);
 
     ReturnT<List> listSiteDRT(Map<String,Object> params);
 
     ReturnT<List> listChannelDRT(Map<String,Object> params);
+
+    ReturnT<Map> listChannelDRTPie(Map<String,Object> params);
 
     ReturnT<Page<HashMap<String, Object>>> listByState(Map<String,Object> params);
 

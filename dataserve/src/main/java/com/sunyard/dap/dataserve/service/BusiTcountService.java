@@ -18,6 +18,8 @@ import java.util.Map;
 public interface BusiTcountService extends IService<BusiTcountDO> {
     ReturnT<List> listType(Map<String,Object> params);
 
+    ReturnT<Map> listTypePie(Map<String,Object> params);
+
     ReturnT<List> listBranch(Map<String,Object> params);
 
     ReturnT<List> listSite(Map<String,Object> params);
@@ -25,6 +27,8 @@ public interface BusiTcountService extends IService<BusiTcountDO> {
     ReturnT<List> listZone(Map<String,Object> params);
 
     ReturnT<List> listChannel(Map<String,Object> params);
+
+    ReturnT<Map> listChannelPie(Map<String,Object> params);
 
     ReturnT<List> listTypeMonthly(Map<String,Object> params);
 }

@@ -31,6 +31,8 @@ public class BusiCountController {
     @PostMapping("/allDaily")
     public ReturnT<List> getAllDaily(@RequestBody Map<String,Object> params){return client.getBusiCountAllDaily(params);}
 
+    @PostMapping("/allDailyMsg")
+    public ReturnT<Map> getAllDailyMsg(@RequestBody Map<String,Object> params){return client.getBusiCountAllDailyMsg(params);}
 
     @PostMapping("/channelDaily")
     public ReturnT<List> getChannelDaily(@RequestBody Map<String,Object> params){
@@ -40,6 +42,11 @@ public class BusiCountController {
     @PostMapping("/branchDaily")
     public ReturnT<List> getBranchDaily(@RequestBody Map<String,Object> params){
         return client.getBusiCountBranchDaily(params);
+    }
+
+    @PostMapping("/branchDailyLine")
+    public ReturnT<Map> getBranchDailyLine(@RequestBody Map<String,Object> params){
+        return client.getBusiCountBranchDailyLine(params);
     }
 
     @PostMapping("/siteDaily")
@@ -81,6 +88,11 @@ public class BusiCountController {
         return client.getBusiCountChannelMonthly(params);
     }
 
+    @PostMapping("/channelMonthlyLine")
+    public ReturnT<Map> getChannelMonthlyLine(@RequestBody Map<String,Object> params){
+        return client.getBusiCountChannelMonthlyLine(params);
+    }
+
     @PostMapping("/branchCount")
     public ReturnT<List> getBranchCount(@RequestBody Map<String,Object> params){
         return client.getBusiCountBranchCount(params);
@@ -89,6 +101,24 @@ public class BusiCountController {
     @PostMapping("/zoneCount")
     public ReturnT<List> getZoneCount(@RequestBody Map<String,Object> params){
         return client.getBusiCountZoneCount(params);
+    }
+
+    @PostMapping("/zoneCountTable")
+    public ReturnT<Map> getZoneCountTable(@RequestBody Map<String,Object> params){
+        return client.zoneCountTable(params);
+    }
+    @PostMapping("/zoneCountBVDTable")
+    public ReturnT<Map> zoneCountBVDTable(@RequestBody Map<String,Object> params){
+        return client.zoneCountBVDTable(params);
+    }
+    @PostMapping("/zoneCountMap")
+    public ReturnT<Map> zoneCountMap(@RequestBody Map<String,Object> params){
+        return client.zoneCountMap(params);
+    }
+
+    @PostMapping("/zoneCountBVDMap")
+    public ReturnT<Map> zoneCountBVDMap(@RequestBody Map<String,Object> params){
+        return client.zoneCountBVDMap(params);
     }
 
     @PostMapping("/siteCount")
@@ -100,5 +130,25 @@ public class BusiCountController {
     public ReturnT<List> getChannelCount(@RequestBody Map<String,Object> params){
         return client.getBusiCountChannelCount(params);
     }
+    @PostMapping("/channelCountPie")
+    public ReturnT<Map> channelCountPie(@RequestBody Map<String,Object> params){
+        return client.channelCountPie(params);
+    }
+    @PostMapping("/channelCountElcPie")
+    public ReturnT<Map> channelCountElcPie(@RequestBody Map<String,Object> params){
+        return client.channelCountElcPie(params);
+    }
+    @PostMapping("/channelCountElcBar")
+    public ReturnT<Map> channelCountElcBar(@RequestBody Map<String,Object> params){
+        return client.channelCountElcBar(params);
+    }
+    @PostMapping("/branchRank")
+    public ReturnT<List> getBranchRank(@RequestBody Map<String,Object> params){
+        return client.getBusiCountBranchRank(params);
+    }
 
+    @PostMapping("/operateCost")
+    public ReturnT<List> getOperateCost(@RequestBody Map<String,Object> params){
+        return client.getBusiCountOperateCost(params);
+    }
 }

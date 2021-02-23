@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- ... sql -->
+
+<mapper namespace="com.sunyard.dap.intilligentSchedual.mapper.VolumeForcastMapper" >
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.sunyard.dap.intilligentSchedual.entity.VolumeForcastDO">
+		<result column="attr1" property="attr1" />
+		<result column="attr2" property="attr2" />
+		<result column="is_open" property="is_open" />
+		<result column="is_lock" property="is_lock" />
+		<result column="last_modi_date" property="last_modi_date" />
+		<result column="bank_no" property="bank_no" />
+		<result column="system_no" property="system_no" />
+		<result column="project_no" property="project_no" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+        attr1, attr2, is_open, is_lock, last_modi_date, bank_no, system_no, project_no
+    </sql>
+	
+	<!-- 查询字段列表 -->
+	<sql id="VolumeForcastColumnList" >
+		<!-- 暂时不用 -->
+	</sql>
+	
+	<!-- 查询查询处室信息 -->
+	<select id="depSelectDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select dep_no,dep_name from sm_dep_role_tb 
+		where dep_no != 'CNYW20000'
+		<if test="query_organ_no != null and query_organ_no != ''" > and  center_no = #{query_organ_no}</if> 
+		group by dep_no,dep_name 
+		order by dep_no
+	</select>
+	<!-- 中心端业务量预测处室表格数据查询 -->
+	<select id="volumeDepTableDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select pre_date,center_no,center_name,dep_no,dep_name, 
+		       trunc(nvl(pre_total,0),0) as pre_total,
+		       trunc(nvl(act_total,0),0) as act_total,
+		       trunc(nvl(oper_pre_total,0),0) as oper_pre_total,
+		       trunc(nvl(oper_act_total,0),0) as oper_act_total,
+		       create_time,
+		       update_time 
+			from HS_PRE_DEP_V 
+			where pre_date &gt;= #{startDate} and pre_date &lt;= #{endDate}
+       		<if test="volume_center_no != null and volume_center_no != ''" > and center_no = #{volume_center_no}</if>
+       		<if test="volume_dep_no != null and volume_dep_no != ''" > and dep_no = #{volume_dep_no}</if>
+	</select>
+	
+	<select id="volumeCenterEchartQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+       	select pre_date,center_no,center_name,nvl(sum(act_total),0) as act_total,
+	       nvl(sum(pre_total),0) as pre_total,
+	       nvl(sum(oper_pre_total),0) as oper_pre_total,
+	       nvl(sum(oper_act_total),0) as oper_act_total from HS_PRE_DEP_V
+	       where pre_date &gt;= #{startDate} and pre_date &lt;= #{endDate}
+       	   and center_no = #{volume_center_no} 
+	       group by pre_date,center_no,center_name	
+	</select>
+	
+	<!-- 处室实际量与预测量对比曲线数据查询 -->
+	<select id="volumeDepEchartDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select pre_date,center_no,center_name,dep_no,dep_name, 
+		       trunc(nvl(pre_total,0),0) as pre_total,
+		       trunc(nvl(act_total,0),0) as act_total,
+		       trunc(nvl(oper_pre_total,0),0) as oper_pre_total,
+		       trunc(nvl(oper_act_total,0),0) as oper_act_total,
+		       create_time,
+		       update_time 
+			 from HS_PRE_DEP_V 
+			 where pre_date &gt;= #{startDate} and pre_date &lt;= #{endDate}
+       		 and center_no = #{volume_center_no}
+       		 and dep_no = #{volume_dep_no}
+	</select>
+	<!-- 业务量预测岗位表格数据查询 -->
+	<select id="volumeRoleTableDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select pre_date,center_no,center_name,dep_no,dep_name,
+		       role_no,role_name,
+		       trunc(nvl(pre_total,0),0) as pre_total,
+		       trunc(nvl(act_total,0),0) as act_total,
+		       trunc(nvl(oper_pre_total,0),0) as oper_pre_total,
+		       trunc(nvl(oper_act_total,0),0) as oper_act_total,
+		       create_time,
+		       update_time 
+			from HS_PRE_ROLE_V 
+			where pre_date &gt;= #{startDate} and pre_date &lt;= #{endDate}
+       		<!-- and center_no = #{volume_center_no} -->
+       		and dep_no = #{volume_dep_no}
+	</select>
+	<!-- 业务量预测业务类型表格数据查询 -->
+	<select id="volumeBusiTypeTableDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select pre_date,center_no,center_name,dep_no,dep_name,
+		       business_id,business_name,
+		       trunc(nvl(pre_total,0),0) as pre_total,
+		       trunc(nvl(act_total,0),0) as act_total,
+		       trunc(nvl(oper_pre_total,0),0) as oper_pre_total,
+		       trunc(nvl(oper_act_total,0),0) as oper_act_total,
+		       create_time,
+		       update_time 
+			from HS_PRE_BUSINESS_V 
+			where pre_date &gt;= #{startDate} and pre_date &lt;= #{endDate}
+       		<!-- and center_no = #{volume_center_no} -->
+       		and dep_no = #{volume_dep_no}
+	</select>
+	
+	<!-- 岗位实际量与预测量对比曲线数据查询 -->
+	<select id="volumeRoleEchartDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select pre_date,center_no,center_name,dep_no,dep_name,
+		       role_no,role_name,
+		       trunc(nvl(pre_total,0),0) as pre_total,
+		       trunc(nvl(act_total,0),0) as act_total,
+		       trunc(nvl(oper_pre_total,0),0) as oper_pre_total,
+		       trunc(nvl(oper_act_total,0),0) as oper_act_total,
+		       create_time,
+		       update_time 
+			from HS_PRE_ROLE_V 
+			where pre_date &gt;= #{startDate} and pre_date &lt;= #{endDate}
+       		and dep_no = #{volume_dep_no}
+       		and role_no = #{volume_role_no}
+	</select>
+	<!-- 业务类型实际量与预测量对比曲线数据查询 -->
+	<select id="volumeBusiTypeEchartDataQuery" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select pre_date,center_no,center_name,dep_no,dep_name,
+		       business_id,business_name,
+		       trunc(nvl(pre_total,0),0) as pre_total,
+		       trunc(nvl(act_total,0),0) as act_total,
+		       trunc(nvl(oper_pre_total,0),0) as oper_pre_total,
+		       trunc(nvl(oper_act_total,0),0) as oper_act_total,
+		       create_time,
+		       update_time 
+			from HS_PRE_BUSINESS_V 
+			where pre_date &gt;= #{startDate} and pre_date &lt;= #{endDate}
+       		and dep_no = #{volume_dep_no}
+       		and business_id = #{volume_role_no}
+	</select>
+	
+	<!-- 新增...信息 -->
+	<insert id="insert" parameterType="java.util.HashMap">
+  		<!-- 
+  		新增初始值 加上 银行号、系统号、项目号 
+  		insert into ... (
+  			...
+  		) values (
+  			...
+  		)
+  		-->
+    </insert>
+    
+	<!-- 修改...信息 -->
+	<update id="update" parameterType="java.util.HashMap">
+		<!-- 
+		修改条件加上 银行号、系统号、项目号 
+		update ... set
+			...
+		where
+			...
+		-->
+    </update>
+    
+    <!-- 删除...信息 -->
+	<delete id="delete" parameterType="java.util.HashMap">
+		<!-- 
+		删除条件加上 银行号、系统号、项目号 
+		delete from
+			...
+		where
+			...
+		-->
+    </delete>
+  
+</mapper>

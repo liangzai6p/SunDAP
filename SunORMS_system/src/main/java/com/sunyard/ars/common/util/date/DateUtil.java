@@ -64,7 +64,7 @@ public class DateUtil {
      */
     public static boolean checkLeapMonth(String date){
         DateTime dt4 = new DateTime(date);
-        org.joda.time.DateTime.Property month = dt4.monthOfYear();
+        DateTime.Property month = dt4.monthOfYear();
         return month.isLeap();
 
     }
@@ -76,7 +76,7 @@ public class DateUtil {
      */
     public static boolean checkLeapYear(String date){
         DateTime dt4 = new DateTime(date);
-        org.joda.time.DateTime.Property year = dt4.year();
+        DateTime.Property year = dt4.year();
         return year.isLeap();
 
     }

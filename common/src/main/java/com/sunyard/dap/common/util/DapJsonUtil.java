@@ -1,5 +1,6 @@
 package com.sunyard.dap.common.util;
 
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -29,6 +30,19 @@ public class DapJsonUtil {
             rsArray[i] = rsJson.getStr(i);
         }
         return rsArray;
+    }
+
+    /**提取JSON中的整数数值
+     * @author: xiao.xie
+     * @param json
+     * @param key
+     * @return
+     * @throws Exception
+     */
+    public static Integer getJsonInteger(String json,String key) throws Exception{
+        JSONObject paramsObj = JSONUtil.parseObj(json);
+//        Integer test=Integer.parseInt(paramsObj.getStr(key));
+        return Integer.parseInt(paramsObj.getStr(key));
     }
 
     public static String parseObjToJsonStr(Object obj,String key){

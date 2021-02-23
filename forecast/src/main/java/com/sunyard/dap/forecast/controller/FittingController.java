@@ -39,6 +39,30 @@ public class FittingController {
     }
 
     /**
+     * 线性拟合
+     * @Author xiao.xie
+     * @Date 2021-1-13 10:52:26
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("lineFittingXY")
+    public ReturnT<Map> lineFittingXY(@RequestBody String params){
+        return service.lineFittingXY(params);
+    }
+
+    /**
+     * 线性拟合(电子渠道替代路)
+     * @Author xiao.xie
+     * @Date 2021-1-13 10:52:26
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("lineFittingElcXY")
+    public ReturnT<Map> lineFittingElcXY(@RequestBody String params){
+        return service.lineFittingElcXY(params);
+    }
+
+    /**
      * 多项式拟合
      * @Author yey.he
      * @Date 2:05 PM 2020/9/28

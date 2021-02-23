@@ -17,6 +17,12 @@ public interface ForecastClient {
     @PostMapping("/fitting/lineFitting")
     ReturnT<List> getFittingLineFitting(String params);
 
+    @PostMapping("/fitting/lineFittingXY")
+    ReturnT<Map> getFittingLineFittingXY(String params);
+
+    @PostMapping("/fitting/lineFittingElcXY")
+    ReturnT<Map> lineFittingElcXY(String params);
+
     @PostMapping("/fitting/polyFitting")
     ReturnT<List> getFittingPolyFitting(String params);
 

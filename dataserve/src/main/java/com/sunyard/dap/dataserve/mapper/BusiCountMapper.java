@@ -57,5 +57,8 @@ public interface BusiCountMapper extends BaseMapper<BusiCountDO>{
 
     List<HashMap<String,Object>> channelCount(@Param("params") Map<String,Object> params);
 
+    List<HashMap<String,Object>> branchRank(@Param("params") Map<String,Object> params);
+
+    List<HashMap<String,Object>> operateCost(@Param("params") Map<String,Object> params);
 
 }

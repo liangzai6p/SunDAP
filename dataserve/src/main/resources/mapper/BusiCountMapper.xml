@@ -621,7 +621,25 @@
         </otherwise>
       </choose>
     </select>
-
-
+    <select id="branchRank" resultType="java.util.HashMap">
+        select ACOUNT_NAME,ACOUNT_TYPE,BUSI_NAME,ACOUNT_BUSI_COUNT
+        from DM_ACOUNT_TB
+    </select>
+    <select id="operateCost" resultType="java.util.HashMap">
+        select BUSI_TYPE,OPERATION_TIME,OPERATION_COUNT,OPERATION_CENTER_NAME
+        from DM_OPERATE_COST_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BUSI_TYPE != null">
+                BUSI_TYPE = #{params.BUSI_TYPE}
+            </if>
+            <if test="params.OPERATION_CENTER_NAME != null">
+                and OPERATION_CENTER_NAME = #{params.OPERATION_CENTER_NAME}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and OPERATION_TIME between #{params.START_TIME} and #{params.END_TIME}
+            </if>
+        </trim>
+        order by OPERATION_TIME
+    </select>
 
 </mapper>

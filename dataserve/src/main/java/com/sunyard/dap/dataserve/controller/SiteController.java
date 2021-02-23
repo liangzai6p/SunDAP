@@ -32,10 +32,10 @@ import java.util.Map;
 public class SiteController {
     @Autowired
     private SiteService service;
-    
+
     /**
      * 机构基础信息
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 5:02 PM 2020/8/26
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -47,7 +47,7 @@ public class SiteController {
 
     /**
      * 机构评分及排名
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 5:02 PM 2020/8/26
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -59,7 +59,7 @@ public class SiteController {
 
     /**
      * 机构交易信息
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 5:02 PM 2020/8/26
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -71,7 +71,7 @@ public class SiteController {
 
     /**
      * 厅堂信息
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 5:02 PM 2020/8/26
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -80,10 +80,10 @@ public class SiteController {
     public ReturnT<List> listHallInfo(@RequestBody Map<String,Object> params){
         return service.listHallInfo(params);
     }
-    
+
     /**
      * 现金管理信息
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 5:30 PM 2020/8/26
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -94,8 +94,20 @@ public class SiteController {
     }
 
     /**
+     * 现金管理信息
+     * @Author yey.he
+     * @Date 5:30 PM 2020/8/26
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listCashInfoBar")
+    public ReturnT<Map> listCashInfoBar(@RequestBody Map<String,Object> params){
+        return service.listCashInfoBar(params);
+    }
+
+    /**
      * 分时排队信息
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 5:30 PM 2020/8/26
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -105,10 +117,22 @@ public class SiteController {
         return service.listQueHourly(params);
     }
 
+    /**
+     * 分时排队信息
+     * @Author xiao.xie
+     * @Date 2021-1-25 17:00:00
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("/listQueHourlyLine")
+    public ReturnT<Map> listQueHourlyLine(@RequestBody Map<String,Object> params){
+        return service.listQueHourlyLine(params);
+    }
+
 
     /**
      * 网点分时分类业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 2:34 PM 2020/9/28
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -116,6 +140,17 @@ public class SiteController {
     @PostMapping("/listMacBusiTypeCountHourly")
     public ReturnT<List> listMacBusiTypeCountHourly(@RequestBody Map<String,Object> params){
         return service.listMacBusiTypeCountHourly(params);
+    }
+    /**
+     * 网点分时分类业务量
+     * @Author xiao.xie
+     * @Date 2021-1-26 14:53:53
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("/listMacBusiTypeCountHourlyLine")
+    public ReturnT<Map> listMacBusiTypeCountHourlyLine(@RequestBody Map<String,Object> params){
+        return service.listMacBusiTypeCountHourlyLine(params);
     }
 
 

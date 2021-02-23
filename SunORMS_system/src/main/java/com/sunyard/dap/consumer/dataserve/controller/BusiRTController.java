@@ -31,7 +31,7 @@ public class BusiRTController {
     public ReturnT<List> listHRT(@RequestBody Map<String,Object> params){
         return client.getBusiHRT(params);
     }
-    
+
     @PostMapping("/branchH")
     public ReturnT<List> listBranchHRT(@RequestBody Map<String,Object> params){
         return client.getBusiBranchHRT(params);
@@ -51,7 +51,10 @@ public class BusiRTController {
     public ReturnT<List> listChannelHRT(@RequestBody Map<String,Object> params){
         return client.getBusiChannelHRT(params);
     }
-
+    @PostMapping("/channelHLine")
+    public ReturnT<Map> listChannelHRTLine(@RequestBody Map<String,Object> params){
+        return client.getBusiChannelHRTLine(params);
+    }
     @PostMapping("/totalD")
     public ReturnT<List> listDRT(@RequestBody Map<String,Object> params){
         return client.getBusiDRT(params);
@@ -61,10 +64,23 @@ public class BusiRTController {
     public ReturnT<List> listBranchDRT(@RequestBody Map<String,Object> params){
         return client.getBusiBranchDRT(params);
     }
-
+    @PostMapping("/branchDBar")
+    public ReturnT<Map> listBranchDRTBar(@RequestBody Map<String,Object> params){
+        return client.getBusiBranchDRTBar(params);
+    }
     @PostMapping("/zoneD")
     public ReturnT<List> listZoneDRT(@RequestBody Map<String,Object> params){
         return client.getBusiZoneDRT(params);
+    }
+
+    @PostMapping("/zoneDTable")
+    public ReturnT<Map> listZoneDRTTable(@RequestBody Map<String,Object> params){
+        return client.getBusiZoneDRTTable(params);
+    }
+
+    @PostMapping("/zoneDMap")
+    public ReturnT<Map> listZoneDRTMap(@RequestBody Map<String,Object> params){
+        return client.getBusiZoneDRTMap(params);
     }
 
     @PostMapping("/siteD")
@@ -75,6 +91,11 @@ public class BusiRTController {
     @PostMapping("/channelD")
     public ReturnT<List> listChannelDRT(@RequestBody Map<String,Object> params){
         return client.getBusiChannelDRT(params);
+    }
+
+    @PostMapping("/channelDPie")
+    public ReturnT<Map> listChannelDRTPie(@RequestBody Map<String,Object> params){
+        return client.getBusiChannelDRTPie(params);
     }
 
     @PostMapping("/listByState")

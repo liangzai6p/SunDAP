@@ -41,7 +41,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.pagehelper.Page;
 import com.sun.rowset.CachedRowSetImpl;
 
 /**
@@ -857,7 +856,7 @@ public class BaseUtil {
      * @date:	2017年12月8日 下午2:21:24
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static List getList(List list, Page page) {
+    /*public static List getList(List list, Page page) {
         if (list == null || list.size() == 0) {
             return new ArrayList();
         }
@@ -872,7 +871,7 @@ public class BaseUtil {
             list.set(i, map);
         }
         return list;
-    }
+    }*/
 
     /**
      * @author: wj

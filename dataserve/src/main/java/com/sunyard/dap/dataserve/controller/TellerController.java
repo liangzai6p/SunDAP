@@ -57,7 +57,29 @@ public class TellerController {
     public ReturnT<Page<HashMap<String, Object>>> listTellerAssess(@RequestBody Map<String,Object> params){
         return service.listTellerAssess(params);
     }
+    /**
+     * 获取对比分数
+     * @Author xiao.xie
+     * @Date 2021-1-11 15:28:06
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<com.baomidou.mybatisplus.extension.plugins.pagination.Page<java.util.HashMap<java.lang.String,java.lang.Object>>>
+     **/
+    @PostMapping("/listTellerAssessCompreScore")
+    public ReturnT<Page<HashMap<String, Object>>> listTellerAssessCompreScore(@RequestBody Map<String,Object> params){
 
+        return service.listTellerAssessCompreScore(params);
+    }
+    /**
+     * 获取对比分数
+     * @Author xiao.xie
+     * @Date 2021-1-11 15:28:06
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<com.baomidou.mybatisplus.extension.plugins.pagination.Page<java.util.HashMap<java.lang.String,java.lang.Object>>>
+     **/
+    @PostMapping("/listTellerAssessChartData")
+    public ReturnT listTellerAssessChartData(@RequestBody Map<String,Object> params){
+        return service.listTellerAssessChartDate(params);
+    }
     /**
      * 柜员综合评价
      * @Author yey.he
@@ -93,6 +115,17 @@ public class TellerController {
     public ReturnT<List> listBranchOffline(@RequestBody Map<String,Object> params){
         return service.listBranchOffline(params);
     }
+    /**
+     * 分行不在岗人员排名柱状图相关数据
+     * @Author yey.he
+     * @Date 3:01 PM 2020/8/14
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listBranchOfflineBarChart")
+    public ReturnT<Map> listBranchOfflineBarChart(Map<String, Object> params){
+        return service.listBranchOfflineBarChart(params);
+    }
 
     /**
      * 网点不在岗人员排名
@@ -107,6 +140,18 @@ public class TellerController {
     }
 
     /**
+     * 网点不在岗人员排名
+     * @Author yey.he
+     * @Date 9:17 AM 2020/8/24
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listSiteOfflineBar")
+    public ReturnT<Map> listSiteOfflineBar(@RequestBody Map<String,Object> params){
+        return service.listSiteOfflineBar(params);
+    }
+
+    /**
      * 柜台角色状态
      * @Author yey.he
      * @Date 5:03 PM 2020/8/26
@@ -117,7 +162,17 @@ public class TellerController {
     public ReturnT<List> listRoleStatus(@RequestBody Map<String,Object> params){
         return service.listRoleStatus(params);
     }
-
+    /**
+     * 柜台角色状态
+     * @Author yey.he
+     * @Date 5:03 PM 2020/8/26
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listRoleStatusBar")
+    public ReturnT<Map> listRoleStatusBar(@RequestBody Map<String,Object> params){
+        return service.listRoleStatusBar(params);
+    }
     /**
      * 柜员排名
      * @Author yey.he
@@ -128,6 +183,29 @@ public class TellerController {
     @PostMapping("/listTellerRank")
     public ReturnT<Page<HashMap<String, Object>>> listTellerRank(@RequestBody Map<String,Object> params){
         return service.listTellerRank(params);
+    }
+    /**
+     * 柜员排名
+     * @Author yey.he
+     * @Date 11:25 AM 2020/8/27
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<com.baomidou.mybatisplus.extension.plugins.pagination.Page<java.util.HashMap<java.lang.String,java.lang.Object>>>
+     **/
+    @PostMapping("/listTellerRankBar")
+    public ReturnT<Map> listTellerRankBar(@RequestBody Map<String,Object> params){
+        return service.listTellerRankBar(params);
+    }
+    /**
+     * 柜员基本信息
+     * @Author
+     * @Date
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listByBranch")
+    public ReturnT<List> listByBranch(@RequestBody Map<String,Object> params){
+//        ReturnT<List> returnT=service.listByBranch(params);
+        return service.listByBranch(params);
     }
 }
 

@@ -18,7 +18,11 @@ import java.util.Map;
 public interface BusiErrorService extends IService<BusiErrorDetailDo> {
     ReturnT<List> listBranchErrorCount(Map<String,Object> params);
 
+    ReturnT<Map> listBranchErrorCountBar(Map<String,Object> params);
+
     ReturnT<List> listSiteErrorCount(Map<String,Object> params);
+
+    ReturnT<Map> listSiteErrorCountBar(Map<String,Object> params);
 
 
 }

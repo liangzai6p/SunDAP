@@ -32,10 +32,10 @@ import java.util.Map;
 public class BusiRtController {
     @Autowired
     private BusiRtService service;
-    
+
     /**
      * 实时小时总运营业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 10:33 AM 2020/7/6
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -47,7 +47,7 @@ public class BusiRtController {
 
     /**
      * 分行实时小时运营业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 10:33 AM 2020/7/6
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -59,7 +59,7 @@ public class BusiRtController {
 
     /**
      * 区域实时小时运营业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 10:33 AM 2020/7/6
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -71,7 +71,7 @@ public class BusiRtController {
 
     /**
      * 网点实时小时运营业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 10:33 AM 2020/7/6
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -83,7 +83,7 @@ public class BusiRtController {
 
     /**
      * 渠道实时小时运营业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 10:34 AM 2020/7/6
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -94,8 +94,20 @@ public class BusiRtController {
     }
 
     /**
+     * 渠道实时小时运营业务量折线图数据
+     * @Author xiao.xie
+     * @Date 2021-1-22 17:04:37
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("/channelHLine")
+    public ReturnT<Map> listChannelHRTLine(@RequestBody Map<String,Object> params){
+        return service.listChannelHRTLine(params);
+    }
+
+    /**
      * 当日实时总运营业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 10:34 AM 2020/7/6
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -107,7 +119,7 @@ public class BusiRtController {
 
     /**
      * 当日实时分行运营业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 10:34 AM 2020/7/6
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -118,8 +130,20 @@ public class BusiRtController {
     }
 
     /**
+     * 当日实时分行运营业务量
+     * @Author xiao.xie
+     * @Date 2021-1-22 15:26:13
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("/branchDBar")
+    public ReturnT<Map> listBranchDRTBar(@RequestBody Map<String,Object> params){
+        return service.listBranchDRTBar(params);
+    }
+
+    /**
      * 当日实时区域运营业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 10:34 AM 2020/7/6
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -130,8 +154,32 @@ public class BusiRtController {
     }
 
     /**
+     * 当日实时区域运营业务量的表格数据
+     * @Author xiao.xie
+     * @Date 2021-1-20 14:50:31
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("/zoneDTable")
+    public ReturnT<Map> listZoneDRTTable(@RequestBody Map<String,Object> params){
+        return service.listZoneDRTTable(params);
+    }
+
+    /**
+     * 当日实时区域运营业务量的表格数据
+     * @Author xiao.xie
+     * @Date 2021-1-20 14:50:31
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("/zoneDMap")
+    public ReturnT<Map> listZoneDRTMap(@RequestBody Map<String,Object> params){
+        return service.listZoneDRTMap(params);
+    }
+
+    /**
      * 当日实时网点运营业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 10:35 AM 2020/7/6
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -143,7 +191,7 @@ public class BusiRtController {
 
     /**
      * 当日实时渠道运营业务量
-     * @Author yey.he 
+     * @Author yey.he
      * @Date 10:35 AM 2020/7/6
      * @Param [params]
      * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
@@ -151,6 +199,18 @@ public class BusiRtController {
     @PostMapping("/channelD")
     public ReturnT<List> listChannelDRT(@RequestBody Map<String,Object> params){
         return service.listChannelDRT(params);
+    }
+
+    /**
+     * 当日实时渠道运营业务量
+     * @Author xiao.xie
+     * @Date 2021-1-22 14:11:18
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.Map>
+     **/
+    @PostMapping("/channelDPie")
+    public ReturnT<Map> listChannelDRTPie(@RequestBody Map<String,Object> params){
+        return service.listChannelDRTPie(params);
     }
 
     /**

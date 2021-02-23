@@ -62,6 +62,8 @@ public interface MacMapper extends BaseMapper<MacDO> {
 
     List<HashMap<String,Object>> listMacMaintainMonthly(@Param("params") Map<String,Object> params);
 
+    List<HashMap<String,Object>> listMacMaintainSuccessRateMonthly(@Param("params") Map<String,Object> params);
+
     List<HashMap<String,Object>> listMacTypeBusiCount(@Param("params") Map<String,Object> params);
 
     Page<HashMap<String, Object>> listMacBusiCount(Page<?> page, @Param("params") Map<String, Object> params);
