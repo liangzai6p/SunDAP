@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.sunyard.dap.common.model.ReturnT;
+import com.sunyard.dap.intilligentSchedual.entity.ResponseDO;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 
@@ -98,7 +99,7 @@ public class SystemIntelScheUtil {
 		}
 		
 		//HTTP请求方法
-		public static String sendPost(String url, Object param) {
+		public static ResponseDO sendPost(String url, Object param) {
 	        OutputStreamWriter out = null;
 	        BufferedReader in = null;
 	        String result = "";
@@ -151,10 +152,10 @@ public class SystemIntelScheUtil {
 	        }
 	        
 	        // 要求请求返回的数据格式化等价于ResponseBean
-	        /*JSONObject json = (JSONObject) JSON.parse(result.toString());
-	        ResponseBean responseBean = JSON.toJavaObject(json, ResponseBean.class);*/
+	        JSONObject json = (JSONObject) JSON.parse(result.toString());
+	        ResponseDO responseBean = JSON.toJavaObject(json, ResponseDO.class);
 	        
-	        return result;
+	        return responseBean;
 	    }
 		
 }

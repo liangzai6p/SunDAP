@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 模型训练sql -->
+
+<mapper namespace="com.sunyard.aos.system.dao.ModelTrainingDao">
+	<select id="select" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	 SELECT * FROM SC_FORECAST_SCHEDULE_LOG_TB
+	 WHERE 1=1
+	 <if test="start_date!='' and start_date!=null and end_date!='' and end_date!=null">
+	 AND RUN_DATE BETWEEN #{start_date} AND #{end_date}
+	 </if>
+	</select>
+	<select id="selectItemName" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	 SELECT ITEM_NAME FROM SC_BUSINESS_IN_TB
+	 WHERE PRE_DATE BETWEEN #{start_date} AND #{end_date}
+	 <if test="training_type==1" >
+		AND (ITEM_NAME LIKE 'CH_%' OR ITEM_NAME LIKE 'GW_%' OR ITEM_NAME LIKE 'YW_%')
+	</if>
+	 <if test="training_type==2" >
+		AND ITEM_NAME LIKE 'QD%'
+	</if>
+	GROUP BY ITEM_NAME
+	</select>
+	<insert id="insert" parameterType="java.util.HashMap" >
+	INSERT INTO SC_FORECAST_SCHEDULE_LOG_TB(RUN_TYPE,RUN_CONTENT,RUN_DATE,RUN_TIME)
+	VALUES(#{run_type},#{run_content},#{run_date},#{run_time})
+	</insert>
+  	
+</mapper>

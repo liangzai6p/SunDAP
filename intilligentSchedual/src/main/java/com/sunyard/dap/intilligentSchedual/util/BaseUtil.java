@@ -30,6 +30,7 @@ import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
+import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
 //import net.sourceforge.pinyin4j.PinyinHelper;
 
@@ -856,7 +857,7 @@ public class BaseUtil {
      * @date:	2017年12月8日 下午2:21:24
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    /*public static List getList(List list, Page page) {
+    public static List getList(List list, Page page) {
         if (list == null || list.size() == 0) {
             return new ArrayList();
         }
@@ -871,7 +872,7 @@ public class BaseUtil {
             list.set(i, map);
         }
         return list;
-    }*/
+    }
 
     /**
      * @author: wj
