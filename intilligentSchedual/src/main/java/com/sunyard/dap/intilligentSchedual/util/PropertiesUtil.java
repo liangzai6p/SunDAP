@@ -27,14 +27,19 @@ public class PropertiesUtil {
 		InputStreamReader isr = null;
 		try {
 			String webInfPath = HttpUtil.getAbsolutePath("WEB-INF");
+			System.out.println("webInfPath："+webInfPath);
 			String fileName = webInfPath + File.separator + "AosConfig.properties";
 			File file = new File(fileName);
 			if (!file.exists()) {
 				log.error(webInfPath.concat("目录下无AosConfig.properties配置文件"));
 			} else {
 				log.debug("AosConfig.properties配置文件路径为：".concat(fileName));
+				System.out.println("AosConfig.properties配置文件路径为：".concat(fileName));
 				in = new FileInputStream(file);
+				System.out.println("file："+file);
+				System.out.println("in："+in);
 				isr = new InputStreamReader(in, "utf-8");
+				System.out.println("isr："+isr);
 				aosConfigProp.load(isr);
 			}
 		} catch (Exception e) {

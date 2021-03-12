@@ -209,6 +209,7 @@ public class HttpUtil {
 	 */
 	public static String getAbsolutePath(String name) {
 		String rootPath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("/");
+		System.out.println(ContextLoader.getCurrentWebApplicationContext());
 		// modify by wj 2019-03-25(解决weblogic下部署war获取不到文件路径)
 		 if(rootPath == null){
 	            //如果返回为空，则表示服务器为weblogic，则需要使用另外的方法

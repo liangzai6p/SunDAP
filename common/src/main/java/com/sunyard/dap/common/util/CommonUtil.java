@@ -2,6 +2,8 @@ package com.sunyard.dap.common.util;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 
 import java.util.*;
 
@@ -13,7 +15,8 @@ import java.util.*;
  **/
 @Slf4j
 public class CommonUtil {
-
+    /** 日志记录器 */
+    public static Log log = LogFactory.getLog(CommonUtil.class);
     public static void setPageByParams(Page<?> page, Map<String, Object> map){
         boolean flag = false;
         if (map.get("currentPage")!=null && map.get("recordSize")!=null){
@@ -22,10 +25,10 @@ public class CommonUtil {
                 page.setSize(Long.parseLong(map.get("recordSize").toString()));
                 flag = true;
             }catch (NumberFormatException e){
-                log.error("页码转换出错,设定currentPage=1,recordSize=10",e.getMessage());
+                log.error("页码转换出错,设定currentPage=1,recordSize=10"+e.getMessage());
             }
         }else {
-            log.info("Autoset currentPage=1,recordSize=10");
+            log.debug("Autoset currentPage=1,recordSize=10");
         }
 
         if (!flag){
