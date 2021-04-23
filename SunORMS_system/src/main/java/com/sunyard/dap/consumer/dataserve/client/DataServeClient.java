@@ -478,7 +478,8 @@ public interface DataServeClient {
     ReturnT<List> getChannelListEleRplRateByBranchTable(Map<String,Object> params);
 
     @PostMapping("/channel/listEleAllRplRateDaily")
-    ReturnT<List> getChannelListEleAllRplRateDaily(Map<String,Object> params);
+    ReturnT<Map> getChannelListEleAllRplRateDaily(Map<String,Object> params);
+
     @PostMapping("/channel/listEleAllRplRateDailyLineChat")
     ReturnT<Map> listEleAllRplRateDailyLineChat(Map<String,Object> params);
 
@@ -512,4 +513,11 @@ public interface DataServeClient {
     @PostMapping("/channel/listCusCountByChannelBar")
     ReturnT<Map> getChannelListCusCountByChannelBar(Map<String,Object> params);
 
+    /**
+     * 机构数据（银行）
+     **/
+    @PostMapping("/banks/listBank")
+    ReturnT<List> listBank(Map<String,Object> params);
+    @PostMapping("/banks/listBankDiaLogData")
+    ReturnT<List> listBankDiaLogData(Map<String, Object> params);
 }

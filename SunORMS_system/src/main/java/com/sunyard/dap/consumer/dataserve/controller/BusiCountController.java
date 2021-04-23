@@ -88,10 +88,10 @@ public class BusiCountController {
         return client.getBusiCountChannelMonthly(params);
     }
 
-    @PostMapping("/channelMonthlyLine")
+    /*@PostMapping("/channelMonthlyLine")
     public ReturnT<Map> getChannelMonthlyLine(@RequestBody Map<String,Object> params){
         return client.getBusiCountChannelMonthlyLine(params);
-    }
+    }*/
 
     @PostMapping("/branchCount")
     public ReturnT<List> getBranchCount(@RequestBody Map<String,Object> params){

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.dap.dataserve.mapper.ISmBanksTbMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sunyard.dap.dataserve.entity.SmBanksTb">
+        <id column="SITE_NO" property="siteNo" />
+        <result column="ZONE_NO" property="zoneNo" />
+        <result column="ZONE_NAME" property="zoneName" />
+        <result column="BRANCH_NO" property="branchNo" />
+        <result column="BRANCH_NAME" property="branchName" />
+        <result column="SITE_NAME" property="siteName" />
+        <result column="PRESIDENT" property="president" />
+        <result column="VICE_PRESIDENT" property="vicePresident" />
+        <result column="ADDR" property="addr" />
+        <result column="TEL" property="tel" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, PRESIDENT, VICE_PRESIDENT, ADDR, TEL
+    </sql>
+
+    <!-- 机构查询 -->
+    <select id="listBank" resultType="java.util.HashMap">
+        select ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, PRESIDENT, VICE_PRESIDENT, ADDR, TEL from SM_BANKS_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.Keyword != null">
+                ADDR like #{params.keyword}
+            </if>
+            <if test="params.ZONE_NO != null">
+                ZONE_NO = #{params.ZONE_NO}
+            </if>
+            <if test="params.ZONE_NAME != null">
+                and ZONE_NAME = #{params.ZONE_NAME}
+            </if>
+            <if test="params.BRANCH_NO != null">
+                and BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.BRANCH_NAME != null">
+                and BRANCH_NAME = #{params.BRANCH_NAME}
+            </if>
+            <if test="params.SITE_NO != null">
+                SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.SITE_NAME != null">
+                and SITE_NAME = #{params.SITE_NAME}
+            </if>
+            <if test="params.PRESIDENT != null">
+                and PRESIDENT = #{params.PRESIDENT}
+            </if>
+            <if test="params.VICE_PRESIDENT != null">
+                and VICE_PRESIDENT = #{params.VICE_PRESIDENT}
+            </if>
+            <if test="params.ADDR != null">
+                ADDR = #{params.ADDR}
+            </if>
+            <if test="params.TEL != null">
+                and TEL = #{params.TEL}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

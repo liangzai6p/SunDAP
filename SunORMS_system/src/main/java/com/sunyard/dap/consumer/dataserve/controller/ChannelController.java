@@ -48,7 +48,7 @@ public class ChannelController {
     }
 
     @PostMapping("/listEleAllRplRateDaily")
-    public ReturnT<List> getListEleAllRplRateDaily(@RequestBody Map<String,Object> params){
+    public ReturnT<Map> getListEleAllRplRateDaily(@RequestBody Map<String,Object> params){
         return client.getChannelListEleAllRplRateDaily(params);
     }
 

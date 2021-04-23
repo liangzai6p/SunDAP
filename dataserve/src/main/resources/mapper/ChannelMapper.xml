@@ -112,12 +112,22 @@
     </select>
 
     <select id="listEleRplRateByChannel" resultType="java.util.HashMap">
-        select CHANNEL_NO,CHANNEL_NAME,REPLACE_RATE from DM_CHANNEL_ELE_RPL_RATE_TB
+        select CHANNEL_NO,CHANNEL_NAME,
+            <if test="params.QUICK != null">
+                sum(REPLACE_RATE)/count(1) as count
+            </if>
+            <if test="params.BRANCH_NO != null">
+                REPLACE_RATE
+            </if>
+        from DM_CHANNEL_ELE_RPL_RATE_TB
         <trim prefix="where" prefixOverrides="and">
             <if test="params.BRANCH_NO != null">
                 BRANCH_NO = #{params.BRANCH_NO}
             </if>
         </trim>
+        <if test="params.QUICK != null">
+            GROUP BY CHANNEL_NO,CHANNEL_NAME
+        </if>
     </select>
 
     <select id="listCusCountByChannel" resultType="java.util.HashMap">
