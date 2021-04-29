@@ -11,7 +11,10 @@ import lombok.experimental.var;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.*;
+
 
 /**
  * <p>
@@ -28,6 +31,13 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     @Override
     public ReturnT<List> allCount(Map<String, Object> params) {
         try {
+            SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
+
+            if (params.get("QUICK")==null){
+                params.put("BRANCH_NO",params.get("BRANCH_NO").toString());
+                params.put("START_TIME",params.get("START_TIME").toString());
+                params.put("END_TIME",params.get("END_TIME").toString());
+            }
             return new ReturnT<>(ReturnT.SUCCESS_CODE, "查询成功", baseMapper.allCount(params));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -101,6 +111,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     @Override
     public ReturnT<List> branchDaily(Map<String, Object> params) {
         try {
+            if (params.get("QUICK")==null){
+                params.put("BRANCH_NO",params.get("BRANCH_NO").toString());
+            }
             return new ReturnT<>(ReturnT.SUCCESS_CODE, "查询成功", baseMapper.branchDaily(params));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -1157,6 +1170,9 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
     @Override
     public ReturnT<List> channelCount(Map<String, Object> params) {
         try {
+            if (params.get("QUICK")==null){
+                params.put("BRANCH_NO",params.get("BRANCH_NO").toString());
+            }
             return new ReturnT<>(ReturnT.SUCCESS_CODE, "查询成功", baseMapper.channelCount(params));
         } catch (Exception e) {
             log.error(e.getMessage());

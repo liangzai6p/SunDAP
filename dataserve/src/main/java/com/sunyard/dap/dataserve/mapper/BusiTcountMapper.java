@@ -18,6 +18,7 @@ import java.util.Map;
  */
 public interface BusiTcountMapper extends BaseMapper<BusiTcountDO> {
     List<HashMap<String,Object>> listType(@Param("params") Map<String,Object> params);
+    List<HashMap<String,Object>> listType1(@Param("params") Map<String,Object> params);
 
     List<HashMap<String,Object>> listBranch(@Param("params") Map<String,Object> params);
 

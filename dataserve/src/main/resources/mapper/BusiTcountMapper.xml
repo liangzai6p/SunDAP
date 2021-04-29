@@ -69,6 +69,22 @@
       </choose>
 
     </select>
+
+    <select id="listType1" resultType="java.util.HashMap">
+
+                select BUSI_NO,BUSI_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(CUS_COUNT) CUS_COUNT
+                from DM_BUSI_TCOUNT_TB
+                <trim prefix="where" prefixOverrides="and">
+                    <if test="params.BRANCH_NO != null">
+                        BRANCH_NO = #{params.BRANCH_NO}
+                    </if>
+
+                </trim>
+                group by BUSI_NO,BUSI_NAME
+                order by BUSI_COUNT desc
+
+    </select>
+
     <select id="listBranch" resultType="java.util.HashMap">
         select BRANCH_NO,BRANCH_NAME,sum(BUSI_COUNT) BUSI_COUNT,sum(CUS_COUNT) CUS_COUNT
         from DM_BUSI_TCOUNT_TB

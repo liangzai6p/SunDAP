@@ -27,6 +27,9 @@ public class BusiTcountServiceImpl extends ServiceImpl<BusiTcountMapper, BusiTco
     @Override
     public ReturnT<List> listType(Map<String,Object> params) {
         try {
+            if (params.get("QUICK")==null){
+                params.put("BRANCH_NO",params.get("BRANCH_NO").toString());
+            }
             return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listType(params));
         }catch (Exception e){
             log.error(e.getMessage());

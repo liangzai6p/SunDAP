@@ -229,7 +229,7 @@
                         and ZONE_NO = #{params.ZONE_NO}
                     </if>
                     <if test="params.START_TIME != null and params.END_TIME != null">
-                        and month between #{params.START_TIME} and #{params.END_TIME}
+                        and month <![CDATA[ >= ]]> #{params.START_TIME} and month <![CDATA[ <= ]]> #{params.END_TIME}
                     </if>
                 </trim>
                 group by month

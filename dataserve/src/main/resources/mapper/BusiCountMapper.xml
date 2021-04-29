@@ -35,7 +35,7 @@
                 </trim>
             </when>
             <otherwise>
-                select COUNT(TASK_ID) BUSI_COUNT,sum(TRANS_AMOUNT) AMOUNT
+                select  COUNT(TASK_ID) BUSI_COUNT,sum(TRANS_AMOUNT) AMOUNT
                 from DM_BUSI_DETAIL_HISTORY_TB
                 <trim prefix="where" prefixOverrides="and">
                     <if test="params.BRANCH_NO != null">
@@ -63,7 +63,7 @@
                         and STYPE_NO = #{params.STYPE_NO}
                     </if>
                     <if test="params.START_TIME != null and params.END_TIME != null">
-                        and to_char(create_time,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
+                        and CREATE_TIME <![CDATA[ >= ]]> to_date(#{params.START_TIME},'yyyy-mm-dd') and CREATE_TIME <![CDATA[ <= ]]> to_date(#{params.END_TIME},'yyyy-mm-dd')
                     </if>
                 </trim>
             </otherwise>
