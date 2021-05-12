@@ -48,9 +48,9 @@ public class BusiTcountServiceImpl extends ServiceImpl<BusiTcountMapper, BusiTco
             for (HashMap item:
                     data) {
                 HashMap temp = new HashMap();
-                temp.put("name", item.get("BUSI_NAME") + ":" + item.get("BUSI_COUNT"));
+                temp.put("name", item.get("BUSI_NAME"));
                 temp.put("value", item.get("BUSI_COUNT"));
-                BQ1.add(item.get("BUSI_NAME") + ":" + item.get("BUSI_COUNT"));
+                BQ1.add(item.get("BUSI_NAME"));
                 seriesDatas1.add(temp);
                 data21=data21+Long.parseLong(item.get("BUSI_COUNT").toString());
             }
@@ -115,9 +115,9 @@ public class BusiTcountServiceImpl extends ServiceImpl<BusiTcountMapper, BusiTco
             for (HashMap item:
                     data) {
                 HashMap temp = new HashMap();
-                temp.put("name", item.get("CHANNEL_NAME") + ":" + item.get("BUSI_COUNT"));
+                temp.put("name", item.get("CHANNEL_NAME"));
                 temp.put("value", item.get("BUSI_COUNT"));
-                BQ2.add(item.get("CHANNEL_NAME") + ":" + item.get("BUSI_COUNT"));
+                BQ2.add(item.get("CHANNEL_NAME"));
                 seriesDatas1.add(temp);
                 data20=data20+Long.parseLong(item.get("BUSI_COUNT").toString());
             }
