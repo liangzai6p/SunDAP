@@ -37,5 +37,14 @@ public class SmBanksTbController {
         return client.listBankDiaLogData(params);
     }
 
+    @PostMapping("/listsubBranchBankDiaLogData")
+    public ReturnT<List> listsubBranchBankDiaLogData(@RequestBody Map<String,Object> params){
+        return client.listsubBranchBankDiaLogData(params);
+    }
+
+    @PostMapping("/listBranchBankDiaLogData")
+    public ReturnT<List> listBranchBankDiaLogData(@RequestBody Map<String,Object> params){
+        return client.listBranchBankDiaLogData(params);
+    }
 
 }

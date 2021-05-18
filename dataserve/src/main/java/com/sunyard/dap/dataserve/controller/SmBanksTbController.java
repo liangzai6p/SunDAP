@@ -46,7 +46,7 @@ public class SmBanksTbController {
     }
 
     /**
-     * 根据条件查询机构数据,并返回弹出下拉框所需的data数据
+     * 根据条件查询机构数据,并返回弹出下拉框所需的银行名称和编号（包括分行和支行）
      * @Author yey.he
      * @Date 9:23 AM 2020/8/13
      * @Param [params]
@@ -56,5 +56,30 @@ public class SmBanksTbController {
     public ReturnT<List> listBankDiaLogData(@RequestBody Map<String,Object> params){
         return service.listBankDiaLogData(params);
     }
+
+    /**
+     * 根据条件查询机构数据,并返回弹出下拉框所需的银行名称和编号（只包括支行）
+     * @Author xiao.xie
+     * @Date 2021年5月18日14:03:53
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listsubBranchBankDiaLogData")
+    public ReturnT<List> listsubBranchBankDiaLogData(@RequestBody Map<String,Object> params){
+        return service.listsubBranchBankDiaLogData(params);
+    }
+
+    /**
+     * 根据条件查询机构数据,并返回弹出下拉框所需的银行名称和编号（只包括分行）
+     * @Author xiao.xie
+     * @Date 2021年5月18日14:03:53
+     * @Param [params]
+     * @return com.sunyard.dap.common.model.ReturnT<java.util.List>
+     **/
+    @PostMapping("/listBranchBankDiaLogData")
+    public ReturnT<List> listBranchBankDiaLogData(@RequestBody Map<String,Object> params){
+        return service.listBranchBankDiaLogData(params);
+    }
+
 }
 

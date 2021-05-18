@@ -20,4 +20,8 @@ public interface ISmBanksTbService extends IService<SmBanksTb> {
     ReturnT<List> listBank(Map<String, Object> params);
 
     ReturnT<List> listBankDiaLogData(Map<String, Object> params);
+
+    ReturnT<List> listBranchBankDiaLogData(Map<String, Object> params);
+
+    ReturnT<List> listsubBranchBankDiaLogData(Map<String, Object> params);
 }

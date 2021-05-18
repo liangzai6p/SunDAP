@@ -518,6 +518,13 @@ public interface DataServeClient {
      **/
     @PostMapping("/banks/listBank")
     ReturnT<List> listBank(Map<String,Object> params);
+
     @PostMapping("/banks/listBankDiaLogData")
     ReturnT<List> listBankDiaLogData(Map<String, Object> params);
+
+    @PostMapping("/banks/listsubBranchBankDiaLogData")
+    ReturnT<List> listsubBranchBankDiaLogData(Map<String, Object> params);
+
+    @PostMapping("/banks/listBranchBankDiaLogData")
+    ReturnT<List> listBranchBankDiaLogData(Map<String, Object> params);
 }
