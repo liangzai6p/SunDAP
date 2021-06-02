@@ -26,7 +26,6 @@ import java.util.*;
 @Slf4j
 public class FittingServiceImpl implements FittingService {
 
-    protected Log log = LogFactory.getLog(getClass());
 
     @Override
     public ReturnT<List> lineFitting(String params) {

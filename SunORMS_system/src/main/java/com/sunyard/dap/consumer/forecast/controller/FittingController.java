@@ -5,6 +5,7 @@ import com.sunyard.dap.common.model.ReturnT;
 import com.sunyard.dap.consumer.forecast.client.ForecastClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,5 +64,15 @@ public class FittingController {
     @PostMapping("standardDeviation")
     public ReturnT<String> standardDeviation(@RequestBody String params){
         return client.getFittingStandardDeviation(params);
+    }
+
+    @PostMapping("getForecast")
+    public ReturnT<double[]> getForecast(@RequestBody Map<String , Object> params){
+        return client.getForecast(params);
+    }
+
+    @PostMapping("getStandardDeviation")
+    public ReturnT<double[]> getStandardDeviation(@RequestBody Map<String , Object> params){
+        return client.getStandardDeviation(params);
     }
 }

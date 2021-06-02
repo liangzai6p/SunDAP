@@ -38,6 +38,9 @@ public interface ForecastClient {
     @PostMapping("/fitting/standardDeviation")
     ReturnT<String> getFittingStandardDeviation(String params);
 
+    @PostMapping("/fitting/getForecast")
+    ReturnT<double[]> getForecast(Map<String , Object> params);
 
-
+    @PostMapping("/fitting/getStandardDeviation")
+    ReturnT<double[]> getStandardDeviation(Map<String , Object> params);
 }

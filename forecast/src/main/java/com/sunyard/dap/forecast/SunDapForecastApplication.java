@@ -1,10 +1,8 @@
-package com.sunyard.dap.dataserve;
+package com.sunyard.dap.forecast;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @program: SunDAP
@@ -14,8 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
  **/
 @SpringBootApplication
 @EnableDiscoveryClient
-public class SunDapApplication {
+public class SunDapForecastApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SunDapApplication.class, args);
+        SpringApplication.run(SunDapForecastApplication.class, args);
     }
 }

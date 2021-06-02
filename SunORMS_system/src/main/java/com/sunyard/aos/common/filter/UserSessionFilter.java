@@ -44,6 +44,8 @@ public class UserSessionFilter extends OncePerRequestFilter {
 							"/SunFlowWebService","/webSocket.do","/userRoleSyn.do","/mrModulePath.do","otherSystem.do",
 							"/scanForUrl.do","/arsOcr.do","/sendstatus","/arsPdf.do","/fileDownload.do","/sundap","/loginController.do","menuTreeController.do"};
 		// 请求的url /SunARS/scanBatch.do
+		response.addHeader("Access-Control-Allow-Origin","*");
+		response.addHeader("Access-Control-Allow-Credentials","true");
 		String url = request.getRequestURI();
 		if (!BaseUtil.isBlank(url)) {
 			url = url.trim();

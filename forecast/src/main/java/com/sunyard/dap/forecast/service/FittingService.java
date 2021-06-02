@@ -1,7 +1,6 @@
 package com.sunyard.dap.forecast.service;
 
 import com.sunyard.dap.common.model.ReturnT;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.Map;
