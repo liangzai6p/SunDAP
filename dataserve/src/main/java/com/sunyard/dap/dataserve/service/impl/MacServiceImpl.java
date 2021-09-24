@@ -700,4 +700,16 @@ public class MacServiceImpl extends ServiceImpl<MacMapper, MacDO> implements Mac
             return ReturnT.listFAIL;
         }
     }
+
+    @Override
+    public ReturnT<Page<HashMap<String, Object>>> listSiteMacDetails(Map<String, Object> params) {
+        Page<HashMap> page = new Page<>();
+        CommonUtil.setPageByParams(page,params);
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listSiteMacDetails(page,params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new ReturnT<>(ReturnT.FAIL_CODE,"查询失败",null);
+        }
+    }
 }

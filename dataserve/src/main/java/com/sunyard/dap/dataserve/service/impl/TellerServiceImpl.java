@@ -331,4 +331,16 @@ public class TellerServiceImpl extends ServiceImpl<TellerMapper, DmTellerTb> imp
             return new ReturnT<>(ReturnT.FAIL_CODE,"查询失败",null);
         }
     }
+
+    @Override
+    public ReturnT<Page<HashMap<String, Object>>> listTellerErrorDetails(Map<String, Object> params) {
+        Page<HashMap> page = new Page<>();
+        CommonUtil.setPageByParams(page,params);
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listTellerErrorDetails(page,params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new ReturnT<>(ReturnT.FAIL_CODE,"查询失败",null);
+        }
+    }
 }

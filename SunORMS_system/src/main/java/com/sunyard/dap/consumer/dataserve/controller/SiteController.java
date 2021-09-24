@@ -79,4 +79,14 @@ public class SiteController {
     public ReturnT<Map> getListMacBusiTypeCountHourlyLine(@RequestBody Map<String,Object> params){
         return client.getSiteListMacBusiTypeCountHourlyLine(params);
     }
+
+    @PostMapping("/listBranchGrade")
+    public ReturnT<List> getListBranchGrade(@RequestBody Map<String,Object> params) {
+        return client.getListBranchGrade(params);
+    }
+
+    @PostMapping("/listSiteSGrade")
+    public ReturnT<List> getListSiteSGrade(@RequestBody Map<String,Object> params){
+        return client.getListSiteSGrade(params);
+    }
 }

@@ -153,8 +153,28 @@ public class SiteController {
         return service.listMacBusiTypeCountHourlyLine(params);
     }
 
+    /**
+    * @Description: 分行排名
+    * @Param: [params]
+    * @return: com.sunyard.dap.common.model.ReturnT<java.util.List>
+    * @Author: shen
+    * @Date: 2021/9/24
+    */
+    @PostMapping("/listBranchGrade")
+    public ReturnT<List> listBranchGrade(@RequestBody Map<String,Object> params){
+        return service.listBranchGrade(params);
+    }
 
-
-
+    /**
+    * @Description: 支行评分排名
+    * @Param: [params]
+    * @return: com.sunyard.dap.common.model.ReturnT<java.util.List>
+    * @Author: shen
+    * @Date: 2021/9/24
+    */
+    @PostMapping("/listSiteSGrade")
+    public ReturnT<List> listSiteSGrade(@RequestBody Map<String,Object> params){
+        return service.listSiteSGrade(params);
+    }
 }
 

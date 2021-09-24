@@ -51,4 +51,5 @@ public interface TellerService extends IService<DmTellerTb> {
 
     ReturnT<List> listByBranch(Map<String,Object> params);
 
+    ReturnT<Page<HashMap<String, Object>>> listTellerErrorDetails(@Param("params") Map<String, Object> params);
 }

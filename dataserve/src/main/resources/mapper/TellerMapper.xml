@@ -136,4 +136,24 @@
             </if>
         </trim>
     </select>
+
+    <select id="listTellerErrorDetails" resultType="java.util.HashMap">
+        select TASK_ID,BRANCH_NAME,ZONE_NAME,CHANNEL_NAME,CUS_NAME,BUSI_NAME,
+        STYPE_NAME,CURRENCY,TRANS_AMOUNT,CREATE_TIME
+        from DM_BUSI_DETAIL_ERROR_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                and BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.SITE_NO != null">
+                and SITE_NO = #{params.SITE_NO}
+            </if>
+            <if test="params.STAFF_NO != null">
+                and STAFF_NO = #{params.STAFF_NO}
+            </if>
+            <if test="params.TASK_ID != null">
+                and TASK_ID = #{params.TASK_ID}
+            </if>
+        </trim>
+    </select>
 </mapper>

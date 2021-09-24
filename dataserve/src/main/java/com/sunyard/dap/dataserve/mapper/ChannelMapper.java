@@ -33,5 +33,5 @@ public interface ChannelMapper extends BaseMapper<ChannelGradeDO> {
 
     List<HashMap<String,Object>> listCusCountByChannel(@Param("params") Map<String,Object> params);
 
-
+    List<HashMap<String,Object>> listChannelAmountRate(@Param("params") Map<String, Object> params);
 }

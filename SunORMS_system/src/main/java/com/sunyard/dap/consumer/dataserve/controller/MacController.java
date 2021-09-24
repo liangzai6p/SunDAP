@@ -155,5 +155,8 @@ public class MacController {
     public ReturnT<List> getListSiteFaultCount(@RequestBody Map<String,Object> params){return client.getMacListSiteFaultCount(params);}
 
 
-
+    @PostMapping("/listSiteMacDetails")
+    public ReturnT<Page<HashMap<String, Object>>> getListSiteMacDetails(@RequestBody Map<String,Object> params){
+        return client.getListSiteMacDetails(params);
+    }
 }

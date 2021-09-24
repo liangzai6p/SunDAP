@@ -38,4 +38,8 @@ public interface SiteService extends IService<SiteDO> {
     ReturnT<List> listMacBusiTypeCountHourly(@Param("params") Map<String,Object> params);
 
     ReturnT<Map> listMacBusiTypeCountHourlyLine(@Param("params") Map<String,Object> params);
+
+    ReturnT<List> listBranchGrade(@Param("params") Map<String, Object> params);
+
+    ReturnT<List> listSiteSGrade(@Param("params") Map<String, Object> params);
 }

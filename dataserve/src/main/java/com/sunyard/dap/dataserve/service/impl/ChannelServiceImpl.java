@@ -460,4 +460,14 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, ChannelGradeD
             return ReturnT.mapFAIL;
         }
     }
+
+    @Override
+    public ReturnT<List> listChannelAmountRate(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listChannelAmountRate(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
 }

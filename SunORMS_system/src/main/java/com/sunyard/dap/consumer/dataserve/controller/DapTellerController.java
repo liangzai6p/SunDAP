@@ -79,4 +79,8 @@ public class DapTellerController {
         return client.listByBranch(params);
     }
 
+    @PostMapping("/listTellerErrorDetails")
+    public ReturnT<Page<HashMap<String, Object>>> getListTellerErrorDetails(@RequestBody Map<String,Object> params){
+        return client.getListTellerErrorDetails(params);
+    }
 }

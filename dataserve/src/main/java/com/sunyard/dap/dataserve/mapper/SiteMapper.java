@@ -32,7 +32,7 @@ public interface SiteMapper extends BaseMapper<SiteDO> {
 
     List<HashMap<String,Object>> listMacBusiTypeCountHourly(@Param("params") Map<String,Object> params);
 
+    List<HashMap<String,Object>> listBranchGrade(@Param("params") Map<String, Object> params);
 
-
-
+    List<HashMap<String,Object>> listSiteSGrade(@Param("params") Map<String, Object> params);
 }

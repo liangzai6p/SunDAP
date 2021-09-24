@@ -171,4 +171,24 @@ public class SiteServiceImpl extends ServiceImpl<SiteMapper, SiteDO> implements 
             return ReturnT.mapFAIL;
         }
     }
+
+    @Override
+    public ReturnT<List> listBranchGrade(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listBranchGrade(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
+
+    @Override
+    public ReturnT<List> listSiteSGrade(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.listSiteSGrade(params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
 }
