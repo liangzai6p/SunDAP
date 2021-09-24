@@ -366,8 +366,8 @@ public interface DataServeClient {
     @PostMapping("/mac/listSiteFaultCount")
     ReturnT<List> getMacListSiteFaultCount(Map<String,Object> params);
 
-
-
+    @PostMapping("/mac/listSiteMacDetails")
+    ReturnT<Page<HashMap<String, Object>>> getListSiteMacDetails(Map<String, Object> params);
 
     /**
      * 柜员信息
@@ -414,7 +414,8 @@ public interface DataServeClient {
     @PostMapping("/teller/listByBranch")
     ReturnT<List> listByBranch(Map<String, Object> params);
 
-
+    @PostMapping("/teller/listTellerErrorDetails")
+    ReturnT<Page<HashMap<String, Object>>> getListTellerErrorDetails(Map<String, Object> params);
 
     /**
      * 业务差错
@@ -464,6 +465,12 @@ public interface DataServeClient {
 
     @PostMapping("/site/listMacBusiTypeCountHourlyLine")
     ReturnT<Map> getSiteListMacBusiTypeCountHourlyLine(Map<String,Object> params);
+
+    @PostMapping("/site/listBranchGrade")
+    ReturnT<List> getListBranchGrade(Map<String, Object> params);
+
+    @PostMapping("/site/listSiteSGrade")
+    ReturnT<List> getListSiteSGrade(Map<String, Object> params);
 
     /**
      * 渠道
@@ -516,6 +523,10 @@ public interface DataServeClient {
     @PostMapping("/channel/listCusCountByChannelBar")
     ReturnT<Map> getChannelListCusCountByChannelBar(Map<String,Object> params);
 
+
+    @PostMapping("/channel/listChannelAmountRate")
+    ReturnT<List> getListChannelAmountRate(Map<String, Object> params);
+
     /**
      * 机构数据（银行）
      **/
@@ -530,4 +541,5 @@ public interface DataServeClient {
 
     @PostMapping("/banks/listBranchBankDiaLogData")
     ReturnT<List> listBranchBankDiaLogData(Map<String, Object> params);
+
 }

@@ -138,4 +138,35 @@
         </if>
     </select>
 
+    <select id="listChannelAmountRate" resultType="java.util.HashMap">
+        select CHANNEL_NAME,SUM( AMOUNT ) AMOUNT,
+        round(SUM( AMOUNT ) /(SELECT AMOUNT
+        FROM (select SUM( AMOUNT ) AMOUNT
+        from DM_BUSI_COUNT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.record_time != null">
+                and to_char( record_time, 'yyyymmdd' ) BETWEEN #{params.START_TIME} and #{params.END_TIME}
+            </if>
+        </trim>
+        GROUP BY rollup ( CHANNEL_NAME )
+        ORDER BY AMOUNT DESC)
+        WHERE ROWNUM = 1) * 100,3) AMOUNT_RATE
+        from DM_BUSI_COUNT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.record_time != null">
+                and to_char( record_time, 'yyyymmdd' ) BETWEEN #{params.START_TIME} and #{params.END_TIME}
+            </if>
+        </trim>
+        GROUP BY
+        CHANNEL_NAME
+        ORDER BY
+        AMOUNT DESC
+    </select>
+
 </mapper>

@@ -68,5 +68,5 @@ public interface MacMapper extends BaseMapper<MacDO> {
 
     Page<HashMap<String, Object>> listMacBusiCount(Page<?> page, @Param("params") Map<String, Object> params);
 
-
+    Page<HashMap<String, Object>> listSiteMacDetails(@Param("page") Page<HashMap> page,@Param("params") Map<String, Object> params);
 }

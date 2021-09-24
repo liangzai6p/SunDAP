@@ -105,4 +105,9 @@ public class ChannelController {
     public ReturnT<Map> getListCusCountByChannelBar(@RequestBody Map<String,Object> params){
         return client.getChannelListCusCountByChannelBar(params);
     }
+
+    @PostMapping("/listChannelAmountRate")
+    public ReturnT<List> getListChannelAmountRate(@RequestBody Map<String,Object> params){
+        return client.getListChannelAmountRate(params);
+    }
 }

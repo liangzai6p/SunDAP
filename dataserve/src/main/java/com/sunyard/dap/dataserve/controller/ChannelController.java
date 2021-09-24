@@ -212,5 +212,17 @@ public class ChannelController {
     public ReturnT<Map> listCusCountByChannelBar(@RequestBody Map<String,Object> params){
         return service.listCusCountByChannelBar(params);
     }
+
+    /**
+     * @Description: 渠道金额占比
+     * @Param: [params]
+     * @return: com.sunyard.dap.common.model.ReturnT<java.util.List>
+     * @Author: shen
+     * @Date: 2021/9/24
+     */
+    @PostMapping("/listChannelAmountRate")
+    public ReturnT<List> listChannelAmountRate(@RequestBody Map<String,Object> params){
+        return service.listChannelAmountRate(params);
+    }
 }
 

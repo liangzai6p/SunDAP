@@ -97,4 +97,5 @@ public interface MacService extends IService<MacDO> {
 
     ReturnT<List> listSiteFaultCount(@Param("params") Map<String,Object> params);
 
+    ReturnT<Page<HashMap<String, Object>>> listSiteMacDetails(@Param("params") Map<String, Object> params);
 }

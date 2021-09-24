@@ -440,4 +440,23 @@
         order by FAULT_RATE desc
     </select>
 
+    <select id="listSiteMacDetails" resultType="java.util.HashMap">
+        select SITE_NAME,SITE_NO,count(*) COUNT,count(decode(STATUS,'1',1,null)) ONLINE_COUNT
+        ,round(nvl(count(decode(STATUS,'1',1,null)),0)/count(*)*100,3) ONLINE_RATE
+        from DM_MAC_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.BRANCH_NAME != null">
+                and BRANCH_NAME = #{params.BRANCH_NAME}
+            </if>
+            <if test="params.SITE_NAME != null">
+                and SITE_NAME like '%'||#{params.SITE_NAME}||'%'
+            </if>
+        </trim>
+        group by SITE_NO,SITE_NAME
+        order by ONLINE_COUNT desc
+    </select>
+
 </mapper>

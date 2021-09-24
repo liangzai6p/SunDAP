@@ -47,4 +47,6 @@ public interface ChannelService extends IService<ChannelGradeDO> {
     ReturnT<List> listCusCountByChannel(Map<String,Object> params);
 
     ReturnT<Map> listCusCountByChannelBar(Map<String,Object> params);
+
+    ReturnT<List> listChannelAmountRate(Map<String, Object> params);
 }

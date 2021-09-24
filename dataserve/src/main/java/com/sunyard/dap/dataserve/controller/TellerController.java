@@ -207,5 +207,17 @@ public class TellerController {
 //        ReturnT<List> returnT=service.listByBranch(params);
         return service.listByBranch(params);
     }
+
+    /**
+     * @Description: 人员差错明细
+     * @Param: [params]
+     * @return: com.sunyard.dap.common.model.ReturnT<com.baomidou.mybatisplus.extension.plugins.pagination.Page<java.util.HashMap<java.lang.String,java.lang.Object>>>
+     * @Author: shen
+     * @Date: 2021/9/24
+     */
+    @PostMapping("/listTellerErrorDetails")
+    public ReturnT<Page<HashMap<String, Object>>> listTellerErrorDetails(@RequestBody Map<String,Object> params){
+        return service.listTellerErrorDetails(params);
+    }
 }
 

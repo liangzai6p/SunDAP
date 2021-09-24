@@ -126,4 +126,25 @@
         order by HOUR
     </select>
 
+
+    <select id="listBranchGrade" resultType="java.util.HashMap">
+        select  BRANCH_NAME , ROUND(AVG(SCORE), 2) SCORE
+        from DM_ORGAN_GRADE_TB
+        GROUP BY BRANCH_NAME ORDER BY SCORE DESC
+    </select>
+
+
+    <select id="listSiteSGrade" resultType="java.util.HashMap">
+        select  SITE_NAME , SCORE
+        from DM_ORGAN_GRADE_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NO != null">
+                BRANCH_NO = #{params.BRANCH_NO}
+            </if>
+            <if test="params.BRANCH_NAME != null">
+                and BRANCH_NAME = #{params.BRANCH_NAME}
+            </if>
+        </trim>
+        ORDER BY SCORE DESC
+    </select>
 </mapper>

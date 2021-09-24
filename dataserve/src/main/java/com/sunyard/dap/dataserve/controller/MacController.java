@@ -408,11 +408,17 @@ public class MacController {
     @PostMapping("/listSiteFaultCount")
     public ReturnT<List> listSiteFaultCount(@RequestBody Map<String, Object> params){return service.listSiteFaultCount(params);}
 
-
-
-
-
-
+    /**
+     * @Description: 支行设备情况
+     * @Param: [params]
+     * @return: com.sunyard.dap.common.model.ReturnT<com.baomidou.mybatisplus.extension.plugins.pagination.Page<java.util.HashMap<java.lang.String,java.lang.Object>>>
+     * @Author: shen
+     * @Date: 2021/9/24
+     */
+    @PostMapping("/listSiteMacDetails")
+    public ReturnT<Page<HashMap<String, Object>>> listSiteMacDetails(@RequestBody Map<String,Object> params){
+        return service.listSiteMacDetails(params);
+    }
 
 }
 
