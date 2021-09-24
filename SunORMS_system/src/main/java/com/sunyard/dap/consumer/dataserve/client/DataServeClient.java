@@ -106,6 +106,9 @@ public interface DataServeClient {
     @PostMapping("/busiCount/operateCost")
     ReturnT<List> getBusiCountOperateCost(Map<String, Object> params);
 
+    @PostMapping("/busiCount/branchBusiDetails")
+    ReturnT<Page<HashMap<String, Object>>> getBranchBusiDetails(Map<String, Object> params);
+
     /**
      * 实时运营业务量
      **/
