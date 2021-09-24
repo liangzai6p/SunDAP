@@ -1,6 +1,7 @@
 package com.sunyard.dap.dataserve.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sunyard.dap.common.model.ReturnT;
 import com.sunyard.dap.dataserve.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -207,6 +209,18 @@ public class BusiCountController {
     @PostMapping("/channelCount")
     public ReturnT<List> channelCount(@RequestBody Map<String,Object> params){
         return service.channelCount(params);
+    }
+
+    /**
+     * @Description: 分行业务明细
+     * @Param: [params]
+     * @return: com.sunyard.dap.common.model.ReturnT<com.baomidou.mybatisplus.core.metadata.IPage<java.util.HashMap<java.lang.String,java.lang.Object>>>
+     * @Author: shen
+     * @Date: 2021/9/24
+     */
+    @PostMapping("/branchBusiDetails")
+    public ReturnT<Page<HashMap<String, Object>>> branchBusiDetails(@RequestBody Map<String,Object> params){
+        return service.branchBusiDetails(params);
     }
 
     /**

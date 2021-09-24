@@ -1,7 +1,9 @@
 package com.sunyard.dap.dataserve.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sunyard.dap.common.model.ReturnT;
+import com.sunyard.dap.common.util.CommonUtil;
 import com.sunyard.dap.dataserve.entity.BusiCountDO;
 import com.sunyard.dap.dataserve.entity.ZoneCount;
 import com.sunyard.dap.dataserve.mapper.BusiCountMapper;
@@ -10,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.experimental.var;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -1279,4 +1282,15 @@ public class BusiCountServiceImpl extends ServiceImpl<BusiCountMapper, BusiCount
         }
     }
 
+    @Override
+    public ReturnT<Page<HashMap<String, Object>>> branchBusiDetails(@RequestBody Map<String, Object> params) {
+        Page<HashMap> page = new Page<>();
+        CommonUtil.setPageByParams(page,params);
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.branchBusiDetails(page,params));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new ReturnT<>(ReturnT.FAIL_CODE,"查询失败",null);
+        }
+    }
 }
