@@ -642,4 +642,18 @@
         order by OPERATION_TIME
     </select>
 
+    <select id="branchBusiDetails" resultType="java.util.HashMap">
+        select SITE_NAME,SITE_NO,channel_name,BUSI_COUNT,AMOUNT
+        from DM_BUSI_COUNT_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.BRANCH_NAME != null">
+                BRANCH_NAME = #{params.BRANCH_NAME}
+            </if>
+            <if test="params.START_TIME != null and params.END_TIME != null">
+                and to_char(record_time,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
+            </if>
+        </trim>
+        order by BUSI_COUNT DESC
+    </select>
+
 </mapper>

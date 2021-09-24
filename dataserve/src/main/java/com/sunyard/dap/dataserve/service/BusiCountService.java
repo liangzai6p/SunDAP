@@ -1,9 +1,11 @@
 package com.sunyard.dap.dataserve.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sunyard.dap.common.model.ReturnT;
 import com.sunyard.dap.dataserve.entity.BusiCountDO;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,4 +73,5 @@ public interface BusiCountService extends IService<BusiCountDO>{
 
     ReturnT<List> operateCost(Map<String,Object> params);
 
+    ReturnT<Page<HashMap<String, Object>>> branchBusiDetails(Map<String, Object> params);
 }

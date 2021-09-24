@@ -1,6 +1,7 @@
 package com.sunyard.dap.dataserve.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sunyard.dap.dataserve.entity.BusiCountDO;
 import org.apache.ibatis.annotations.Param;
 
@@ -61,4 +62,5 @@ public interface BusiCountMapper extends BaseMapper<BusiCountDO>{
 
     List<HashMap<String,Object>> operateCost(@Param("params") Map<String,Object> params);
 
+    Page<HashMap<String, Object>> branchBusiDetails(@Param("page") Page<HashMap> page ,@Param("params") Map<String, Object> params);
 }
