@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunyard.dap.modelserver.mapper.MoAllIndexMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="MoAllIndexMap" type="com.sunyard.dap.modelserver.entity.MoAllIndex">
+        <result column="INDEX_NAME" property="indexName"/>
+        <result column="INDEX_TABLE_NAME" property="indexTableName"/>
+        <result column="FIRST_CLASSIFICATION" property="firstClassification"/>
+        <result column="SECOND_CLASSIFICATION" property="secondClassification"/>
+        <result column="INDEX_DESCRIBE" property="indexDescribe"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        INDEX_NAME
+        ,INDEX_TABLE_NAME, FIRST_CLASSIFICATION, SECOND_CLASSIFICATION, INDEX_DESCRIBE
+    </sql>
+
+    <select id="serachIndexName" resultType="String">
+        select INDEX_NAME
+        from MO_ALL_INDEX
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.FIRST_CLASSIFICATION != null">
+                FIRST_CLASSIFICATION = #{params.FIRST_CLASSIFICATION}
+            </if>
+            <if test="params.SECOND_CLASSIFICATION != null">
+                and SECOND_CLASSIFICATION = #{params.SECOND_CLASSIFICATION}
+            </if>
+        </trim>
+    </select>
+
+
+</mapper>

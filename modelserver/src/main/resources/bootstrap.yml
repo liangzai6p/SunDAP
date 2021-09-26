@@ -1,0 +1,41 @@
+server:
+  port: 9031
+
+spring:
+  application:
+    name: sundap-modelserver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:oracle:thin:@172.1.1.11:1521:orcl
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      username: sundap_model
+      #sundap_model 数据库
+      password: R1ztR2g0N7Kwpu7InND0Ws8pGtm81wgYEMEgYyvQhtWxQnmY9vu/j3F1fgQ1f8sLW9sb+K6cJy9dHBJzHvh95g==
+      public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIDiCmr0V/ajg1qDlK5z3SqZyLvHceNTfLloPSEBgOfnSsTIgSrYW3gHBKVg9hVDDJIHeFwHeMHjXms2cakydgkCAwEAAQ==
+      #sundap数据库
+      #      password: OiUN5PpZG2TimMpTi0T3hd26hqFIH4xVHy3l03jvNfOe/xUyezIiQN49Wi7537dyMKXCG46353ajMosdFWI3Hg==
+      #      public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIS/D3aONEzR9KY2LUWOP8roBhlSparTwQmjq/3xVblRfx/cZqESmR2i81Fdv+MNRBQMK6b/j7oYVFQDx2rdf88CAwEAAQ==
+
+      # 初始化，最小，最大连接数
+      initialSize: 3
+      minidle: 3
+      maxActive: 18
+      # 获取数据库连接等待的超时时间
+      maxWait: 60000
+      # 开启加密配置
+      connectionProperties: config.decrypt=true;config.decrypt.key=${spring.datasource.druid.public-key};druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # 开启Druid监控
+      filters: stat,wall,config
+      web-stat-filter:
+        enabled: true
+
+sundap:
+  param: test

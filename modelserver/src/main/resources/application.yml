@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: dev # 环境逻辑组 dev/test/prod
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  typeAliasesPackage: com.sunyard.dap.modelserver.entity
