@@ -30,5 +30,40 @@
         </trim>
     </select>
 
+    <select id="searchTellerOperation" resultType="java.util.HashMap">
+        select TELLER_NO,to_char(OPERATION_TIME,'yyyymmdd hh:mi:ss') OPERATION_TIME,TELLER_NAME,OPERATION_NAME
+        from MO_TELLER_SELFBUSI_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.ORGAN_NO != null">
+                ORGAN_NO = #{params.ORGAN_NO}
+            </if>
+            <if test="params.TELLER_NO != null">
+                and TELLER_NO = #{params.TELLER_NO}
+            </if>
+        </trim>
+    </select>
+
+    <select id="searchTellerCusMoney" resultType="java.util.HashMap">
+        select to_char( BUSI_DATE, 'yyyyMMdd' ) BUSI_DATE,
+        to_char( BUSI_DATE, 'hh:mi:ss' ) BUSI_TIME,
+        BUSI_ACCOUNT,
+        BUSI_ACCOUNTNAME,
+        BUSI_AMOUNT
+        from MO_TELLER_SELFBUSI_TB
+        <trim prefix="where" prefixOverrides="and">
+            <if test="params.ORGAN_NO != null">
+                ORGAN_NO = #{params.ORGAN_NO}
+            </if>
+            <if test="params.BUSI_AMOUNT != null">
+                and (BUSI_AMOUNT = #{params.BUSI_AMOUNT} OR ( BUSI_ACCOUNT IN (
+                SELECT BUSI_ACCOUNT FROM MO_TELLER_CUS_MONEY_TB
+                where ORGAN_NO = #{params.ORGAN_NO}
+
+                GROUP BY BUSI_ACCOUNT
+                HAVING SUM( BUSI_AMOUNT ) >= #{params.BUSI_AMOUNT} ) ) )
+            </if>
+        </trim>
+    </select>
+
 
 </mapper>

@@ -103,25 +103,37 @@
     </select>
 
     <select id="listEleSatisByChannel" resultType="java.util.HashMap">
-        select CHANNEL_NO,CHANNEL_NAME,SATIS_SCORE from DM_CHANNEL_GRADE_TB
-        where CHANNEL_NO &lt;&gt; 'CH000'
-        <if test="params.BRANCH_NO != null">
-            and BRANCH_NO = #{params.BRANCH_NO}
-        </if>
-        order by to_number(SATIS_SCORE) desc
+        <choose>
+            <when test="params.QUICK != null">
+                select CHANNEL_NO,CHANNEL_NAME,SATIS_SCORE from DM_CHANNEL_GRADE_TB
+                where CHANNEL_NO &lt;&gt; 'CH000'
+                <if test="params.BRANCH_NO != null">
+                    and BRANCH_NO = #{params.BRANCH_NO}
+                </if>
+                order by to_number(SATIS_SCORE) desc
+            </when>
+            <otherwise>
+                select CHANNEL_NO,CHANNEL_NAME,ROUND(AVG(SATIS_SCORE),2) SATIS_SCORE
+                FROM
+                DM_CHANNEL_GRADE_TB
+                where CHANNEL_NO &lt;&gt; 'CH000'
+                GROUP BY CHANNEL_NO,CHANNEL_NAME
+                order by to_number(SATIS_SCORE) desc
+            </otherwise>
+        </choose>
     </select>
 
     <select id="listEleRplRateByChannel" resultType="java.util.HashMap">
         select CHANNEL_NO,CHANNEL_NAME,
             <if test="params.QUICK != null">
-                sum(REPLACE_RATE)/count(1) as count
+                ROUND(sum( REPLACE_RATE ) / count( 1 ),2)  REPLACE_RATE
             </if>
-            <if test="params.BRANCH_NO != null">
+            <if test="params.BRANCH_NO != null and params.QUICK == null">
                 REPLACE_RATE
             </if>
         from DM_CHANNEL_ELE_RPL_RATE_TB
         <trim prefix="where" prefixOverrides="and">
-            <if test="params.BRANCH_NO != null">
+            <if test="params.BRANCH_NO != null and params.QUICK == null">
                 BRANCH_NO = #{params.BRANCH_NO}
             </if>
         </trim>

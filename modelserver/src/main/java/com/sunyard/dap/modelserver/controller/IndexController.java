@@ -26,4 +26,13 @@ public class IndexController {
         return indexServer.serachIndexName(params);
     }
 
+    @PostMapping("searchTellerOperation")
+    public ReturnT<List> searchTellerOperation(@RequestBody Map<String,Object> params){
+        return indexServer.searchTellerOperation(params);
+    }
+
+    @PostMapping("searchTellerCusMoney")
+    public ReturnT<List> searchTellerCusMoney(@RequestBody Map<String,Object> params){
+        return indexServer.searchTellerCusMoney(params);
+    }
 }

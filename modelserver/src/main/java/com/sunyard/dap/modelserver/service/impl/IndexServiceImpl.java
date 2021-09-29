@@ -30,5 +30,25 @@ public class IndexServiceImpl extends ServiceImpl<MoAllIndexMapper, MoAllIndex> 
         return new ReturnT<List>(ReturnT.SUCCESS_CODE,"查询成功",baseMapper.serachIndexName(params));
     }
 
+    @Override
+    public ReturnT<List> searchTellerOperation(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE, "查询成功", baseMapper.searchTellerOperation(params));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
+
+    @Override
+    public ReturnT<List> searchTellerCusMoney(Map<String, Object> params) {
+        try {
+            return new ReturnT<>(ReturnT.SUCCESS_CODE, "查询成功", baseMapper.searchTellerCusMoney(params));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ReturnT.listFAIL;
+        }
+    }
+
 
 }

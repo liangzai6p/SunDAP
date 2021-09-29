@@ -10,4 +10,7 @@ import java.util.Map;
 public interface IndexServer extends IService<MoAllIndex> {
     ReturnT<List> serachIndexName( Map<String, Object> params);
 
+    ReturnT<List> searchTellerOperation(Map<String, Object> params);
+
+    ReturnT<List> searchTellerCusMoney(Map<String, Object> params);
 }

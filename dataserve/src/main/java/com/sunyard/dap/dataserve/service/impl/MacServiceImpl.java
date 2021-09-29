@@ -60,6 +60,9 @@ public class MacServiceImpl extends ServiceImpl<MacMapper, MacDO> implements Mac
     @Override
     public ReturnT<List> listBranchFaultRate(Map<String, Object> params) {
         try {
+            if (params.get("QUICK")==null){
+                params.put("BRANCH_NO",params.get("BRANCH_NO").toString());
+            }
             return new ReturnT<>(ReturnT.SUCCESS_CODE, "查询成功", baseMapper.listBranchFaultRate(params));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -82,10 +85,17 @@ public class MacServiceImpl extends ServiceImpl<MacMapper, MacDO> implements Mac
             }
             int index = 0;
             for (int i = limit; i >= 0; i--) {
-                xAxis.add(list.get(i).get("BRANCH_NAME"));
-                yAxis.add(list.get(i).get("FAULT_RATE"));
-                machineErrorRateOrganData.add(list.get(i).get("BRANCH_NO"));
-                index++;
+                if (list.get(i).get("SITE_NO") != null){
+                    xAxis.add(list.get(i).get("SITE_NAME"));
+                    yAxis.add(list.get(i).get("FAULT_RATE"));
+                    machineErrorRateOrganData.add(list.get(i).get("SITE_NO"));
+                    index++;
+                }else {
+                    xAxis.add(list.get(i).get("BRANCH_NAME"));
+                    yAxis.add(list.get(i).get("FAULT_RATE"));
+                    machineErrorRateOrganData.add(list.get(i).get("BRANCH_NO"));
+                    index++;
+                }
             }
             Map map = new HashMap();
             map.put("xAxis", xAxis);
@@ -199,6 +209,9 @@ public class MacServiceImpl extends ServiceImpl<MacMapper, MacDO> implements Mac
     @Override
     public ReturnT<List> listBranchMacReplaceRate(Map<String, Object> params) {
         try {
+            if (params.get("QUICK")==null){
+                params.put("BRANCH_NO",params.get("BRANCH_NO").toString());
+            }
             return new ReturnT<>(ReturnT.SUCCESS_CODE, "查询成功", baseMapper.listBranchMacReplaceRate(params));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -221,10 +234,17 @@ public class MacServiceImpl extends ServiceImpl<MacMapper, MacDO> implements Mac
             }
             int index = 0;
             for (int i = limit; i >= 0; i--) {
-                xAxis.add(list.get(i).get("BRANCH_NAME"));
-                yAxis.add(list.get(i).get("REPLACE_RATE"));
-                machineInsteadRankOrganData.add(list.get(i).get("BRANCH_NO"));
-                index++;
+                if (list.get(i).get("SITE_NO") != null){
+                    xAxis.add(list.get(i).get("SITE_NAME"));
+                    yAxis.add(list.get(i).get("REPLACE_RATE"));
+                    machineInsteadRankOrganData.add(list.get(i).get("SITE_NO"));
+                    index++;
+                }else {
+                    xAxis.add(list.get(i).get("BRANCH_NAME"));
+                    yAxis.add(list.get(i).get("REPLACE_RATE"));
+                    machineInsteadRankOrganData.add(list.get(i).get("BRANCH_NO"));
+                    index++;
+                }
             }
             Map map = new HashMap();
             map.put("xAxis", xAxis);

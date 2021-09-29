@@ -44,7 +44,7 @@ public class MacController {
         return client.getMacListBranchFaultRate(params);
     }
     @PostMapping("/listBranchFaultRateXY")
-    public ReturnT<Map> listBranchFaultRateXY( Map<String,Object> params){
+    public ReturnT<Map> listBranchFaultRateXY(@RequestBody Map<String,Object> params){
         return client.listBranchFaultRateXY(params);
     }
     @PostMapping("/listSiteFaultRate")
@@ -56,7 +56,7 @@ public class MacController {
         return client.getMacListSiteFaultRateBar(params);
     }
     @PostMapping("/listBranchMacReplaceRateXY")
-    public ReturnT<Map> listBranchMacReplaceRateXY( Map<String,Object> params){
+    public ReturnT<Map> listBranchMacReplaceRateXY(@RequestBody Map<String,Object> params){
         return client.listBranchMacReplaceRateXY(params);
     };
     @PostMapping("/listBranchOnlineMacMap")

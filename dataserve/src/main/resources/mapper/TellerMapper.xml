@@ -86,16 +86,29 @@
     </select>
 
     <select id="listSiteOffline" resultType="java.util.HashMap">
-        select COUNT(*) COUNT,b.SITE_NO,b.SITE_NAME
-        from DM_TELLER_TB t join SM_BANKS_TB b on t.SITE_NO = b.SITE_NO
-        <trim prefix="where" prefixOverrides="and">
-            STATUS = 0
-            <if test="params.BRANCH_NO != null">
-                and b.BRANCH_NO = #{params.BRANCH_NO}
-            </if>
-        </trim>
-        group by b.SITE_NO,b.SITE_NAME
-        order by COUNT desc
+        <choose>
+            <when test="params.QUICK != null">
+                select COUNT(*) COUNT,b.SITE_NO,b.SITE_NAME
+                from DM_TELLER_TB t join SM_BANKS_TB b on t.SITE_NO = b.SITE_NO
+                <trim prefix="where" prefixOverrides="and">
+                    STATUS = 0
+                    <if test="params.BRANCH_NO != null">
+                        and b.BRANCH_NO = #{params.BRANCH_NO}
+                    </if>
+                </trim>
+                group by b.SITE_NO,b.SITE_NAME
+                order by COUNT desc
+            </when>
+            <otherwise>
+                select COUNT(*) COUNT,b.BRANCH_NO,b.BRANCH_NAME
+                from DM_TELLER_TB t join SM_BANKS_TB b on t.SITE_NO = b.SITE_NO
+                <trim prefix="where" prefixOverrides="and">
+                    STATUS = 0
+                </trim>
+                group by b.BRANCH_NO,b.BRANCH_NAME
+                order by COUNT desc
+            </otherwise>
+        </choose>
     </select>
 
     <select id="listRoleStatus" resultType="java.util.HashMap">

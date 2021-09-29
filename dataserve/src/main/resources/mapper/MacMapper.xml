@@ -85,16 +85,42 @@
         </trim>
     </select>
     <select id="listBranchFaultRate" resultType="java.util.HashMap">
-        select round(nvl(t2.fault_count,0)/t1.mac_count*100,3) FAULT_RATE,t1.BRANCH_NO,t1.BRANCH_NAME from (
+        <choose>
+            <when test="params.QUICK != null">
+                select round(nvl(t2.fault_count,0)/t1.mac_count*100,3) FAULT_RATE,t1.SITE_NO,t1.SITE_NAME from (
+                (select COUNT(MAC_NO) mac_count,SITE_NO,SITE_NAME
+                from DM_MAC_TB
+                <trim prefix="where" prefixOverrides="and">
+                    <if test="params.BRANCH_NO">
+                        BRANCH_NO =  #{params.BRANCH_NO}
+                    </if>
+                </trim>
+                group by SITE_NO,SITE_NAME) t1 left join
+                (select COUNT(MAC_NO) fault_count,SITE_NO,SITE_NAME
+                from DM_MAC_TB
+                <trim prefix="where" prefixOverrides="and">
+                    STATUS = '2'
+                    <if test="params.BRANCH_NO">
+                        and BRANCH_NO =  #{params.BRANCH_NO}
+                    </if>
+                </trim>
+                group by SITE_NO,SITE_NAME) t2
+                on t1.SITE_NO = t2.SITE_NO)
+                order by FAULT_RATE desc
+            </when>
+            <otherwise>
+                select round(nvl(t2.fault_count,0)/t1.mac_count*100,3) FAULT_RATE,t1.BRANCH_NO,t1.BRANCH_NAME from (
                 (select COUNT(MAC_NO) mac_count,BRANCH_NO,BRANCH_NAME
-                 from DM_MAC_TB
-                 group by BRANCH_NO,BRANCH_NAME) t1 left join
-                        (select COUNT(MAC_NO) fault_count,BRANCH_NO,BRANCH_NAME
-                         from DM_MAC_TB
-                         where STATUS = '2'
-                         group by BRANCH_NO,BRANCH_NAME) t2
-                        on t1.branch_no = t2.branch_no)
-        order by FAULT_RATE desc
+                from DM_MAC_TB
+                group by BRANCH_NO,BRANCH_NAME) t1 left join
+                (select COUNT(MAC_NO) fault_count,BRANCH_NO,BRANCH_NAME
+                from DM_MAC_TB
+                where STATUS = '2'
+                group by BRANCH_NO,BRANCH_NAME) t2
+                on t1.branch_no = t2.branch_no)
+                order by FAULT_RATE desc
+            </otherwise>
+        </choose>
     </select>
     <select id="listBranchOnlineMac" resultType="java.util.HashMap">
         select BRANCH_NO,BRANCH_NAME,count(*) COUNT,count(decode(STATUS,'1',1,null)) ONLINE_COUNT
@@ -116,20 +142,43 @@
                 on a.branch_no = b.branch_no
         order by FAULT_TIMES DESC
     </select>
+
     <select id="listBranchMacReplaceRate" resultType="java.util.HashMap">
-        select BRANCH_NO,BRANCH_NAME,round(c1/c2*100,2) REPLACE_RATE
-        from (
-             select  BRANCH_NO,BRANCH_NAME,count(decode(CHANNEL_NO,'CH005',1,NULL)) c1,count(decode(CHANNEL_NO,'CH000',1,null)) c2
-             from DM_BUSI_COUNT_TB
-            <trim prefix="where" prefixOverrides="and">
-                <if test="params.START_TIME != null and params.END_TIME != null">
-                    RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
-                </if>
-            </trim>
-            group by BRANCH_NO,BRANCH_NAME
-             )
-        order by replace_rate desc
+        <choose>
+            <when test="params.QUICK != null">
+                select SITE_NO,SITE_NAME,round(c1/c2*100,2) REPLACE_RATE
+                from (
+                select  SITE_NO,SITE_NAME,count(decode(CHANNEL_NO,'CH005',1,NULL)) c1,count(decode(CHANNEL_NO,'CH000',1,null)) c2
+                from DM_BUSI_COUNT_TB
+                <trim prefix="where" prefixOverrides="and">
+                    <if test="params.START_TIME != null and params.END_TIME != null">
+                        RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                    </if>
+                    <if test="params.BRANCH_NO  != null">
+                        and BRANCH_NO = #{params.BRANCH_NO}
+                    </if>
+                </trim>
+                group by SITE_NO,SITE_NAME
+                )
+                order by replace_rate desc
+            </when>
+            <otherwise>
+                select BRANCH_NO,BRANCH_NAME,round(c1/c2*100,2) REPLACE_RATE
+                from (
+                select  BRANCH_NO,BRANCH_NAME,count(decode(CHANNEL_NO,'CH005',1,NULL)) c1,count(decode(CHANNEL_NO,'CH000',1,null)) c2
+                from DM_BUSI_COUNT_TB
+                <trim prefix="where" prefixOverrides="and">
+                    <if test="params.START_TIME != null and params.END_TIME != null">
+                        RECORD_TIME between to_date(#{params.START_TIME},'yyyymmdd') and to_date(#{params.END_TIME},'yyyymmdd')
+                    </if>
+                </trim>
+                group by BRANCH_NO,BRANCH_NAME
+                )
+                order by replace_rate desc
+            </otherwise>
+        </choose>
     </select>
+
     <select id="listMacReplaceRateMonthly" resultType="java.util.HashMap">
         select MONTH,round(c1/c2*100,2) REPLACE_RATE
         from (

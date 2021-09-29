@@ -35,11 +35,60 @@
         TASK_ID, ZONE_NO, ZONE_NAME, BRANCH_NO, BRANCH_NAME, SITE_NO, SITE_NAME, CHANNEL_NO, CHANNEL_NAME, ROLE_NO, ROLE_NAME, STAFF_NO, STAFF_NAME, CUS_TYPE, CUS_NO, CUS_NAME, BUSI_NO, BUSI_NAME, STYPE_NO, STYPE_NAME, MAC_NO, CURRENCY, TRANS_AMOUNT, CREATE_TIME
     </sql>
     <select id="listBranchErrorCount" resultType="java.util.HashMap">
-        select a.BRANCH_NO,a.BRANCH_NAME,nvl(e.COUNT,0) ERROR_COUNT,round(nvl(e.COUNT,0)/a.COUNT*100,2) ERROR_RATE
-        from
-        (
-          select nvl(c.BRANCH_NO,d.BRANCH_NO) BRANCH_NO,nvl(c.BRANCH_NAME,d.BRANCH_NAME) BRANCH_NAME,nvl(c.COUNT,0)+nvl(d.COUNT,0) COUNT from
-            (
+        <choose>
+            <when test="params.QUICK != null">
+                select a.SITE_NO,a.SITE_NAME,nvl(e.COUNT,0) ERROR_COUNT,round(nvl(e.COUNT,0)/a.COUNT*100,2) ERROR_RATE
+                from
+                (
+                select nvl(c.SITE_NO,d.SITE_NO) SITE_NO,nvl(c.SITE_NAME,d.SITE_NAME) SITE_NAME,nvl(c.COUNT,0)+nvl(d.COUNT,0) COUNT from
+                (
+                select SITE_NO,SITE_NAME,sum(busi_count) COUNT
+                from dm_busi_count_tb
+                <trim prefix="where" prefixOverrides="and">
+                    <if test="params.START_TIME != null and params.END_TIME != null">
+                        to_char(RECORD_TIME,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
+                    </if>
+                    <if test="params.BRANCH_NO != null">
+                       and BRANCH_NO =  #{params.BRANCH_NO}
+                    </if>
+                </trim>
+                group by SITE_NO,SITE_NAME
+                ) c full join
+                (
+                select SITE_NO,SITE_NAME,count(*) COUNT
+                from DM_BUSI_DETAIL_TB
+                <trim prefix="where" prefixOverrides="and">
+                    <if test="params.START_TIME != null and params.END_TIME != null">
+                        to_char(CREATE_TIME,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
+                    </if>
+                    <if test="params.BRANCH_NO != null">
+                        and BRANCH_NO =  #{params.BRANCH_NO}
+                    </if>
+                </trim>
+                group by SITE_NO, SITE_NAME
+                ) d on c.SITE_NO = d.SITE_NO
+                ) a left join
+                (
+                select SITE_NO,SITE_NAME,count(*) COUNT
+                from DM_BUSI_DETAIL_ERROR_TB
+                <trim prefix="where" prefixOverrides="and">
+                    <if test="params.START_TIME != null and params.END_TIME != null">
+                        to_char(CREATE_TIME,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
+                    </if>
+                    <if test="params.BRANCH_NO != null">
+                        and BRANCH_NO =  #{params.BRANCH_NO}
+                    </if>
+                </trim>
+                group by SITE_NO, SITE_NAME
+                ) e on a.SITE_NO = e.SITE_NO
+                order by ERROR_RATE desc
+            </when>
+            <otherwise>
+                select a.BRANCH_NO,a.BRANCH_NAME,nvl(e.COUNT,0) ERROR_COUNT,round(nvl(e.COUNT,0)/a.COUNT*100,2) ERROR_RATE
+                from
+                (
+                select nvl(c.BRANCH_NO,d.BRANCH_NO) BRANCH_NO,nvl(c.BRANCH_NAME,d.BRANCH_NAME) BRANCH_NAME,nvl(c.COUNT,0)+nvl(d.COUNT,0) COUNT from
+                (
                 select BRANCH_NO,BRANCH_NAME,sum(busi_count) COUNT
                 from dm_busi_count_tb
                 <trim prefix="where" prefixOverrides="and">
@@ -48,8 +97,8 @@
                     </if>
                 </trim>
                 group by branch_no,branch_name
-            ) c full join
-            (
+                ) c full join
+                (
                 select BRANCH_NO,BRANCH_NAME,count(*) COUNT
                 from DM_BUSI_DETAIL_TB
                 <trim prefix="where" prefixOverrides="and">
@@ -58,19 +107,21 @@
                     </if>
                 </trim>
                 group by BRANCH_NO, BRANCH_NAME
-            ) d on c.branch_no = d.branch_no
-        ) a left join
-        (
-            select BRANCH_NO,BRANCH_NAME,count(*) COUNT
-            from DM_BUSI_DETAIL_ERROR_TB
-            <trim prefix="where" prefixOverrides="and">
-                <if test="params.START_TIME != null and params.END_TIME != null">
-                    to_char(CREATE_TIME,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
-                </if>
-            </trim>
-            group by BRANCH_NO, BRANCH_NAME
-        ) e on a.BRANCH_NO = e.BRANCH_NO
-        order by ERROR_RATE desc
+                ) d on c.branch_no = d.branch_no
+                ) a left join
+                (
+                select BRANCH_NO,BRANCH_NAME,count(*) COUNT
+                from DM_BUSI_DETAIL_ERROR_TB
+                <trim prefix="where" prefixOverrides="and">
+                    <if test="params.START_TIME != null and params.END_TIME != null">
+                        to_char(CREATE_TIME,'yyyymmdd') between #{params.START_TIME} and #{params.END_TIME}
+                    </if>
+                </trim>
+                group by BRANCH_NO, BRANCH_NAME
+                ) e on a.BRANCH_NO = e.BRANCH_NO
+                order by ERROR_RATE desc
+            </otherwise>
+        </choose>
     </select>
 
     <select id="listSiteErrorCount" resultType="java.util.HashMap">

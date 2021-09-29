@@ -24,5 +24,13 @@ public class ModelController {
         return client.serachIndexName(params);
     }
 
+    @PostMapping("searchTellerOperation")
+    public ReturnT<List> searchTellerOperation(@RequestBody Map<String,Object> params){
+        return client.searchTellerOperation(params);
+    }
 
+    @PostMapping("searchTellerCusMoney")
+    public ReturnT<List> searchTellerCusMoney(@RequestBody Map<String,Object> params){
+        return client.searchTellerCusMoney(params);
+    }
 }
